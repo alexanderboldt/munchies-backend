@@ -5,6 +5,7 @@ data class ApiModelRecipeGet(
     val userId: String,
     val title: String,
     val description: String?,
+    val duration: Int,
     val createdAt: Long,
     val updatedAt: Long
 )

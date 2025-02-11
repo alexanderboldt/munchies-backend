@@ -1,0 +1,1 @@
+alter table db_model_recipe add duration int not null;

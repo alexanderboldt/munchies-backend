@@ -7,12 +7,12 @@ import java.util.Date
 
 // from api to database
 
-fun ApiModelRecipePost.toDbModel(userId: String) = DbModelRecipe(0, userId, title, description, Date().time, Date().time)
+fun ApiModelRecipePost.toDbModel(userId: String) = DbModelRecipe(0, userId, title, description, duration, Date().time, Date().time)
 
-fun ApiModelRecipePost.toDbModel(dbModelExisting: DbModelRecipe) = DbModelRecipe(dbModelExisting.id, dbModelExisting.userId, title, description, dbModelExisting.createdAt, Date().time)
+fun ApiModelRecipePost.toDbModel(dbModelExisting: DbModelRecipe) = DbModelRecipe(dbModelExisting.id, dbModelExisting.userId, title, description, duration, dbModelExisting.createdAt, Date().time)
 
 // from database to api
 
 fun Iterable<DbModelRecipe>.toApiModelGet() = map { it.toApiModelGet() }
 
-fun DbModelRecipe.toApiModelGet() = ApiModelRecipeGet(id, userId, title, description, createdAt, updatedAt)
+fun DbModelRecipe.toApiModelGet() = ApiModelRecipeGet(id, userId, title, description, duration, createdAt, updatedAt)

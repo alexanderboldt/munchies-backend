@@ -16,6 +16,8 @@ data class DbModelRecipe(
 
     val description: String?,
 
+    val duration: Int,
+
     val createdAt: Long,
 
     val updatedAt: Long
