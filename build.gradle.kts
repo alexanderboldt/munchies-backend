@@ -44,6 +44,10 @@ dependencies {
 
 	implementation("mysql:mysql-connector-java:8.0.33")
 
+	val flywayVersion = "11.2.0"
+	implementation("org.flywaydb:flyway-core:$flywayVersion")
+	implementation("org.flywaydb:flyway-mysql:$flywayVersion")
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
