@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: munchies_mysql
+    image: mysql:9.2.0
+    environment:
+      MYSQL_DATABASE: munchies
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+    ports:
+      - 127.0.0.1:3306:3306
+  keycloak:
+    container_name: munchies_keycloak
+    image: quay.io/keycloak/keycloak:26.1.0
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - 8080:8080
+    command:
+      - start-dev
