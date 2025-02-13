@@ -1,20 +1,21 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	id("org.springframework.boot") version "3.4.2"
-	id("io.spring.dependency-management") version "1.1.7"
-
 	val kotlinVersion = "2.1.0"
 	kotlin("jvm") version kotlinVersion
 	kotlin("plugin.spring") version kotlinVersion
 	kotlin("plugin.jpa") version kotlinVersion
+
+	id("org.springframework.boot") version "3.4.2"
+	id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.alex"
 version = "0.0.1-SNAPSHOT"
 
-java {
-	sourceCompatibility = JavaVersion.VERSION_17
+kotlin {
+	jvmToolchain(23)
+	compilerOptions {
+		freeCompilerArgs.addAll("-Xjsr305=strict")
+	}
 }
 
 repositories {
@@ -22,6 +23,7 @@ repositories {
 }
 
 dependencies {
+	// test-libraries
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(module = "junit")
 		exclude(module = "mockito-core")
@@ -30,6 +32,7 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 
+	// project-libraries
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
@@ -49,13 +52,6 @@ dependencies {
 	implementation("org.flywaydb:flyway-mysql:$flywayVersion")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-}
-
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "17"
-	}
 }
 
 tasks.withType<Test> {
