@@ -1,3 +1,7 @@
+values:
+  themealdb:
+    url: https://www.themealdb.com/api/json
+
 server:
   port: 9000
 

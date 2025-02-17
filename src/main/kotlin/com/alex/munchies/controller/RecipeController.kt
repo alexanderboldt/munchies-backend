@@ -1,8 +1,10 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.repository.TheMealDbClient
 import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelRecipeGet
 import com.alex.munchies.repository.api.ApiModelRecipePost
+import com.alex.munchies.repository.api.ApiModelTheMealDbPost
 import com.alex.munchies.repository.database.RecipeRepository
 import com.alex.munchies.repository.database.findByIdAndUserIdOrThrowException
 import com.alex.munchies.repository.mapping.toApiModelGet
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("api/v1/recipes")
 class RecipeController(
     private val userService: UserService,
-    private val recipeRepository: RecipeRepository
+    private val recipeRepository: RecipeRepository,
+    private val theMealDbClient: TheMealDbClient
 ) {
 
     // create
@@ -25,6 +28,13 @@ class RecipeController(
     @ResponseStatus(HttpStatus.CREATED)
     fun postRecipe(@RequestBody recipe: ApiModelRecipePost): ApiModelRecipeGet {
         return recipeRepository.save(recipe.toDbModel(userService.getUserId())).toApiModelGet()
+    }
+
+    @PostMapping("/themealdb")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun postRecipeFromTheMealDb(@RequestBody recipe: ApiModelTheMealDbPost): ApiModelRecipeGet {
+        val meal = theMealDbClient.getMeal(recipe.id).meals.first()
+        return recipeRepository.save(meal.toDbModel(userService.getUserId())).toApiModelGet()
     }
 
     // read
