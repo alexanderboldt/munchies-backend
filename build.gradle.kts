@@ -1,11 +1,9 @@
 plugins {
-	val kotlinVersion = "2.1.0"
-	kotlin("jvm") version kotlinVersion
-	kotlin("plugin.spring") version kotlinVersion
-	kotlin("plugin.jpa") version kotlinVersion
-
-	id("org.springframework.boot") version "3.4.2"
-	id("io.spring.dependency-management") version "1.1.7"
+	alias(libs.plugins.kotlin.jvm)
+	alias(libs.plugins.kotlin.spring)
+	alias(libs.plugins.kotlin.jpa)
+	alias(libs.plugins.spring.boot)
+	alias(libs.plugins.spring.dependency.management)
 }
 
 group = "com.alex"
@@ -23,37 +21,24 @@ repositories {
 }
 
 dependencies {
-	// test-libraries
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(module = "junit")
-		exclude(module = "mockito-core")
-	}
-	testImplementation("io.mockk:mockk:1.13.16")
-	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation("org.testcontainers:mysql")
-
 	// project-libraries
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation(libs.kotlin.reflect)
+	implementation(libs.kotlin.stdlib)
+	implementation(libs.jackson.kotlin)
 
-	val springVersion = "3.4.2"
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-client:$springVersion")
-	implementation("org.springframework.boot:spring-boot-starter-security:$springVersion")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:$springVersion")
+	implementation(libs.spring.boot.starter.web)
+	implementation(libs.spring.boot.starter.data)
+	implementation(libs.spring.boot.starter.oauth2.client)
+	implementation(libs.spring.boot.starter.oauth2.resource)
+	implementation(libs.spring.boot.starter.security)
 
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation(libs.mysql)
+	implementation(libs.flyway.core)
+	implementation(libs.flyway.mysql)
 
-	implementation("mysql:mysql-connector-java:8.0.33")
+	implementation(libs.openfeign)
 
-	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0")
-
-	val flywayVersion = "11.2.0"
-	implementation("org.flywaydb:flyway-core:$flywayVersion")
-	implementation("org.flywaydb:flyway-mysql:$flywayVersion")
-
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	developmentOnly(libs.spring.boot.devtools)
 }
 
 tasks.withType<Test> {
