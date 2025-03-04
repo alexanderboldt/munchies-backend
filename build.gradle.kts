@@ -39,6 +39,12 @@ dependencies {
 	implementation(libs.openfeign)
 
 	developmentOnly(libs.spring.boot.devtools)
+
+	// test-libraries
+	testImplementation(libs.spring.boot.starter.test) {
+		exclude(module = "junit")
+		exclude(module = "mockito-core")
+	}
 }
 
 tasks.withType<Test> {
