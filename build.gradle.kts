@@ -43,8 +43,9 @@ dependencies {
 	// test-libraries
 	testImplementation(libs.spring.boot.starter.test) {
 		exclude(module = "junit")
-		exclude(module = "mockito-core")
 	}
+	testImplementation(libs.testcontainers.junit.jupiter)
+	testImplementation(libs.testcontainers.mysql)
 }
 
 tasks.withType<Test> {
