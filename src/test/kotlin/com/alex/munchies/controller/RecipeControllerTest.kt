@@ -4,15 +4,16 @@ import com.alex.munchies.repository.TheMealDbClient
 import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelRecipeGet
 import com.alex.munchies.repository.api.ApiModelRecipePost
+import com.alex.munchies.repository.api.ApiModelTheMealDbPost
 import com.alex.munchies.repository.database.RecipeRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -21,7 +22,6 @@ import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Testcontainers
 class RecipeControllerTest {
 
@@ -70,6 +70,11 @@ class RecipeControllerTest {
         controller = RecipeController(userService, recipeRepository, theMealDbClient)
     }
 
+    @AfterEach
+    fun afterEach() {
+        recipeRepository.deleteAll()
+    }
+
     @Test
     fun testPostRecipe() {
         val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
@@ -77,6 +82,22 @@ class RecipeControllerTest {
         val recipePosted = controller.postRecipe(recipePost)
 
         assertRecipe(recipePosted, recipePost)
+    }
+
+    @Test
+    fun testPostRecipeFromTheMealDb() {
+        val recipePost = ApiModelTheMealDbPost("53014")
+
+        val recipePosted = controller.postRecipeFromTheMealDb(recipePost)
+
+        assertThat(recipePosted).isNotNull
+        assertThat(recipePosted.id).isNotZero
+        assertThat(recipePosted.userId).isEqualTo(userId)
+        assertThat(recipePosted.title).isNotBlank
+        assertThat(recipePosted.description).isNotBlank
+        assertThat(recipePosted.duration).isZero
+        assertThat(recipePosted.createdAt).isNotZero
+        assertThat(recipePosted.updatedAt).isNotZero
     }
 
     @Test
@@ -97,6 +118,30 @@ class RecipeControllerTest {
         val recipeGet = controller.getAllRecipes()
 
         assertRecipe(recipeGet[0], recipePost)
+    }
+
+    @Test
+    fun testUpdateRecipe() {
+        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
+
+        val recipePosted = controller.postRecipe(recipePost)
+
+        val recipeUpdate = ApiModelRecipePost("Burger", "lecker", 1000)
+        val recipeGet = controller.updateRecipe(recipePosted.id, recipeUpdate)
+
+        assertRecipe(recipeGet, recipeUpdate)
+    }
+
+    @Test
+    fun testDeleteRecipe() {
+        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
+
+        val recipePosted = controller.postRecipe(recipePost)
+
+        controller.deleteRecipe(recipePosted.id)
+        val recipesGet = controller.getAllRecipes()
+
+        assertThat(recipesGet).isEmpty()
     }
 
     fun assertRecipe(actual: ApiModelRecipeGet, expected: ApiModelRecipePost) {
