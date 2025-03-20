@@ -4,6 +4,7 @@ spring-version = "3.4.2"
 mysql-version = "8.0.33"
 flyway-version = "11.2.0"
 openfeign-version = "4.2.0"
+rest-assured-version = "5.5.1"
 
 [libraries]
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-version" }
@@ -27,6 +28,7 @@ spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-version" }
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
+rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }

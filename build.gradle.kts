@@ -46,6 +46,7 @@ dependencies {
 	}
 	testImplementation(libs.testcontainers.junit.jupiter)
 	testImplementation(libs.testcontainers.mysql)
+	testImplementation(libs.rest.assured)
 }
 
 tasks.withType<Test> {
