@@ -9,6 +9,7 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
+import io.restassured.response.ValidatableResponse
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterAll
@@ -20,6 +21,7 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.http.HttpStatus
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
@@ -57,8 +59,6 @@ class RecipeResourceTest {
         }
     }
 
-    private val userId = "12345"
-
     @LocalServerPort
     private var port: Int = 0
 
@@ -67,6 +67,14 @@ class RecipeResourceTest {
 
     @Autowired
     private lateinit var recipeRepository: RecipeRepository
+
+    private val userId = "12345"
+    
+    private val route = "/api/v1/recipes"
+    private val routeDetail = "$route/{id}"
+
+    private val recipePizza = ApiModelRecipePost("Pizza", "lecker", 1000)
+    private val recipeBurger = ApiModelRecipePost("Burger", "juicy", 2000)
 
     @BeforeEach
     fun beforeEach() {
@@ -80,32 +88,32 @@ class RecipeResourceTest {
         recipeRepository.deleteAll()
     }
 
+    // region create
+
     @Test
     fun testPostWithValidRequest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(ApiModelRecipePost("Pizza", "lecker", 1000))
+            body(recipePizza)
         } When {
-            post("/api/v1/recipes")
+            post(route)
         } Then {
-            statusCode(201)
-            body("id", Matchers.greaterThan(0))
-            body("userId", equalTo(userId))
-            body("title", equalTo("Pizza"))
-            body("description", equalTo("lecker"))
-            body("duration", equalTo(1000))
-            body("createdAt", Matchers.greaterThan(0L))
-            body("updatedAt", Matchers.greaterThan(0L))
+            statusCode(HttpStatus.CREATED.value())
+            assertRecipe(recipePizza)
         }
     }
+
+    // endregion
+
+    // region read all
 
     @Test
     fun testGetAllWithNoRecipes() {
         When {
-            get("/api/v1/recipes")
+            get(route)
         } Then {
-            statusCode(200)
+            statusCode(HttpStatus.OK.value())
             body("size()", equalTo(0))
         }
     }
@@ -115,52 +123,149 @@ class RecipeResourceTest {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(ApiModelRecipePost("Pizza", "lecker", 1000))
+            body(recipePizza)
         } When {
-            post("/api/v1/recipes")
+            post(route)
         } Then {
-            statusCode(201)
+            statusCode(HttpStatus.CREATED.value())
         }
 
         When {
-            get("/api/v1/recipes")
+            get(route)
         } Then {
-            statusCode(200)
-            body("id[0]", Matchers.greaterThan(0))
-            body("userId[0]", equalTo(userId))
-            body("title[0]", equalTo("Pizza"))
-            body("description[0]", equalTo("lecker"))
-            body("duration[0]", equalTo(1000))
-            body("createdAt[0]", Matchers.greaterThan(0L))
-            body("updatedAt[0]", Matchers.greaterThan(0L))
+            statusCode(HttpStatus.OK.value())
+            body("size()", equalTo(1))
+            assertRecipeInArray(recipePizza)
+        }
+    }
+
+    // endregion
+
+    // region read one
+
+    @Test
+    fun testGetOneWithInvalidId() {
+        postRecipe(recipePizza)
+
+        When {
+            get(routeDetail, 100)
+        } Then {
+            statusCode(HttpStatus.BAD_REQUEST.value())
         }
     }
 
     @Test
-    fun testGetOneWithValidRecipe() {
-        val id: Int = Given {
+    fun testGetOneWithValidId() {
+        val id = postRecipe(recipePizza)
+
+        When {
+            get(routeDetail, id)
+        } Then {
+            statusCode(HttpStatus.OK.value())
+            assertRecipe(recipePizza)
+        }
+    }
+
+    // endregion
+
+    // region update
+
+    @Test
+    fun testUpdateWithInvalidId() {
+        postRecipe(recipePizza)
+
+        Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(ApiModelRecipePost("Pizza", "lecker", 1000))
+            body(recipeBurger)
         } When {
-            post("/api/v1/recipes")
+            put(routeDetail, 100)
         } Then {
-            statusCode(201)
+            statusCode(HttpStatus.BAD_REQUEST.value())
+        }
+    }
+
+    @Test
+    fun testUpdateWithValidId() {
+        val id = postRecipe(recipePizza)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+            body(recipeBurger)
+        } When {
+            put(routeDetail, id)
+        } Then {
+            statusCode(HttpStatus.OK.value())
+            assertRecipe(recipeBurger)
+        }
+    }
+
+    // endregion
+
+    // region delete
+
+    @Test
+    fun testDeleteWithInvalidId() {
+        postRecipe(recipePizza)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+        } When {
+            delete(routeDetail, 100)
+        } Then {
+            statusCode(HttpStatus.BAD_REQUEST.value())
+        }
+    }
+
+    @Test
+    fun testDeleteWithValidRecipe() {
+        val id = postRecipe(recipePizza)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+        } When {
+            delete(routeDetail, id)
+        } Then {
+            statusCode(HttpStatus.NO_CONTENT.value())
+        }
+    }
+
+    // endregion
+
+    fun postRecipe(recipe: ApiModelRecipePost): Int {
+        return Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+            body(recipe)
+        } When {
+            post(route)
+        } Then {
+            statusCode(HttpStatus.CREATED.value())
         } Extract {
             path("id")
         }
+    }
 
-        When {
-            get("/api/v1/recipes/{id}", id)
-        } Then {
-            statusCode(200)
-            body("id", Matchers.greaterThan(0))
-            body("userId", equalTo(userId))
-            body("title", equalTo("Pizza"))
-            body("description", equalTo("lecker"))
-            body("duration", equalTo(1000))
-            body("createdAt", Matchers.greaterThan(0L))
-            body("updatedAt", Matchers.greaterThan(0L))
-        }
+    private fun ValidatableResponse.assertRecipe(recipe: ApiModelRecipePost) {
+        body("id", Matchers.greaterThan(0))
+        body("userId", equalTo(userId))
+        body("title", equalTo(recipe.title))
+        body("description", equalTo(recipe.description))
+        body("duration", equalTo(recipe.duration))
+        body("createdAt", Matchers.greaterThan(0L))
+        body("updatedAt", Matchers.greaterThan(0L))
+    }
+
+    private fun ValidatableResponse.assertRecipeInArray(recipe: ApiModelRecipePost) {
+        body("id[0]", Matchers.greaterThan(0))
+        body("userId[0]", equalTo(userId))
+        body("title[0]", equalTo(recipe.title))
+        body("description[0]", equalTo(recipe.description))
+        body("duration[0]", equalTo(recipe.duration))
+        body("createdAt[0]", Matchers.greaterThan(0L))
+        body("updatedAt[0]", Matchers.greaterThan(0L))
     }
 }

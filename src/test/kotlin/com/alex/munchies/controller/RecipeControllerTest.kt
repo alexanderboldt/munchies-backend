@@ -52,6 +52,9 @@ class RecipeControllerTest {
 
     private val userId = "12345"
 
+    private val recipePizza = ApiModelRecipePost("Pizza", "lecker", 1000)
+    private val recipeBurger = ApiModelRecipePost("Burger", "juicy", 2000)
+
     @MockitoBean
     private lateinit var userService: UserService
 
@@ -77,11 +80,9 @@ class RecipeControllerTest {
 
     @Test
     fun testPostRecipe() {
-        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
+        val recipePosted = controller.postRecipe(recipePizza)
 
-        val recipePosted = controller.postRecipe(recipePost)
-
-        assertRecipe(recipePosted, recipePost)
+        assertRecipe(recipePosted, recipePizza)
     }
 
     @Test
@@ -102,41 +103,32 @@ class RecipeControllerTest {
 
     @Test
     fun testGetOneRecipe() {
-        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
-
-        val recipePosted = controller.postRecipe(recipePost)
+        val recipePosted = controller.postRecipe(recipePizza)
         val recipeGet = controller.getRecipe(recipePosted.id)
 
-        assertRecipe(recipeGet, recipePost)
+        assertRecipe(recipeGet, recipePizza)
     }
 
     @Test
     fun testGetAllRecipes() {
-        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
-
-        controller.postRecipe(recipePost)
+        controller.postRecipe(recipePizza)
         val recipeGet = controller.getAllRecipes()
 
-        assertRecipe(recipeGet[0], recipePost)
+        assertRecipe(recipeGet[0], recipePizza)
     }
 
     @Test
     fun testUpdateRecipe() {
-        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
+        val recipePosted = controller.postRecipe(recipePizza)
 
-        val recipePosted = controller.postRecipe(recipePost)
+        val recipeUpdated = controller.updateRecipe(recipePosted.id, recipeBurger)
 
-        val recipeUpdate = ApiModelRecipePost("Burger", "lecker", 1000)
-        val recipeGet = controller.updateRecipe(recipePosted.id, recipeUpdate)
-
-        assertRecipe(recipeGet, recipeUpdate)
+        assertRecipe(recipeUpdated, recipeBurger)
     }
 
     @Test
     fun testDeleteRecipe() {
-        val recipePost = ApiModelRecipePost("Pizza", "lecker", 1000)
-
-        val recipePosted = controller.postRecipe(recipePost)
+        val recipePosted = controller.postRecipe(recipePizza)
 
         controller.deleteRecipe(recipePosted.id)
         val recipesGet = controller.getAllRecipes()
