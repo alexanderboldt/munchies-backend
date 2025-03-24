@@ -10,6 +10,7 @@ import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import io.restassured.response.ValidatableResponse
+import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterAll
@@ -21,7 +22,6 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.http.HttpStatus
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.bean.override.mockito.MockitoBean
@@ -69,12 +69,16 @@ class RecipeResourceTest {
     private lateinit var recipeRepository: RecipeRepository
 
     private val userId = "12345"
-    
-    private val route = "/api/v1/recipes"
-    private val routeDetail = "$route/{id}"
 
-    private val recipePizza = ApiModelRecipePost("Pizza", "lecker", 1000)
-    private val recipeBurger = ApiModelRecipePost("Burger", "juicy", 2000)
+    private object Routes {
+        val main = "/api/v1/recipes"
+        val detail = "$main/{id}"
+    }
+
+    private object Recipes {
+        val pizza = ApiModelRecipePost("Pizza", "lecker", 1000)
+        val burger = ApiModelRecipePost("Burger", "juicy", 2000)
+    }
 
     @BeforeEach
     fun beforeEach() {
@@ -95,12 +99,12 @@ class RecipeResourceTest {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(recipePizza)
+            body(Recipes.pizza)
         } When {
-            post(route)
+            post(Routes.main)
         } Then {
-            statusCode(HttpStatus.CREATED.value())
-            assertRecipe(recipePizza)
+            statusCode(HttpStatus.SC_CREATED)
+            assertRecipe(Recipes.pizza)
         }
     }
 
@@ -111,9 +115,9 @@ class RecipeResourceTest {
     @Test
     fun testGetAllWithNoRecipes() {
         When {
-            get(route)
+            get(Routes.main)
         } Then {
-            statusCode(HttpStatus.OK.value())
+            statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
         }
     }
@@ -123,19 +127,19 @@ class RecipeResourceTest {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(recipePizza)
+            body(Recipes.pizza)
         } When {
-            post(route)
+            post(Routes.main)
         } Then {
-            statusCode(HttpStatus.CREATED.value())
+            statusCode(HttpStatus.SC_CREATED)
         }
 
         When {
-            get(route)
+            get(Routes.main)
         } Then {
-            statusCode(HttpStatus.OK.value())
+            statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
-            assertRecipeInArray(recipePizza)
+            assertRecipeInArray(Recipes.pizza)
         }
     }
 
@@ -145,24 +149,24 @@ class RecipeResourceTest {
 
     @Test
     fun testGetOneWithInvalidId() {
-        postRecipe(recipePizza)
+        postRecipe(Recipes.pizza)
 
         When {
-            get(routeDetail, 100)
+            get(Routes.detail, 100)
         } Then {
-            statusCode(HttpStatus.BAD_REQUEST.value())
+            statusCode(HttpStatus.SC_BAD_REQUEST)
         }
     }
 
     @Test
     fun testGetOneWithValidId() {
-        val id = postRecipe(recipePizza)
+        val id = postRecipe(Recipes.pizza)
 
         When {
-            get(routeDetail, id)
+            get(Routes.detail, id)
         } Then {
-            statusCode(HttpStatus.OK.value())
-            assertRecipe(recipePizza)
+            statusCode(HttpStatus.SC_OK)
+            assertRecipe(Recipes.pizza)
         }
     }
 
@@ -172,32 +176,32 @@ class RecipeResourceTest {
 
     @Test
     fun testUpdateWithInvalidId() {
-        postRecipe(recipePizza)
+        postRecipe(Recipes.pizza)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(recipeBurger)
+            body(Recipes.burger)
         } When {
-            put(routeDetail, 100)
+            put(Routes.detail, 100)
         } Then {
-            statusCode(HttpStatus.BAD_REQUEST.value())
+            statusCode(HttpStatus.SC_BAD_REQUEST)
         }
     }
 
     @Test
     fun testUpdateWithValidId() {
-        val id = postRecipe(recipePizza)
+        val id = postRecipe(Recipes.pizza)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(recipeBurger)
+            body(Recipes.burger)
         } When {
-            put(routeDetail, id)
+            put(Routes.detail, id)
         } Then {
-            statusCode(HttpStatus.OK.value())
-            assertRecipe(recipeBurger)
+            statusCode(HttpStatus.SC_OK)
+            assertRecipe(Recipes.burger)
         }
     }
 
@@ -207,29 +211,29 @@ class RecipeResourceTest {
 
     @Test
     fun testDeleteWithInvalidId() {
-        postRecipe(recipePizza)
+        postRecipe(Recipes.pizza)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(routeDetail, 100)
+            delete(Routes.detail, 100)
         } Then {
-            statusCode(HttpStatus.BAD_REQUEST.value())
+            statusCode(HttpStatus.SC_BAD_REQUEST)
         }
     }
 
     @Test
     fun testDeleteWithValidRecipe() {
-        val id = postRecipe(recipePizza)
+        val id = postRecipe(Recipes.pizza)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(routeDetail, id)
+            delete(Routes.detail, id)
         } Then {
-            statusCode(HttpStatus.NO_CONTENT.value())
+            statusCode(HttpStatus.SC_NO_CONTENT)
         }
     }
 
@@ -241,9 +245,9 @@ class RecipeResourceTest {
             contentType(ContentType.JSON)
             body(recipe)
         } When {
-            post(route)
+            post(Routes.main)
         } Then {
-            statusCode(HttpStatus.CREATED.value())
+            statusCode(HttpStatus.SC_CREATED)
         } Extract {
             path("id")
         }
