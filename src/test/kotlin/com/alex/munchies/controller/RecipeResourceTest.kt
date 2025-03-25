@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.repository.UserService
-import com.alex.munchies.repository.api.ApiModelRecipePost
+import com.alex.munchies.repository.api.ApiModelRecipe
 import com.alex.munchies.repository.database.RecipeRepository
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
@@ -39,8 +39,8 @@ class RecipeResourceTest {
         @JvmStatic
         fun configureProperties(registry: DynamicPropertyRegistry) {
             registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl)
-            registry.add("spring.datasource.username", mysqlContainer::getUsername);
-            registry.add("spring.datasource.password", mysqlContainer::getPassword);
+            registry.add("spring.datasource.username", mysqlContainer::getUsername)
+            registry.add("spring.datasource.password", mysqlContainer::getPassword)
             registry.add("spring.jpa.hibernate.ddl-auto") { "create" }
         }
 
@@ -76,8 +76,8 @@ class RecipeResourceTest {
     }
 
     private object Recipes {
-        val pizza = ApiModelRecipePost("Pizza", "lecker", 1000)
-        val burger = ApiModelRecipePost("Burger", "juicy", 2000)
+        val pizza = ApiModelRecipe(0, "", "Pizza", "lecker", 1000, 0, 0)
+        val burger = ApiModelRecipe(0, "", "Burger", "juicy", 2000, 0, 0)
     }
 
     @BeforeEach
@@ -239,7 +239,7 @@ class RecipeResourceTest {
 
     // endregion
 
-    fun postRecipe(recipe: ApiModelRecipePost): Int {
+    fun postRecipe(recipe: ApiModelRecipe): Int {
         return Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
@@ -253,7 +253,7 @@ class RecipeResourceTest {
         }
     }
 
-    private fun ValidatableResponse.assertRecipe(recipe: ApiModelRecipePost) {
+    private fun ValidatableResponse.assertRecipe(recipe: ApiModelRecipe) {
         body("id", Matchers.greaterThan(0))
         body("userId", equalTo(userId))
         body("title", equalTo(recipe.title))
@@ -263,7 +263,7 @@ class RecipeResourceTest {
         body("updatedAt", Matchers.greaterThan(0L))
     }
 
-    private fun ValidatableResponse.assertRecipeInArray(recipe: ApiModelRecipePost) {
+    private fun ValidatableResponse.assertRecipeInArray(recipe: ApiModelRecipe) {
         body("id[0]", Matchers.greaterThan(0))
         body("userId[0]", equalTo(userId))
         body("title[0]", equalTo(recipe.title))
