@@ -1,21 +1,20 @@
 package com.alex.munchies.repository.mapping
 
-import com.alex.munchies.repository.api.ApiModelMealGet
-import com.alex.munchies.repository.api.ApiModelRecipeGet
-import com.alex.munchies.repository.api.ApiModelRecipePost
+import com.alex.munchies.repository.api.ApiModelMeal
+import com.alex.munchies.repository.api.ApiModelRecipe
 import com.alex.munchies.repository.database.DbModelRecipe
 import java.util.Date
 
 // from api to database
 
-fun ApiModelMealGet.toDbModel(userId: String) = DbModelRecipe(0, userId, strMeal, strCategory, 0, Date().time, Date().time)
+fun ApiModelMeal.newDbModel(userId: String) = DbModelRecipe(0, userId, strMeal, strCategory, 0, Date().time, Date().time)
 
-fun ApiModelRecipePost.toDbModel(userId: String) = DbModelRecipe(0, userId, title, description, duration, Date().time, Date().time)
+fun ApiModelRecipe.newDbModel(userId: String) = DbModelRecipe(0, userId, title, description, duration, Date().time, Date().time)
 
-fun ApiModelRecipePost.toDbModel(dbModelExisting: DbModelRecipe) = DbModelRecipe(dbModelExisting.id, dbModelExisting.userId, title, description, duration, dbModelExisting.createdAt, Date().time)
+fun ApiModelRecipe.mergeDbModel(existing: DbModelRecipe) = DbModelRecipe(existing.id, existing.userId, title, description, duration, existing.createdAt, Date().time)
 
 // from database to api
 
-fun Iterable<DbModelRecipe>.toApiModelGet() = map { it.toApiModelGet() }
+fun Iterable<DbModelRecipe>.toApiModelGet() = map { it.toApiModel() }
 
-fun DbModelRecipe.toApiModelGet() = ApiModelRecipeGet(id, userId, title, description, duration, createdAt, updatedAt)
+fun DbModelRecipe.toApiModel() = ApiModelRecipe(id, userId, title, description, duration, createdAt, updatedAt)
