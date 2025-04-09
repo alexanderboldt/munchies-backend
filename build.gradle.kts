@@ -10,7 +10,7 @@ group = "com.alex"
 version = "0.0.1-SNAPSHOT"
 
 kotlin {
-	jvmToolchain(23)
+	jvmToolchain(17)
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
 	}
