@@ -1,11 +1,11 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.exception.RecipeNotFoundException
 import com.alex.munchies.repository.TheMealDbClient
 import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelMeal
 import com.alex.munchies.repository.api.ApiModelRecipe
 import com.alex.munchies.repository.database.RecipeRepository
-import com.alex.munchies.repository.database.findByIdAndUserIdOrThrowException
 import com.alex.munchies.repository.mapping.mergeDbModel
 import com.alex.munchies.repository.mapping.newDbModel
 import com.alex.munchies.repository.mapping.toApiModel
@@ -28,7 +28,7 @@ class RecipeController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun postRecipe(@RequestBody recipe: ApiModelRecipe): ApiModelRecipe {
-        return recipeRepository.save(recipe.newDbModel(userService.getUserId())).toApiModel()
+        return recipeRepository.save(recipe.newDbModel(userService.userId)).toApiModel()
     }
 
     @PostMapping("/themealdb")
@@ -38,7 +38,7 @@ class RecipeController(
             .getMeal(meal.idMeal)
             .meals
             .first()
-            .newDbModel(userService.getUserId())
+            .newDbModel(userService.userId)
 
         return recipeRepository.save(recipe).toApiModel()
     }
@@ -52,25 +52,23 @@ class RecipeController(
         @RequestParam pageSize: Int = -1
     ): List<ApiModelRecipe> {
         return when (pageNumber >= 0 && pageSize >= 1) {
-            true -> recipeRepository.findAllByUserId(userService.getUserId(), PageRequest.of(pageNumber, pageSize, sort))
-            false -> recipeRepository.findAllByUserId(userService.getUserId(), sort)
+            true -> recipeRepository.findAllByUserId(userService.userId, PageRequest.of(pageNumber, pageSize, sort))
+            false -> recipeRepository.findAllByUserId(userService.userId, sort)
         }.toList().toApiModelGet()
     }
 
     @GetMapping("{id}")
     fun getRecipe(@PathVariable("id") id: Long): ApiModelRecipe {
-        return recipeRepository.findByIdAndUserIdOrThrowException(id, userService.getUserId()).toApiModel()
+        val recipe = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
+        return recipe.toApiModel()
     }
 
     // update
 
     @PutMapping("{id}")
-    fun updateRecipe(@PathVariable("id") id: Long, @RequestBody recipe: ApiModelRecipe): ApiModelRecipe {
-        val recipeUpdated = recipeRepository
-            .findByIdAndUserIdOrThrowException(id, userService.getUserId())
-            .let { recipe.mergeDbModel(it) }
-
-        return recipeRepository.save(recipeUpdated).toApiModel()
+    fun updateRecipe(@PathVariable("id") id: Long, @RequestBody recipeNew: ApiModelRecipe): ApiModelRecipe {
+        val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
+        return recipeRepository.save(recipeNew.mergeDbModel(recipeExisting)).toApiModel()
     }
 
     // delete
@@ -79,7 +77,7 @@ class RecipeController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteRecipe(@PathVariable("id") id: Long) {
         recipeRepository.apply {
-            findByIdAndUserIdOrThrowException(id, userService.getUserId())
+            if (!existsByIdAndUserId(id, userService.userId)) throw RecipeNotFoundException()
             deleteById(id)
         }
     }

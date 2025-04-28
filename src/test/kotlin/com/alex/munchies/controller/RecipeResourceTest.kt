@@ -84,7 +84,7 @@ class RecipeResourceTest {
     fun beforeEach() {
         RestAssured.port = port
 
-        Mockito.`when`(userService.getUserId()).thenReturn(userId)
+        Mockito.`when`(userService.userId).thenReturn(userId)
     }
 
     @AfterEach

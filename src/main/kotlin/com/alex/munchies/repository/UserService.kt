@@ -6,5 +6,8 @@ import org.springframework.stereotype.Component
 @Component
 class UserService {
 
-    fun getUserId(): String = SecurityContextHolder.getContext().authentication.name
+    val userId: String
+        get() {
+            return SecurityContextHolder.getContext().authentication.name
+        }
 }
