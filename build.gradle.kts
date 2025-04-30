@@ -38,6 +38,8 @@ dependencies {
 
 	implementation(libs.openfeign)
 
+	implementation(libs.springdoc)
+
 	developmentOnly(libs.spring.boot.devtools)
 
 	// test-libraries

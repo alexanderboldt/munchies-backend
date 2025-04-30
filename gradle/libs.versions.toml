@@ -5,6 +5,7 @@ mysql-version = "8.0.33"
 flyway-version = "11.2.0"
 openfeign-version = "4.2.0"
 rest-assured-version = "5.5.1"
+springdoc-version = "2.8.6"
 
 [libraries]
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-version" }
@@ -22,6 +23,8 @@ flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway-versi
 flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway-version" }
 
 openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "openfeign-version" }
+
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-version" }
 
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
 
