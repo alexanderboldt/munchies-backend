@@ -15,6 +15,4 @@ fun ApiModelRecipe.mergeDbModel(existing: DbModelRecipe) = DbModelRecipe(existin
 
 // from database to api
 
-fun Iterable<DbModelRecipe>.toApiModelGet() = map { it.toApiModel() }
-
 fun DbModelRecipe.toApiModel() = ApiModelRecipe(id, userId, title, description, duration, createdAt, updatedAt)

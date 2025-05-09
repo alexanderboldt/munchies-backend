@@ -12,6 +12,4 @@ fun ApiModelLabel.mergeDbModel(existing: DbModelLabel) = DbModelLabel(existing.i
 
 // from database to api
 
-fun Iterable<DbModelLabel>.toApiModel() = map { it.toApiModel() }
-
 fun DbModelLabel.toApiModel() = ApiModelLabel(id, userId, name, createdAt, updatedAt)

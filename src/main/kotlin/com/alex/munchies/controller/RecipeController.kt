@@ -9,7 +9,6 @@ import com.alex.munchies.repository.database.recipe.RecipeRepository
 import com.alex.munchies.repository.mapping.mergeDbModel
 import com.alex.munchies.repository.mapping.newDbModel
 import com.alex.munchies.repository.mapping.toApiModel
-import com.alex.munchies.repository.mapping.toApiModelGet
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -54,7 +53,7 @@ class RecipeController(
         return when (pageNumber >= 0 && pageSize >= 1) {
             true -> recipeRepository.findAllByUserId(userService.userId, PageRequest.of(pageNumber, pageSize, sort))
             false -> recipeRepository.findAllByUserId(userService.userId, sort)
-        }.toList().toApiModelGet()
+        }.map { it.toApiModel() }
     }
 
     @GetMapping("{id}")

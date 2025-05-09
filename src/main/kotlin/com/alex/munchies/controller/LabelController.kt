@@ -37,7 +37,7 @@ class LabelController(
 
     @GetMapping
     fun getAllLabels(): List<ApiModelLabel> {
-        return labelRepository.findAllByUserId(userService.userId).toList().toApiModel()
+        return labelRepository.findAllByUserId(userService.userId).map { it.toApiModel() }
     }
 
     @GetMapping("{id}")
