@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.database
+package com.alex.munchies.repository.database.recipe
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

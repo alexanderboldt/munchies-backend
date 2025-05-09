@@ -2,7 +2,7 @@ package com.alex.munchies.repository.mapping
 
 import com.alex.munchies.repository.api.ApiModelMeal
 import com.alex.munchies.repository.api.ApiModelRecipe
-import com.alex.munchies.repository.database.DbModelRecipe
+import com.alex.munchies.repository.database.recipe.DbModelRecipe
 import java.util.Date
 
 // from api to database

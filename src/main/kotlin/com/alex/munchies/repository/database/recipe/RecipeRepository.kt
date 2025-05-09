@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.database
+package com.alex.munchies.repository.database.recipe
 
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort

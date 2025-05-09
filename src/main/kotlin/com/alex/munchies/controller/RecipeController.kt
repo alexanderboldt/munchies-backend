@@ -5,7 +5,7 @@ import com.alex.munchies.repository.TheMealDbClient
 import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelMeal
 import com.alex.munchies.repository.api.ApiModelRecipe
-import com.alex.munchies.repository.database.RecipeRepository
+import com.alex.munchies.repository.database.recipe.RecipeRepository
 import com.alex.munchies.repository.mapping.mergeDbModel
 import com.alex.munchies.repository.mapping.newDbModel
 import com.alex.munchies.repository.mapping.toApiModel

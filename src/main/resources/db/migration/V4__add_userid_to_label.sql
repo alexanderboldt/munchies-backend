@@ -1,0 +1,1 @@
+alter table db_model_label add user_id varchar(20) not null;
