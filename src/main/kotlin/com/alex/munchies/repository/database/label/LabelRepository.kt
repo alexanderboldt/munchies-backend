@@ -1,12 +1,6 @@
 package com.alex.munchies.repository.database.label
 
+import com.alex.munchies.repository.database.Repository
 import org.springframework.data.repository.CrudRepository
 
-interface LabelRepository : CrudRepository<DbModelLabel, Long> {
-
-    fun existsByIdAndUserId(id: Long, userId: String): Boolean
-
-    fun findAllByUserId(userId: String): List<DbModelLabel>
-
-    fun findByIdAndUserId(id: Long, userId: String): DbModelLabel?
-}
+interface LabelRepository : CrudRepository<DbModelLabel, Long>, Repository<DbModelLabel>
