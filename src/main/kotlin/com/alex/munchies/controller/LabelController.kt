@@ -29,19 +29,19 @@ class LabelController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun postLabel(@RequestBody label: ApiModelLabel): ApiModelLabel {
+    fun create(@RequestBody label: ApiModelLabel): ApiModelLabel {
         return labelRepository.save(label.newDbModel(userService.userId)).toApiModel()
     }
 
     // read
 
     @GetMapping
-    fun getAllLabels(): List<ApiModelLabel> {
+    fun readAll(): List<ApiModelLabel> {
         return labelRepository.findAllByUserId(userService.userId).map { it.toApiModel() }
     }
 
     @GetMapping("{id}")
-    fun getLabel(@PathVariable("id") id: Long): ApiModelLabel {
+    fun read(@PathVariable("id") id: Long): ApiModelLabel {
         val label = labelRepository.findByIdAndUserId(id, userService.userId) ?: throw LabelNotFoundException()
         return label.toApiModel()
     }
@@ -49,7 +49,7 @@ class LabelController(
     // update
 
     @PutMapping("{id}")
-    fun updateLabel(@PathVariable("id") id: Long, @RequestBody labelNew: ApiModelLabel): ApiModelLabel {
+    fun update(@PathVariable("id") id: Long, @RequestBody labelNew: ApiModelLabel): ApiModelLabel {
         val labelExisting = labelRepository.findByIdAndUserId(id, userService.userId) ?: throw LabelNotFoundException()
         return labelRepository.save(labelNew.mergeDbModel(labelExisting)).toApiModel()
     }
@@ -58,7 +58,7 @@ class LabelController(
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteLabel(@PathVariable("id") id: Long) {
+    fun delete(@PathVariable("id") id: Long) {
         labelRepository.apply {
             if (!existsByIdAndUserId(id, userService.userId)) throw LabelNotFoundException()
             deleteById(id)

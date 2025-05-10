@@ -26,13 +26,13 @@ class RecipeController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun postRecipe(@RequestBody recipe: ApiModelRecipe): ApiModelRecipe {
+    fun create(@RequestBody recipe: ApiModelRecipe): ApiModelRecipe {
         return recipeRepository.save(recipe.newDbModel(userService.userId)).toApiModel()
     }
 
     @PostMapping("/themealdb")
     @ResponseStatus(HttpStatus.CREATED)
-    fun postRecipeFromTheMealDb(@RequestBody meal: ApiModelMeal): ApiModelRecipe {
+    fun createFromTheMealDb(@RequestBody meal: ApiModelMeal): ApiModelRecipe {
         val recipe = theMealDbClient
             .getMeal(meal.idMeal)
             .meals
@@ -45,7 +45,7 @@ class RecipeController(
     // read
 
     @GetMapping
-    fun getAllRecipes(
+    fun readAll(
         @RequestParam sort: Sort = Sort.unsorted(),
         @RequestParam pageNumber: Int = -1,
         @RequestParam pageSize: Int = -1
@@ -57,7 +57,7 @@ class RecipeController(
     }
 
     @GetMapping("{id}")
-    fun getRecipe(@PathVariable("id") id: Long): ApiModelRecipe {
+    fun read(@PathVariable("id") id: Long): ApiModelRecipe {
         val recipe = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
         return recipe.toApiModel()
     }
@@ -65,7 +65,7 @@ class RecipeController(
     // update
 
     @PutMapping("{id}")
-    fun updateRecipe(@PathVariable("id") id: Long, @RequestBody recipeNew: ApiModelRecipe): ApiModelRecipe {
+    fun update(@PathVariable("id") id: Long, @RequestBody recipeNew: ApiModelRecipe): ApiModelRecipe {
         val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
         return recipeRepository.save(recipeNew.mergeDbModel(recipeExisting)).toApiModel()
     }
@@ -74,7 +74,7 @@ class RecipeController(
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteRecipe(@PathVariable("id") id: Long) {
+    fun delete(@PathVariable("id") id: Long) {
         recipeRepository.apply {
             if (!existsByIdAndUserId(id, userService.userId)) throw RecipeNotFoundException()
             deleteById(id)
