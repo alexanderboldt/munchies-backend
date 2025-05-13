@@ -76,8 +76,8 @@ class RecipeResourceTest {
     }
 
     private object Recipes {
-        val pizza = ApiModelRecipe(0, "", "Pizza", "lecker", 1000, 0, 0)
-        val burger = ApiModelRecipe(0, "", "Burger", "juicy", 2000, 0, 0)
+        val pizza = ApiModelRecipe(0, "", 0,"Pizza", "lecker", 1000, 0, 0)
+        val burger = ApiModelRecipe(0, "", 0, "Burger", "juicy", 2000, 0, 0)
     }
 
     @BeforeEach
