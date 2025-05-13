@@ -12,6 +12,8 @@ data class DbModelRecipe(
 
     val userId: String,
 
+    val labelId: Long?,
+
     val title: String,
 
     val description: String?,
