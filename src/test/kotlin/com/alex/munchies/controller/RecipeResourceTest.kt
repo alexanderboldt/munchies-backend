@@ -41,7 +41,6 @@ class RecipeResourceTest {
             registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl)
             registry.add("spring.datasource.username", mysqlContainer::getUsername)
             registry.add("spring.datasource.password", mysqlContainer::getPassword)
-            registry.add("spring.jpa.hibernate.ddl-auto") { "create" }
         }
 
         @BeforeAll
@@ -76,8 +75,8 @@ class RecipeResourceTest {
     }
 
     private object Recipes {
-        val pizza = ApiModelRecipe(0, "", 0,"Pizza", "lecker", 1000, 0, 0)
-        val burger = ApiModelRecipe(0, "", 0, "Burger", "juicy", 2000, 0, 0)
+        val pizza = ApiModelRecipe(0, "", null,"Pizza", "lecker", 1000, 1747138632, 1747138632)
+        val burger = ApiModelRecipe(0, "", null, "Burger", "juicy", 2000, 1747138632, 1747138632)
     }
 
     @BeforeEach
