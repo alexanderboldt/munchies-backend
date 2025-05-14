@@ -1,0 +1,25 @@
+server:
+  port: 9000
+
+spring:
+  jpa.hibernate.ddl-auto: none
+  datasource:
+    url: jdbc:mysql://localhost:3306/munchies
+    username: admin
+    password: admin
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+  security:
+    oauth2:
+      client:
+        registration.keycloak:
+          client-id: munchies-client
+          authorization-grant-type: authorization_code
+          scope: openid
+        provider.keycloak:
+          issuer-uri: http://localhost:8080/realms/munchies
+          user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/munchies

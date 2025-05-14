@@ -13,7 +13,6 @@ import io.restassured.response.ValidatableResponse
 import org.apache.http.HttpStatus
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
@@ -22,39 +21,21 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoBean
-import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@ActiveProfiles("tests")
 class RecipeResourceTest {
 
     companion object {
-        val mysqlContainer = MySQLContainer("mysql:9.2.0")
-
-        @DynamicPropertySource
-        @JvmStatic
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl)
-            registry.add("spring.datasource.username", mysqlContainer::getUsername)
-            registry.add("spring.datasource.password", mysqlContainer::getPassword)
-        }
 
         @BeforeAll
         @JvmStatic
         fun beforeAll() {
             RestAssured.baseURI = "http://localhost"
-
-            mysqlContainer.start()
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun afterAll() {
-            mysqlContainer.stop()
         }
     }
 
