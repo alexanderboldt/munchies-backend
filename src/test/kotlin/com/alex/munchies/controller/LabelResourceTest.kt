@@ -26,11 +26,6 @@ class LabelResourceTest : BaseResourceTest() {
     @Autowired
     private lateinit var labelRepository: LabelRepository
 
-    private object Labels {
-        val vegetarian = ApiModelLabel(0, "", name = "Vegetarian", 1747138632, 1747138632)
-        val vegan = ApiModelLabel(0, "", name = "Vegan", 1747138632, 1747138632)
-    }
-
     @AfterEach
     fun afterEach() {
         labelRepository.deleteAll()
@@ -43,12 +38,12 @@ class LabelResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Labels.vegetarian)
+            body(Fixtures.Labels.vegetarian)
         } When {
             post(Routes.Label.main)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertLabel(Labels.vegetarian)
+            assertLabel(Fixtures.Labels.vegetarian)
         }
     }
 
@@ -71,7 +66,7 @@ class LabelResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Labels.vegetarian)
+            body(Fixtures.Labels.vegetarian)
         } When {
             post(Routes.Label.main)
         } Then {
@@ -83,7 +78,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
-            assertLabel(Labels.vegetarian, true)
+            assertLabel(Fixtures.Labels.vegetarian, true)
         }
     }
 
@@ -93,7 +88,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testGetOneWithInvalidId() {
-        postLabel(Labels.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         When {
             get(Routes.Label.detail, 100)
@@ -104,13 +99,13 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testGetOneWithValidId() {
-        val id = postLabel(Labels.vegetarian)
+        val id = postLabel(Fixtures.Labels.vegetarian)
 
         When {
             get(Routes.Label.detail, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertLabel(Labels.vegetarian)
+            assertLabel(Fixtures.Labels.vegetarian)
         }
     }
 
@@ -120,12 +115,12 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testUpdateWithInvalidId() {
-        postLabel(Labels.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Labels.vegan)
+            body(Fixtures.Labels.vegan)
         } When {
             put(Routes.Label.detail, 100)
         } Then {
@@ -135,17 +130,17 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testUpdateWithValidId() {
-        val id = postLabel(Labels.vegetarian)
+        val id = postLabel(Fixtures.Labels.vegetarian)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Labels.vegan)
+            body(Fixtures.Labels.vegan)
         } When {
             put(Routes.Label.detail, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertLabel(Labels.vegan)
+            assertLabel(Fixtures.Labels.vegan)
         }
     }
 
@@ -155,7 +150,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testDeleteWithInvalidId() {
-        postLabel(Labels.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         Given {
             accept(ContentType.JSON)
@@ -169,7 +164,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testDeleteWithValidLabel() {
-        val id = postLabel(Labels.vegetarian)
+        val id = postLabel(Fixtures.Labels.vegetarian)
 
         Given {
             accept(ContentType.JSON)
