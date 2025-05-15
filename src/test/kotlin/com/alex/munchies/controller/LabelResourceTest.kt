@@ -116,6 +116,73 @@ class LabelResourceTest : BaseResourceTest() {
 
     // endregion
 
+    // region update
+
+    @Test
+    fun testUpdateWithInvalidId() {
+        postLabel(Labels.vegetarian)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+            body(Labels.vegan)
+        } When {
+            put(Routes.Label.detail, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun testUpdateWithValidId() {
+        val id = postLabel(Labels.vegetarian)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+            body(Labels.vegan)
+        } When {
+            put(Routes.Label.detail, id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+            assertLabel(Labels.vegan)
+        }
+    }
+
+    // endregion
+
+    // region delete
+
+    @Test
+    fun testDeleteWithInvalidId() {
+        postLabel(Labels.vegetarian)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+        } When {
+            delete(Routes.Label.detail, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun testDeleteWithValidLabel() {
+        val id = postLabel(Labels.vegetarian)
+
+        Given {
+            accept(ContentType.JSON)
+            contentType(ContentType.JSON)
+        } When {
+            delete(Routes.Label.detail, id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+    }
+
+    // endregion
+
     fun postLabel(label: ApiModelLabel): Int {
         return Given {
             accept(ContentType.JSON)
