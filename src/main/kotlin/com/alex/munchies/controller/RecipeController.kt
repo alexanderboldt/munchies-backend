@@ -6,8 +6,8 @@ import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelMeal
 import com.alex.munchies.repository.api.ApiModelRecipe
 import com.alex.munchies.repository.database.recipe.RecipeRepository
-import com.alex.munchies.repository.mapping.mergeDbModel
 import com.alex.munchies.repository.mapping.newDbModel
+import com.alex.munchies.repository.mapping.plus
 import com.alex.munchies.repository.mapping.toApiModel
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -67,7 +67,7 @@ class RecipeController(
     @PutMapping("{id}")
     fun update(@PathVariable("id") id: Long, @RequestBody recipeNew: ApiModelRecipe): ApiModelRecipe {
         val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
-        return recipeRepository.save(recipeNew.mergeDbModel(recipeExisting)).toApiModel()
+        return recipeRepository.save(recipeNew + recipeExisting).toApiModel()
     }
 
     // delete

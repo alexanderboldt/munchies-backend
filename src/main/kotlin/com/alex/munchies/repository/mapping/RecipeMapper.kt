@@ -11,7 +11,7 @@ fun ApiModelMeal.newDbModel(userId: String) = DbModelRecipe(0, userId, null, str
 
 fun ApiModelRecipe.newDbModel(userId: String) = DbModelRecipe(0, userId, labelId, title, description, duration, Date().time, Date().time)
 
-fun ApiModelRecipe.mergeDbModel(existing: DbModelRecipe) = DbModelRecipe(existing.id, existing.userId, labelId, title, description, duration, existing.createdAt, Date().time)
+operator fun ApiModelRecipe.plus(existing: DbModelRecipe) = DbModelRecipe(existing.id, existing.userId, labelId, title, description, duration, existing.createdAt, Date().time)
 
 // from database to api
 

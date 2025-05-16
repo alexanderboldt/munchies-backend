@@ -8,7 +8,7 @@ import java.util.Date
 
 fun ApiModelLabel.newDbModel(userId: String) = DbModelLabel(0, userId, name, Date().time, Date().time)
 
-fun ApiModelLabel.mergeDbModel(existing: DbModelLabel) = DbModelLabel(existing.id, existing.userId, name,existing.createdAt, Date().time)
+operator fun ApiModelLabel.plus(existing: DbModelLabel) = DbModelLabel(existing.id, existing.userId, name,existing.createdAt, Date().time)
 
 // from database to api
 

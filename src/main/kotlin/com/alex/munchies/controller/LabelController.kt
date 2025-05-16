@@ -4,8 +4,8 @@ import com.alex.munchies.exception.LabelNotFoundException
 import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelLabel
 import com.alex.munchies.repository.database.label.LabelRepository
-import com.alex.munchies.repository.mapping.mergeDbModel
 import com.alex.munchies.repository.mapping.newDbModel
+import com.alex.munchies.repository.mapping.plus
 import com.alex.munchies.repository.mapping.toApiModel
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -51,7 +51,7 @@ class LabelController(
     @PutMapping("{id}")
     fun update(@PathVariable("id") id: Long, @RequestBody labelNew: ApiModelLabel): ApiModelLabel {
         val labelExisting = labelRepository.findByIdAndUserId(id, userService.userId) ?: throw LabelNotFoundException()
-        return labelRepository.save(labelNew.mergeDbModel(labelExisting)).toApiModel()
+        return labelRepository.save(labelNew + labelExisting).toApiModel()
     }
 
     // delete
