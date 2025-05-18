@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.exception.LabelNotFoundException
 import com.alex.munchies.repository.UserService
 import com.alex.munchies.repository.api.ApiModelLabel
@@ -22,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("api/v1/labels")
 class LabelController(
     private val userService: UserService,
-    private val labelRepository: LabelRepository
+    private val labelRepository: LabelRepository,
+    private val rabbitMqProducer: RabbitMqProducer
 ) {
 
     // create
@@ -30,6 +32,7 @@ class LabelController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody label: ApiModelLabel): ApiModelLabel {
+        rabbitMqProducer.sendMessage("created label")
         return labelRepository.save(label.newDbModel(userService.userId)).toApiModel()
     }
 

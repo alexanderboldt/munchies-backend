@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.exception.RecipeNotFoundException
 import com.alex.munchies.repository.TheMealDbClient
 import com.alex.munchies.repository.UserService
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*
 class RecipeController(
     private val userService: UserService,
     private val recipeRepository: RecipeRepository,
-    private val theMealDbClient: TheMealDbClient
+    private val theMealDbClient: TheMealDbClient,
+    private val rabbitMqProducer: RabbitMqProducer
 ) {
 
     // create
@@ -27,6 +29,7 @@ class RecipeController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody recipe: ApiModelRecipe): ApiModelRecipe {
+        rabbitMqProducer.sendMessage("created recipe")
         return recipeRepository.save(recipe.newDbModel(userService.userId)).toApiModel()
     }
 

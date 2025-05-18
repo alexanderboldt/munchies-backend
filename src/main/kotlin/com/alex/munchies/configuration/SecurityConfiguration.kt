@@ -1,4 +1,4 @@
-package com.alex.munchies
+package com.alex.munchies.configuration
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean

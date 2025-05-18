@@ -26,7 +26,7 @@ services:
       - munchies_default
 
   rabbitmq:
-    container_name: rabbitmq
+    container_name: munchies_rabbitmq
     image: rabbitmq:4.1.0-management
     environment:
       RABBITMQ_DEFAULT_USER: admin
@@ -40,3 +40,4 @@ services:
 networks:
   munchies_default:
     driver: bridge
+    external: true
