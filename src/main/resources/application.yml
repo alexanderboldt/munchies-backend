@@ -7,3 +7,5 @@ springdoc:
 values:
   themealdb:
     url: https://www.themealdb.com/api/json
+  rabbitmq:
+    queue: statistic
