@@ -1,6 +1,6 @@
-package com.alex.munchies.domain.api
+package com.alex.munchies.domain
 
-data class ApiModelRecipe(
+data class Recipe(
     val id: Long,
     val userId: String?,
     val labelId: Long?,

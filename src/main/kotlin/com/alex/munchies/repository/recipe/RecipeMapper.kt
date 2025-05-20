@@ -1,17 +1,17 @@
 package com.alex.munchies.repository.recipe
 
-import com.alex.munchies.domain.api.ApiModelMeal
-import com.alex.munchies.domain.api.ApiModelRecipe
+import com.alex.munchies.domain.Meal
+import com.alex.munchies.domain.Recipe
 import java.util.Date
 
-// from api to database
+// from domain to entity
 
-fun ApiModelMeal.newDbModel(userId: String) = DbModelRecipe(0, userId, null, strMeal, strCategory, 0, Date().time, Date().time)
+fun Meal.toEntity(userId: String) = RecipeEntity(0, userId, null, strMeal, strCategory, 0, Date().time, Date().time)
 
-fun ApiModelRecipe.newDbModel(userId: String) = DbModelRecipe(0, userId, labelId, title, description, duration, Date().time, Date().time)
+fun Recipe.toEntity(userId: String) = RecipeEntity(0, userId, labelId, title, description, duration, Date().time, Date().time)
 
-operator fun ApiModelRecipe.plus(existing: DbModelRecipe) = DbModelRecipe(existing.id, existing.userId, labelId, title, description, duration, existing.createdAt, Date().time)
+operator fun Recipe.plus(existing: RecipeEntity) = RecipeEntity(existing.id, existing.userId, labelId, title, description, duration, existing.createdAt, Date().time)
 
-// from database to api
+// from entity to domain
 
-fun DbModelRecipe.toApiModel() = ApiModelRecipe(id, userId, labelId, title, description, duration, createdAt, updatedAt)
+fun RecipeEntity.toDomain() = Recipe(id, userId, labelId, title, description, duration, createdAt, updatedAt)

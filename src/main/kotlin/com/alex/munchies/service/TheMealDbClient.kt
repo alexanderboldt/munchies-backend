@@ -1,6 +1,6 @@
 package com.alex.munchies.service
 
-import com.alex.munchies.domain.api.ApiModelMeals
+import com.alex.munchies.domain.Meals
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestParam
 interface TheMealDbClient {
 
     @RequestMapping(method = [RequestMethod.GET], value = ["/v1/1/lookup.php"])
-    fun getMeal(@RequestParam("i") id: String): ApiModelMeals
+    fun getMeal(@RequestParam("i") id: String): Meals
 }

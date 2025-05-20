@@ -1,6 +1,6 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.domain.api.ApiModelRecipe
+import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
@@ -217,7 +217,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     // endregion
 
-    fun postRecipe(recipe: ApiModelRecipe): Int {
+    fun postRecipe(recipe: Recipe): Int {
         return Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
@@ -231,7 +231,7 @@ class RecipeResourceTest : BaseResourceTest() {
         }
     }
 
-    private fun ValidatableResponse.assertRecipe(recipe: ApiModelRecipe, isInArray: Boolean = false) {
+    private fun ValidatableResponse.assertRecipe(recipe: Recipe, isInArray: Boolean = false) {
         val suffix = if (isInArray) "[0]" else ""
 
         body("id".plus(suffix), Matchers.greaterThan(0))

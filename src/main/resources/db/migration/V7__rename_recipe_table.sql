@@ -1,0 +1,1 @@
+alter table db_model_recipe rename to recipe_entity;
