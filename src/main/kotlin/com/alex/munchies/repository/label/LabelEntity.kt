@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.database.recipe
+package com.alex.munchies.repository.label
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -6,20 +6,14 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-data class DbModelRecipe(
+data class LabelEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
     val userId: String,
 
-    val labelId: Long?,
-
-    val title: String,
-
-    val description: String?,
-
-    val duration: Int,
+    val name: String,
 
     val createdAt: Long,
 

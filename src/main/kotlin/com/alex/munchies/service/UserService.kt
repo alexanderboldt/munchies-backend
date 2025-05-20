@@ -1,4 +1,4 @@
-package com.alex.munchies.repository
+package com.alex.munchies.service
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component

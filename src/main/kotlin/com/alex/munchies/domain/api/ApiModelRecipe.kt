@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.api
+package com.alex.munchies.domain.api
 
 data class ApiModelRecipe(
     val id: Long,

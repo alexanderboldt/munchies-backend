@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.api
+package com.alex.munchies.domain.api
 
 data class ApiModelMeal(
     val idMeal: String = "",

@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.repository.api.ApiModelRecipe
-import com.alex.munchies.repository.database.recipe.RecipeRepository
+import com.alex.munchies.domain.api.ApiModelRecipe
+import com.alex.munchies.repository.recipe.RecipeRepository
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given

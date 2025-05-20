@@ -1,6 +1,6 @@
-package com.alex.munchies.repository
+package com.alex.munchies.service
 
-import com.alex.munchies.repository.api.ApiModelMeals
+import com.alex.munchies.domain.api.ApiModelMeals
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod

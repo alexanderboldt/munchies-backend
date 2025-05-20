@@ -2,14 +2,14 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.exception.RecipeNotFoundException
-import com.alex.munchies.repository.TheMealDbClient
-import com.alex.munchies.repository.UserService
-import com.alex.munchies.repository.api.ApiModelMeal
-import com.alex.munchies.repository.api.ApiModelRecipe
-import com.alex.munchies.repository.database.recipe.RecipeRepository
-import com.alex.munchies.repository.mapping.newDbModel
-import com.alex.munchies.repository.mapping.plus
-import com.alex.munchies.repository.mapping.toApiModel
+import com.alex.munchies.service.TheMealDbClient
+import com.alex.munchies.service.UserService
+import com.alex.munchies.domain.api.ApiModelMeal
+import com.alex.munchies.domain.api.ApiModelRecipe
+import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.repository.recipe.newDbModel
+import com.alex.munchies.repository.recipe.plus
+import com.alex.munchies.repository.recipe.toApiModel
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus

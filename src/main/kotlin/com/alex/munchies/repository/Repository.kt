@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.database
+package com.alex.munchies.repository
 
 /**
  * Interface contains base functionalities for all repositories.

@@ -1,0 +1,1 @@
+alter table db_model_label rename to label_entity;

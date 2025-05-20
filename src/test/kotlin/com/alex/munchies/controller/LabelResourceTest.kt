@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.repository.api.ApiModelLabel
-import com.alex.munchies.repository.database.label.LabelRepository
+import com.alex.munchies.domain.Label
+import com.alex.munchies.repository.label.LabelRepository
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
@@ -178,7 +178,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     // endregion
 
-    fun postLabel(label: ApiModelLabel): Int {
+    fun postLabel(label: Label): Int {
         return Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
@@ -192,7 +192,7 @@ class LabelResourceTest : BaseResourceTest() {
         }
     }
 
-    private fun ValidatableResponse.assertLabel(label: ApiModelLabel, isInArray: Boolean = false) {
+    private fun ValidatableResponse.assertLabel(label: Label, isInArray: Boolean = false) {
         val suffix = if (isInArray) "[0]" else ""
 
         body("id".plus(suffix), Matchers.greaterThan(0))

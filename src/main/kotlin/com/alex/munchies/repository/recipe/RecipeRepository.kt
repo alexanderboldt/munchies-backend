@@ -1,6 +1,6 @@
-package com.alex.munchies.repository.database.recipe
+package com.alex.munchies.repository.recipe
 
-import com.alex.munchies.repository.database.Repository
+import com.alex.munchies.repository.Repository
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.CrudRepository

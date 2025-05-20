@@ -1,13 +1,7 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.service.RabbitMqProducer
-import com.alex.munchies.exception.LabelNotFoundException
-import com.alex.munchies.repository.UserService
-import com.alex.munchies.repository.api.ApiModelLabel
-import com.alex.munchies.repository.database.label.LabelRepository
-import com.alex.munchies.repository.mapping.newDbModel
-import com.alex.munchies.repository.mapping.plus
-import com.alex.munchies.repository.mapping.toApiModel
+import com.alex.munchies.domain.Label
+import com.alex.munchies.service.LabelService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,50 +15,30 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/v1/labels")
-class LabelController(
-    private val userService: UserService,
-    private val labelRepository: LabelRepository,
-    private val rabbitMqProducer: RabbitMqProducer
-) {
+class LabelController(private val labelService: LabelService) {
 
     // create
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody label: ApiModelLabel): ApiModelLabel {
-        rabbitMqProducer.sendMessage("created label")
-        return labelRepository.save(label.newDbModel(userService.userId)).toApiModel()
-    }
+    fun create(@RequestBody label: Label) = labelService.create(label)
 
     // read
 
     @GetMapping
-    fun readAll(): List<ApiModelLabel> {
-        return labelRepository.findAllByUserId(userService.userId).map { it.toApiModel() }
-    }
+    fun readAll() = labelService.readAll()
 
     @GetMapping("{id}")
-    fun read(@PathVariable("id") id: Long): ApiModelLabel {
-        val label = labelRepository.findByIdAndUserId(id, userService.userId) ?: throw LabelNotFoundException()
-        return label.toApiModel()
-    }
+    fun read(@PathVariable("id") id: Long) = labelService.read(id)
 
     // update
 
     @PutMapping("{id}")
-    fun update(@PathVariable("id") id: Long, @RequestBody labelNew: ApiModelLabel): ApiModelLabel {
-        val labelExisting = labelRepository.findByIdAndUserId(id, userService.userId) ?: throw LabelNotFoundException()
-        return labelRepository.save(labelNew + labelExisting).toApiModel()
-    }
+    fun update(@PathVariable("id") id: Long, @RequestBody labelNew: Label) = labelService.update(id, labelNew)
 
     // delete
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable("id") id: Long) {
-        labelRepository.apply {
-            if (!existsByIdAndUserId(id, userService.userId)) throw LabelNotFoundException()
-            deleteById(id)
-        }
-    }
+    fun delete(@PathVariable("id") id: Long) = labelService.delete(id)
 }

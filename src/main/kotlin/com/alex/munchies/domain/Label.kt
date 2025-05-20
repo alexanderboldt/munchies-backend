@@ -1,6 +1,6 @@
-package com.alex.munchies.repository.api
+package com.alex.munchies.domain
 
-data class ApiModelLabel(
+data class Label(
     val id: Long,
     val userId: String?,
     val name: String,

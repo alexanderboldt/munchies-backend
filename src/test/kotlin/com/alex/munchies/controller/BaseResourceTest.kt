@@ -1,6 +1,6 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.repository.UserService
+import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.Mockito
