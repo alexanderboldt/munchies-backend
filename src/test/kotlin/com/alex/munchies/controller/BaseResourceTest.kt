@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
 import org.junit.jupiter.api.BeforeEach
@@ -12,7 +13,10 @@ open class BaseResourceTest {
     protected val userId = "12345"
 
     @MockitoBean
-    protected lateinit var userService: UserService
+    private lateinit var userService: UserService
+
+    @MockitoBean
+    private lateinit var rabbitMqProducer: RabbitMqProducer
 
     @LocalServerPort
     private var port: Int = 0
