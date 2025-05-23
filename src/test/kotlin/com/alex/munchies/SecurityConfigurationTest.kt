@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
@@ -14,10 +15,11 @@ class SecurityConfigurationTests() {
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
-        return httpSecurity
-            .cors { it.disable() }
-            .csrf { it.disable() }
-            .authorizeHttpRequests { it.anyRequest().permitAll() }
-            .build()
+        httpSecurity {
+            cors { disable() }
+            csrf { disable() }
+            authorizeHttpRequests { authorize(anyRequest, permitAll) }
+        }
+        return httpSecurity.build()
     }
 }
