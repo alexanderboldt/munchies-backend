@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 
@@ -20,16 +21,18 @@ class SecurityConfiguration(
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
-        return httpSecurity
-            .cors { it.disable() }
-            .csrf { it.disable() }
-            .authorizeHttpRequests {
-                it.requestMatchers("$pathDoc/**").permitAll()
-                it.requestMatchers(pathUi).permitAll()
-                it.requestMatchers("/swagger-ui/**").permitAll()
-            }.authorizeHttpRequests { it.anyRequest().authenticated() }
-            .oauth2ResourceServer { it.jwt(Customizer.withDefaults()) }
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .build()
+        httpSecurity {
+            cors { disable() }
+            csrf { disable() }
+            authorizeHttpRequests {
+                authorize("$pathDoc/**", permitAll)
+                authorize(pathUi, permitAll)
+                authorize("/swagger-ui/**", permitAll)
+                authorize(anyRequest, authenticated)
+            }
+            oauth2ResourceServer { jwt { Customizer.withDefaults<HttpSecurity>() } }
+            sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
+        }
+        return httpSecurity.build()
     }
 }
