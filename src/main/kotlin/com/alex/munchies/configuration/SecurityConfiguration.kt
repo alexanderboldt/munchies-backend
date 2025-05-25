@@ -15,8 +15,9 @@ import org.springframework.security.web.SecurityFilterChain
 @EnableWebSecurity
 @Profile("development")
 class SecurityConfiguration(
-    @Value("\${springdoc.api-docs.path}") val pathDoc: String,
-    @Value("\${springdoc.swagger-ui.path}") val pathUi: String
+    @Value("\${values.swagger.doc}") val swaggerDoc: String,
+    @Value("\${values.swagger.ui}") val swaggerUi: String,
+    @Value("\${values.swagger.ui-all}") val swaggerUiAll: String
 ) {
 
     @Bean
@@ -25,9 +26,12 @@ class SecurityConfiguration(
             cors { disable() }
             csrf { disable() }
             authorizeHttpRequests {
-                authorize("$pathDoc/**", permitAll)
-                authorize(pathUi, permitAll)
-                authorize("/swagger-ui/**", permitAll)
+                // swagger paths are available for everyone
+                authorize(swaggerDoc, permitAll)
+                authorize(swaggerUi, permitAll)
+                authorize(swaggerUiAll, permitAll)
+
+                // other routes are only accessible with authentication
                 authorize(anyRequest, authenticated)
             }
             oauth2ResourceServer { jwt { Customizer.withDefaults<HttpSecurity>() } }

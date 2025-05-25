@@ -1,11 +1,5 @@
 spring.profiles.active: development
 
-springdoc:
-  api-docs.path: /docs
-  swagger-ui.path: /docs.html
-
 values:
   themealdb:
     url: https://www.themealdb.com/api/json
-  rabbitmq:
-    queue: statistic

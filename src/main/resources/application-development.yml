@@ -28,3 +28,15 @@ spring:
     port: 5672
     username: admin
     password: admin
+
+springdoc:
+  api-docs.path: /docs
+  swagger-ui.path: /docs.html
+
+values:
+  swagger:
+    doc: ${springdoc.api-docs.path}/**
+    ui: ${springdoc.swagger-ui.path}
+    ui-all: /swagger-ui/**
+  rabbitmq:
+    queue: statistic
