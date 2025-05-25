@@ -1,7 +1,18 @@
 # Munchies
 
-This is a backend application for managing recipes.
+This is a backend application made with Kotlin and Spring Boot for managing recipes.
 
-## Technologies
+## Tech-Stack
 
-Uses Kotlin, Spring Boot, Gradle, Hibernate, MySQL, Keycloak, Flyway, OpenFeign, OpenApi (Swagger), RabbitMQ and RestAssured.
+- Kotlin
+- Spring Boot
+- Gradle
+- Hibernate
+- MySQL
+- Keycloak
+- Flyway
+- OpenFeign
+- OpenApi (Swagger)
+- RabbitMQ
+- RestAssured
+- Mockito
