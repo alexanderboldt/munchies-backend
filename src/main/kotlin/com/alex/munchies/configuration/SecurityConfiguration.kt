@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-@Profile("development")
+@Profile(SpringProfile.DEVELOPMENT)
 class SecurityConfiguration(
     @Value("\${values.swagger.doc}") val swaggerDoc: String,
     @Value("\${values.swagger.ui}") val swaggerUi: String,

@@ -1,5 +1,6 @@
 package com.alex.munchies
 
+import com.alex.munchies.configuration.SpringProfile
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -10,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-@Profile("tests")
+@Profile(SpringProfile.TESTS)
 class SecurityConfigurationTests() {
 
     @Bean

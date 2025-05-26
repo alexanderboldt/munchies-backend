@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
 import io.restassured.http.ContentType
@@ -16,11 +17,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
-@ActiveProfiles("tests")
+@ActiveProfiles(SpringProfile.TESTS)
 class RecipeResourceTest : BaseResourceTest() {
 
     @Autowired

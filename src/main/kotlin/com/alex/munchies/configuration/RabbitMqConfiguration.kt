@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 
 @Configuration
-@Profile("development")
+@Profile(SpringProfile.DEVELOPMENT)
 class RabbitMqConfiguration(@Value("\${values.rabbitmq.queue}") private val queue: String) {
 
     @Bean
