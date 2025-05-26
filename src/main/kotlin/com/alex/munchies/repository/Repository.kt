@@ -2,6 +2,8 @@ package com.alex.munchies.repository
 
 /**
  * Interface contains base functionalities for all repositories.
+ *
+ * @param T The type of the entity managed by this repository.
  */
 interface Repository<T> {
 
