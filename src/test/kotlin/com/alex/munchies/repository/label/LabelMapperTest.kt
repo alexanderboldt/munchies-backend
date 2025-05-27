@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class LabelMapperTest {
 
-    private val userId = "123456"
+    private val userId = "12345"
 
     @Test
     fun `should map domain to entity`() {

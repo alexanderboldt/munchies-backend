@@ -1,15 +1,9 @@
 package com.alex.munchies.converter
 
-import com.alex.munchies.configuration.SpringProfile
-import com.alex.munchies.controller.BaseResourceTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(SpringProfile.TESTS)
-class SortConvertTest : BaseResourceTest() {
+class SortConvertTest {
 
     private val sortConverter = SortConverter()
 
