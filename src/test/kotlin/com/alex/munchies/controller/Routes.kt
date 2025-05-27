@@ -2,11 +2,11 @@ package com.alex.munchies.controller
 
 object Routes {
     object Label {
-        const val main = "/api/v1/labels"
-        const val detail = "$main/{id}"
+        const val MAIN = "/api/v1/labels"
+        const val DETAIL = "$MAIN/{id}"
     }
     object Recipe {
-        const val main = "/api/v1/recipes"
-        const val detail = "$main/{id}"
+        const val MAIN = "/api/v1/recipes"
+        const val DETAIL = "$MAIN/{id}"
     }
 }

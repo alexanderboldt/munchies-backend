@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
+@Suppress("unused")
 @RestController
 @RequestMapping("api/v1/recipes")
 class RecipeController(private val recipeService: RecipeService) {

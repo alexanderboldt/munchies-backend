@@ -40,7 +40,7 @@ class LabelResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
-            post(Routes.Label.main)
+            post(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
             assertLabel(Fixtures.Labels.Domain.vegetarian)
@@ -54,7 +54,7 @@ class LabelResourceTest : BaseResourceTest() {
     @Test
     fun testGetAllWithNoLabels() {
         When {
-            get(Routes.Label.main)
+            get(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
@@ -68,13 +68,13 @@ class LabelResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
-            post(Routes.Label.main)
+            post(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         }
 
         When {
-            get(Routes.Label.main)
+            get(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
@@ -91,7 +91,7 @@ class LabelResourceTest : BaseResourceTest() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
-            get(Routes.Label.detail, 100)
+            get(Routes.Label.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -102,7 +102,7 @@ class LabelResourceTest : BaseResourceTest() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
-            get(Routes.Label.detail, id)
+            get(Routes.Label.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             assertLabel(Fixtures.Labels.Domain.vegetarian)
@@ -122,7 +122,7 @@ class LabelResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegan)
         } When {
-            put(Routes.Label.detail, 100)
+            put(Routes.Label.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -137,7 +137,7 @@ class LabelResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegan)
         } When {
-            put(Routes.Label.detail, id)
+            put(Routes.Label.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             assertLabel(Fixtures.Labels.Domain.vegan)
@@ -156,7 +156,7 @@ class LabelResourceTest : BaseResourceTest() {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(Routes.Label.detail, 100)
+            delete(Routes.Label.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -170,7 +170,7 @@ class LabelResourceTest : BaseResourceTest() {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(Routes.Label.detail, id)
+            delete(Routes.Label.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -184,7 +184,7 @@ class LabelResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(label)
         } When {
-            post(Routes.Label.main)
+            post(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -196,7 +196,7 @@ class LabelResourceTest : BaseResourceTest() {
         val suffix = if (isInArray) "[0]" else ""
 
         body("id".plus(suffix), Matchers.greaterThan(0))
-        body("userId".plus(suffix), equalTo(Fixtures.User.userId))
+        body("userId".plus(suffix), equalTo(Fixtures.User.USER_ID))
         body("name".plus(suffix), equalTo(label.name))
         body("createdAt".plus(suffix), Matchers.greaterThan(0L))
         body("updatedAt".plus(suffix), Matchers.greaterThan(0L))

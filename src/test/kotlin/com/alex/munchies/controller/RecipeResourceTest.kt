@@ -40,7 +40,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.pizza)
         } When {
-            post(Routes.Recipe.main)
+            post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
             assertRecipe(Fixtures.Recipes.Domain.pizza)
@@ -54,7 +54,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.pizza.copy(labelId = 100))
         } When {
-            post(Routes.Recipe.main)
+            post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
         }
@@ -67,7 +67,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
-            post(Routes.Label.main)
+            post(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -79,7 +79,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.pizza.copy(labelId = labelId.toLong()))
         } When {
-            post(Routes.Recipe.main)
+            post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
             assertRecipe(Fixtures.Recipes.Domain.pizza)
@@ -93,7 +93,7 @@ class RecipeResourceTest : BaseResourceTest() {
     @Test
     fun testGetAllWithNoRecipes() {
         When {
-            get(Routes.Recipe.main)
+            get(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
@@ -107,13 +107,13 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.pizza)
         } When {
-            post(Routes.Recipe.main)
+            post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         }
 
         When {
-            get(Routes.Recipe.main)
+            get(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
@@ -130,7 +130,7 @@ class RecipeResourceTest : BaseResourceTest() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
-            get(Routes.Recipe.detail, 100)
+            get(Routes.Recipe.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -141,7 +141,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
-            get(Routes.Recipe.detail, id)
+            get(Routes.Recipe.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             assertRecipe(Fixtures.Recipes.Domain.pizza)
@@ -161,7 +161,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.burger)
         } When {
-            put(Routes.Recipe.detail, 100)
+            put(Routes.Recipe.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -176,7 +176,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.burger)
         } When {
-            put(Routes.Recipe.detail, id)
+            put(Routes.Recipe.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             assertRecipe(Fixtures.Recipes.Domain.burger)
@@ -195,7 +195,7 @@ class RecipeResourceTest : BaseResourceTest() {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(Routes.Recipe.detail, 100)
+            delete(Routes.Recipe.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -209,7 +209,7 @@ class RecipeResourceTest : BaseResourceTest() {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
         } When {
-            delete(Routes.Recipe.detail, id)
+            delete(Routes.Recipe.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -223,7 +223,7 @@ class RecipeResourceTest : BaseResourceTest() {
             contentType(ContentType.JSON)
             body(recipe)
         } When {
-            post(Routes.Recipe.main)
+            post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -235,7 +235,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val suffix = if (isInArray) "[0]" else ""
 
         body("id".plus(suffix), Matchers.greaterThan(0))
-        body("userId".plus(suffix), equalTo(Fixtures.User.userId))
+        body("userId".plus(suffix), equalTo(Fixtures.User.USER_ID))
         body("title".plus(suffix), equalTo(recipe.title))
         body("description".plus(suffix), equalTo(recipe.description))
         body("duration".plus(suffix), equalTo(recipe.duration))

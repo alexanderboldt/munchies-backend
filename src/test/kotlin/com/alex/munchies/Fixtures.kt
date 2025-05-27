@@ -9,7 +9,7 @@ import com.alex.munchies.repository.recipe.RecipeEntity
 object Fixtures {
 
     object User {
-        const val userId = "12345"
+        const val USER_ID = "12345"
     }
 
     object Labels {
@@ -18,18 +18,18 @@ object Fixtures {
             val vegan = Label(0, "", name = "Vegan", 1747138632, 1747138632)
         }
         object Entity {
-            val vegetarian = LabelEntity(12, User.userId, "Vegetarian", 16438423489, 162131233)
+            val vegetarian = LabelEntity(12, User.USER_ID, "Vegetarian", 16438423489, 162131233)
         }
     }
 
     object Recipes {
         object Domain {
-            val pizza = Recipe(0, "", null, "Pizza", "lecker", 1000, 1747138632, 1747138632)
+            val pizza = Recipe(0, "", null, "Pizza", "Italian Style", 1000, 1747138632, 1747138632)
             val burger = Recipe(0, "", null, "Burger", "juicy", 2000, 1747138632, 1747138632)
             val meal = Meal("231", "Spaghetti Bolognese", "Pasta")
         }
         object Entity {
-            val pizza = RecipeEntity(12, User.userId, 10, "Pizza", "Italian Style", 1000, 16438423489, 162131233)
+            val pizza = RecipeEntity(12, User.USER_ID, 10, "Pizza", "Italian Style", 1000, 16438423489, 162131233)
         }
     }
 }

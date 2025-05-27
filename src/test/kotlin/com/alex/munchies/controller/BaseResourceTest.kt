@@ -14,6 +14,7 @@ open class BaseResourceTest {
     @MockitoBean
     private lateinit var userService: UserService
 
+    @Suppress("unused")
     @MockitoBean
     private lateinit var rabbitMqProducer: RabbitMqProducer
 
@@ -24,6 +25,6 @@ open class BaseResourceTest {
     fun beforeEach() {
         RestAssured.port = port
 
-        Mockito.`when`(userService.userId).thenReturn(Fixtures.User.userId)
+        Mockito.`when`(userService.userId).thenReturn(Fixtures.User.USER_ID)
     }
 }
