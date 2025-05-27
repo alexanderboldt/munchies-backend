@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Label
 import com.alex.munchies.repository.label.LabelRepository
@@ -37,12 +38,12 @@ class LabelResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Labels.vegetarian)
+            body(Fixtures.Labels.Domain.vegetarian)
         } When {
             post(Routes.Label.main)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertLabel(Fixtures.Labels.vegetarian)
+            assertLabel(Fixtures.Labels.Domain.vegetarian)
         }
     }
 
@@ -65,7 +66,7 @@ class LabelResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Labels.vegetarian)
+            body(Fixtures.Labels.Domain.vegetarian)
         } When {
             post(Routes.Label.main)
         } Then {
@@ -77,7 +78,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
-            assertLabel(Fixtures.Labels.vegetarian, true)
+            assertLabel(Fixtures.Labels.Domain.vegetarian, true)
         }
     }
 
@@ -87,7 +88,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testGetOneWithInvalidId() {
-        postLabel(Fixtures.Labels.vegetarian)
+        postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
             get(Routes.Label.detail, 100)
@@ -98,13 +99,13 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testGetOneWithValidId() {
-        val id = postLabel(Fixtures.Labels.vegetarian)
+        val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
             get(Routes.Label.detail, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertLabel(Fixtures.Labels.vegetarian)
+            assertLabel(Fixtures.Labels.Domain.vegetarian)
         }
     }
 
@@ -114,12 +115,12 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testUpdateWithInvalidId() {
-        postLabel(Fixtures.Labels.vegetarian)
+        postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Labels.vegan)
+            body(Fixtures.Labels.Domain.vegan)
         } When {
             put(Routes.Label.detail, 100)
         } Then {
@@ -129,17 +130,17 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testUpdateWithValidId() {
-        val id = postLabel(Fixtures.Labels.vegetarian)
+        val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Labels.vegan)
+            body(Fixtures.Labels.Domain.vegan)
         } When {
             put(Routes.Label.detail, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertLabel(Fixtures.Labels.vegan)
+            assertLabel(Fixtures.Labels.Domain.vegan)
         }
     }
 
@@ -149,7 +150,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testDeleteWithInvalidId() {
-        postLabel(Fixtures.Labels.vegetarian)
+        postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
             accept(ContentType.JSON)
@@ -163,7 +164,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun testDeleteWithValidLabel() {
-        val id = postLabel(Fixtures.Labels.vegetarian)
+        val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
             accept(ContentType.JSON)
@@ -195,7 +196,7 @@ class LabelResourceTest : BaseResourceTest() {
         val suffix = if (isInArray) "[0]" else ""
 
         body("id".plus(suffix), Matchers.greaterThan(0))
-        body("userId".plus(suffix), equalTo(userId))
+        body("userId".plus(suffix), equalTo(Fixtures.User.userId))
         body("name".plus(suffix), equalTo(label.name))
         body("createdAt".plus(suffix), Matchers.greaterThan(0L))
         body("updatedAt".plus(suffix), Matchers.greaterThan(0L))

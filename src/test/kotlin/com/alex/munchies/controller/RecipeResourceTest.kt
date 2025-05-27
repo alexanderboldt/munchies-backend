@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
@@ -37,12 +38,12 @@ class RecipeResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Recipes.pizza)
+            body(Fixtures.Recipes.Domain.pizza)
         } When {
             post(Routes.Recipe.main)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertRecipe(Fixtures.Recipes.pizza)
+            assertRecipe(Fixtures.Recipes.Domain.pizza)
         }
     }
 
@@ -51,7 +52,7 @@ class RecipeResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Recipes.pizza.copy(labelId = 100))
+            body(Fixtures.Recipes.Domain.pizza.copy(labelId = 100))
         } When {
             post(Routes.Recipe.main)
         } Then {
@@ -64,7 +65,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val labelId: Int = Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Labels.vegetarian)
+            body(Fixtures.Labels.Domain.vegetarian)
         } When {
             post(Routes.Label.main)
         } Then {
@@ -76,12 +77,12 @@ class RecipeResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Recipes.pizza.copy(labelId = labelId.toLong()))
+            body(Fixtures.Recipes.Domain.pizza.copy(labelId = labelId.toLong()))
         } When {
             post(Routes.Recipe.main)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertRecipe(Fixtures.Recipes.pizza)
+            assertRecipe(Fixtures.Recipes.Domain.pizza)
         }
     }
 
@@ -104,7 +105,7 @@ class RecipeResourceTest : BaseResourceTest() {
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Recipes.pizza)
+            body(Fixtures.Recipes.Domain.pizza)
         } When {
             post(Routes.Recipe.main)
         } Then {
@@ -116,7 +117,7 @@ class RecipeResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
-            assertRecipe(Fixtures.Recipes.pizza, true)
+            assertRecipe(Fixtures.Recipes.Domain.pizza, true)
         }
     }
 
@@ -126,7 +127,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun testGetOneWithInvalidId() {
-        postRecipe(Fixtures.Recipes.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
             get(Routes.Recipe.detail, 100)
@@ -137,13 +138,13 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun testGetOneWithValidId() {
-        val id = postRecipe(Fixtures.Recipes.pizza)
+        val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
             get(Routes.Recipe.detail, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertRecipe(Fixtures.Recipes.pizza)
+            assertRecipe(Fixtures.Recipes.Domain.pizza)
         }
     }
 
@@ -153,12 +154,12 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun testUpdateWithInvalidId() {
-        postRecipe(Fixtures.Recipes.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Recipes.burger)
+            body(Fixtures.Recipes.Domain.burger)
         } When {
             put(Routes.Recipe.detail, 100)
         } Then {
@@ -168,17 +169,17 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun testUpdateWithValidId() {
-        val id = postRecipe(Fixtures.Recipes.pizza)
+        val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
-            body(Fixtures.Recipes.burger)
+            body(Fixtures.Recipes.Domain.burger)
         } When {
             put(Routes.Recipe.detail, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertRecipe(Fixtures.Recipes.burger)
+            assertRecipe(Fixtures.Recipes.Domain.burger)
         }
     }
 
@@ -188,7 +189,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun testDeleteWithInvalidId() {
-        postRecipe(Fixtures.Recipes.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         Given {
             accept(ContentType.JSON)
@@ -202,7 +203,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun testDeleteWithValidRecipe() {
-        val id = postRecipe(Fixtures.Recipes.pizza)
+        val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         Given {
             accept(ContentType.JSON)
@@ -234,7 +235,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val suffix = if (isInArray) "[0]" else ""
 
         body("id".plus(suffix), Matchers.greaterThan(0))
-        body("userId".plus(suffix), equalTo(userId))
+        body("userId".plus(suffix), equalTo(Fixtures.User.userId))
         body("title".plus(suffix), equalTo(recipe.title))
         body("description".plus(suffix), equalTo(recipe.description))
         body("duration".plus(suffix), equalTo(recipe.duration))

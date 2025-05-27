@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Fixtures
 import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
@@ -9,8 +10,6 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 open class BaseResourceTest {
-
-    protected val userId = "12345"
 
     @MockitoBean
     private lateinit var userService: UserService
@@ -25,6 +24,6 @@ open class BaseResourceTest {
     fun beforeEach() {
         RestAssured.port = port
 
-        Mockito.`when`(userService.userId).thenReturn(userId)
+        Mockito.`when`(userService.userId).thenReturn(Fixtures.User.userId)
     }
 }

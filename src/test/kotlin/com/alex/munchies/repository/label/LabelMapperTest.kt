@@ -1,20 +1,18 @@
 package com.alex.munchies.repository.label
 
-import com.alex.munchies.domain.Label
+import com.alex.munchies.Fixtures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class LabelMapperTest {
 
-    private val userId = "12345"
-
     @Test
     fun `should map domain to entity`() {
-        val domain = Label(-1, null, "Vegetarian", 0, 0)
-        val entity = domain.toEntity(userId) // information like id, createdAt and updatedAt will be set automatically
+        val domain = Fixtures.Labels.Domain.vegetarian
+        val entity = domain.toEntity(Fixtures.User.userId) // information like id, createdAt and updatedAt will be set automatically
 
         assertThat(entity.id).isEqualTo(0)
-        assertThat(entity.userId).isEqualTo(userId)
+        assertThat(entity.userId).isEqualTo(Fixtures.User.userId)
         assertThat(entity.name).isEqualTo(domain.name)
         assertThat(entity.createdAt).isGreaterThan(0)
         assertThat(entity.updatedAt).isGreaterThan(0)
@@ -22,8 +20,8 @@ class LabelMapperTest {
 
     @Test
     fun `should combine a new domain with an existing entity`() {
-        val domain = Label(-1, null, "Vegan", 0, 0)
-        val entity = LabelEntity(12, userId, "Vegetarian", 16438423489, 162131233)
+        val domain = Fixtures.Labels.Domain.vegan
+        val entity = Fixtures.Labels.Entity.vegetarian
 
         val combined = domain + entity
 
@@ -37,7 +35,7 @@ class LabelMapperTest {
 
     @Test
     fun `should map entity to domain`() {
-        val entity = LabelEntity(12, userId, "Vegetarian", 23784434, 9789683)
+        val entity = Fixtures.Labels.Entity.vegetarian
         val domain = entity.toDomain()
 
         assertThat(domain.id).isEqualTo(entity.id)

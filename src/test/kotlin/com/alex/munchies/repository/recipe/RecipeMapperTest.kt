@@ -1,21 +1,18 @@
 package com.alex.munchies.repository.recipe
 
-import com.alex.munchies.domain.Meal
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.Fixtures
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class RecipeMapperTest {
 
-    private val userId = "12345"
-
     @Test
     fun `should map domain to entity`() {
-        val domain = Recipe(-1, null, 10, "Pizza", "Italian Style", 1000,0, 0)
-        val entity = domain.toEntity(userId) // information like id, createdAt and updatedAt will be set automatically
+        val domain = Fixtures.Recipes.Domain.pizza
+        val entity = domain.toEntity(Fixtures.User.userId) // information like id, createdAt and updatedAt will be set automatically
 
         assertThat(entity.id).isEqualTo(0)
-        assertThat(entity.userId).isEqualTo(userId)
+        assertThat(entity.userId).isEqualTo(Fixtures.User.userId)
         assertThat(entity.labelId).isEqualTo(domain.labelId)
         assertThat(entity.title).isEqualTo(domain.title)
         assertThat(entity.description).isEqualTo(domain.description)
@@ -26,11 +23,11 @@ class RecipeMapperTest {
 
     @Test
     fun `should map meal to entity`() {
-        val meal = Meal("231", "Spaghetti Bolognese", "Pasta")
-        val entity = meal.toEntity(userId)
+        val meal = Fixtures.Recipes.Domain.meal
+        val entity = meal.toEntity(Fixtures.User.userId)
 
         assertThat(entity.id).isEqualTo(0)
-        assertThat(entity.userId).isEqualTo(userId)
+        assertThat(entity.userId).isEqualTo(Fixtures.User.userId)
         assertThat(entity.labelId).isNull()
         assertThat(entity.title).isEqualTo(meal.strMeal)
         assertThat(entity.description).isEqualTo(meal.strCategory)
@@ -41,8 +38,8 @@ class RecipeMapperTest {
 
     @Test
     fun `should combine a new domain with an existing entity`() {
-        val domain = Recipe(-1, null, 11, "Burger", "A juicy one", 500, 0, 0)
-        val entity = RecipeEntity(12, userId, 10, "Pizza", "Italian Style", 1000, 16438423489, 162131233)
+        val domain = Fixtures.Recipes.Domain.burger
+        val entity = Fixtures.Recipes.Entity.pizza
 
         val combined = domain + entity
 
@@ -59,7 +56,7 @@ class RecipeMapperTest {
 
     @Test
     fun `should map entity to domain`() {
-        val entity = RecipeEntity(12, userId, 10, "Pizza", "Italian Style", 1000, 16438423489, 162131233)
+        val entity = Fixtures.Recipes.Entity.pizza
         val domain = entity.toDomain()
 
         assertThat(domain.id).isEqualTo(entity.id)
