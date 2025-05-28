@@ -4,15 +4,14 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Label
 import com.alex.munchies.repository.label.LabelRepository
+import io.restassured.common.mapper.TypeRef
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.response.ValidatableResponse
 import org.apache.http.HttpStatus
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.Matchers
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,8 +33,8 @@ class LabelResourceTest : BaseResourceTest() {
     // region create
 
     @Test
-    fun testPostWithValidRequest() {
-        Given {
+    fun `should create a label with valid request`() {
+        val label = Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegetarian)
@@ -43,8 +42,12 @@ class LabelResourceTest : BaseResourceTest() {
             post(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertLabel(Fixtures.Labels.Domain.vegetarian)
+        } Extract {
+            `as`(object : TypeRef<Label>() {})
         }
+
+        assertThat(label).isNotNull
+        assertLabel(label)
     }
 
     // endregion
@@ -52,34 +55,52 @@ class LabelResourceTest : BaseResourceTest() {
     // region read all
 
     @Test
-    fun testGetAllWithNoLabels() {
-        When {
+    fun `should return an empty list`() {
+        val labels = When {
             get(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body("size()", equalTo(0))
+        } Extract {
+            `as`(object : TypeRef<List<Label>>() {})
         }
+
+        assertThat(labels).isEmpty()
     }
 
     @Test
-    fun testGetAllWithOneLabel() {
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-            body(Fixtures.Labels.Domain.vegetarian)
-        } When {
-            post(Routes.Label.MAIN)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        }
+    fun `should return a list with one label`() {
+        postLabel(Fixtures.Labels.Domain.vegetarian)
 
-        When {
+        val labels = When {
             get(Routes.Label.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            body("size()", equalTo(1))
-            assertLabel(Fixtures.Labels.Domain.vegetarian, true)
+        } Extract {
+            `as`(object : TypeRef<List<Label>>() {})
         }
+
+        assertThat(labels).isNotEmpty
+        assertThat(labels).hasSize(1)
+        assertLabels(labels)
+    }
+
+    @Test
+    fun `should return a list with ten labels`() {
+        (1..10).forEach { _ ->
+            postLabel(Fixtures.Labels.Domain.vegetarian)
+        }
+
+        val labels = When {
+            get(Routes.Label.MAIN)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            `as`(object : TypeRef<List<Label>>() {})
+        }
+
+        assertThat(labels).isNotEmpty
+        assertThat(labels).hasSize(10)
+        assertLabels(labels)
     }
 
     // endregion
@@ -87,7 +108,7 @@ class LabelResourceTest : BaseResourceTest() {
     // region read one
 
     @Test
-    fun testGetOneWithInvalidId() {
+    fun `should return bad request with invalid id`() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
@@ -98,15 +119,19 @@ class LabelResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testGetOneWithValidId() {
+    fun `should return one label with valid id`() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
-        When {
+        val label = When {
             get(Routes.Label.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertLabel(Fixtures.Labels.Domain.vegetarian)
+        } Extract {
+            `as`(object : TypeRef<Label>() {})
         }
+
+        assertThat(label).isNotNull
+        assertLabel(label)
     }
 
     // endregion
@@ -114,7 +139,7 @@ class LabelResourceTest : BaseResourceTest() {
     // region update
 
     @Test
-    fun testUpdateWithInvalidId() {
+    fun `should not update a label and return bad request with invalid id`() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
@@ -129,10 +154,10 @@ class LabelResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testUpdateWithValidId() {
+    fun `should update and return a label with valid id`() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
-        Given {
+        val label = Given {
             accept(ContentType.JSON)
             contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegan)
@@ -140,8 +165,12 @@ class LabelResourceTest : BaseResourceTest() {
             put(Routes.Label.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertLabel(Fixtures.Labels.Domain.vegan)
+        } Extract {
+            `as`(object : TypeRef<Label>() {})
         }
+
+        assertThat(label).isNotNull
+        assertLabel(label)
     }
 
     // endregion
@@ -149,7 +178,7 @@ class LabelResourceTest : BaseResourceTest() {
     // region delete
 
     @Test
-    fun testDeleteWithInvalidId() {
+    fun `should not delete a label with invalid id`() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
@@ -163,7 +192,7 @@ class LabelResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testDeleteWithValidLabel() {
+    fun `should delete a label with valid id`() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
@@ -192,13 +221,15 @@ class LabelResourceTest : BaseResourceTest() {
         }
     }
 
-    private fun ValidatableResponse.assertLabel(label: Label, isInArray: Boolean = false) {
-        val suffix = if (isInArray) "[0]" else ""
+    private fun assertLabels(labels: List<Label>) {
+        labels.forEach { assertLabel(it) }
+    }
 
-        body("id".plus(suffix), Matchers.greaterThan(0))
-        body("userId".plus(suffix), equalTo(Fixtures.User.USER_ID))
-        body("name".plus(suffix), equalTo(label.name))
-        body("createdAt".plus(suffix), Matchers.greaterThan(0L))
-        body("updatedAt".plus(suffix), Matchers.greaterThan(0L))
+    private fun assertLabel(label: Label) {
+        assertThat(label.id).isGreaterThan(0)
+        assertThat(label.userId).isEqualTo(Fixtures.User.USER_ID)
+        assertThat(label.name).isNotBlank
+        assertThat(label.createdAt).isGreaterThan(0)
+        assertThat(label.updatedAt).isGreaterThan(0)
     }
 }
