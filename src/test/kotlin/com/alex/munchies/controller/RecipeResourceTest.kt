@@ -4,15 +4,14 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
-import io.restassured.http.ContentType
+import io.restassured.common.mapper.TypeRef
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.response.ValidatableResponse
 import org.apache.http.HttpStatus
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.Matchers
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,24 +33,24 @@ class RecipeResourceTest : BaseResourceTest() {
     // region create
 
     @Test
-    fun testPostWithValidRequest() {
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
+    fun `should create a recipe with valid request`() {
+        val recipe = Given {
             body(Fixtures.Recipes.Domain.pizza)
         } When {
             post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertRecipe(Fixtures.Recipes.Domain.pizza)
+        } Extract {
+            `as`(object : TypeRef<Recipe>() {})
         }
+
+        assertThat(recipe).isNotNull
+        assertRecipe(recipe, Fixtures.Recipes.Domain.pizza)
     }
 
     @Test
-    fun testPostWithInvalidLabelId() {
+    fun `should not create a recipe with invalid label-id`() {
         Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.pizza.copy(labelId = 100))
         } When {
             post(Routes.Recipe.MAIN)
@@ -61,10 +60,8 @@ class RecipeResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testPostWithValidLabelId() {
+    fun `should create a recipe with valid label-id`() {
         val labelId: Int = Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
             post(Routes.Label.MAIN)
@@ -74,16 +71,19 @@ class RecipeResourceTest : BaseResourceTest() {
             path("id")
         }
 
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-            body(Fixtures.Recipes.Domain.pizza.copy(labelId = labelId.toLong()))
+        val recipeRequest = Fixtures.Recipes.Domain.pizza.copy(labelId = labelId.toLong())
+
+        val recipeResponse = Given {
+            body(recipeRequest)
         } When {
             post(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
-            assertRecipe(Fixtures.Recipes.Domain.pizza)
+        } Extract {
+            `as`(object : TypeRef<Recipe>() {})
         }
+
+        assertRecipe(recipeResponse, recipeRequest)
     }
 
     // endregion
@@ -91,34 +91,57 @@ class RecipeResourceTest : BaseResourceTest() {
     // region read all
 
     @Test
-    fun testGetAllWithNoRecipes() {
-        When {
+    fun `should return an empty list`() {
+        val recipes = When {
             get(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
+        } Extract {
+            `as`(object : TypeRef<List<Recipe>>() {})
         }
+
+        assertThat(recipes).isNotNull
+        assertThat(recipes).isEmpty()
     }
 
-    @Test
-    fun testGetAllWithOneRecipe() {
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-            body(Fixtures.Recipes.Domain.pizza)
-        } When {
-            post(Routes.Recipe.MAIN)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        }
 
-        When {
+    @Test
+    fun `should return a list with one recipe`() {
+        postRecipe(Fixtures.Recipes.Domain.pizza)
+
+        val recipes = When {
             get(Routes.Recipe.MAIN)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
-            assertRecipe(Fixtures.Recipes.Domain.pizza, true)
+        } Extract {
+            `as`(object : TypeRef<List<Recipe>>() {})
         }
+
+        assertThat(recipes).isNotEmpty
+        assertThat(recipes).hasSize(1)
+        assertRecipes(recipes, listOf(Fixtures.Recipes.Domain.pizza))
+    }
+
+    @Test
+    fun `should return a list with ten recipes`() {
+        val recipesRequest = (1..10).map { Fixtures.Recipes.Domain.pizza }
+
+        recipesRequest.forEach { postRecipe(it) }
+
+        val recipes = When {
+            get(Routes.Recipe.MAIN)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+            body("size()", equalTo(10))
+        } Extract {
+            `as`(object : TypeRef<List<Recipe>>() {})
+        }
+
+        assertThat(recipes).isNotEmpty
+        assertThat(recipes).hasSize(10)
+        assertRecipes(recipes, recipesRequest)
     }
 
     // endregion
@@ -126,7 +149,7 @@ class RecipeResourceTest : BaseResourceTest() {
     // region read one
 
     @Test
-    fun testGetOneWithInvalidId() {
+    fun `should throw bad-request with invalid id`() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
@@ -137,15 +160,18 @@ class RecipeResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testGetOneWithValidId() {
+    fun `should return one recipe with valid id`() {
         val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
-        When {
+        val recipe = When {
             get(Routes.Recipe.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertRecipe(Fixtures.Recipes.Domain.pizza)
+        } Extract {
+            `as`(object : TypeRef<Recipe>() {})
         }
+
+        assertRecipe(recipe, Fixtures.Recipes.Domain.pizza)
     }
 
     // endregion
@@ -153,12 +179,10 @@ class RecipeResourceTest : BaseResourceTest() {
     // region update
 
     @Test
-    fun testUpdateWithInvalidId() {
+    fun `should not update a recipe and throw bad-request with invalid id`() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
         Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Recipes.Domain.burger)
         } When {
             put(Routes.Recipe.DETAIL, 100)
@@ -168,19 +192,20 @@ class RecipeResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testUpdateWithValidId() {
+    fun `should update and return a recipe with valid id`() {
         val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
+        val recipe = Given {
             body(Fixtures.Recipes.Domain.burger)
         } When {
             put(Routes.Recipe.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
-            assertRecipe(Fixtures.Recipes.Domain.burger)
+        } Extract {
+            `as`(object : TypeRef<Recipe>() {})
         }
+
+        assertRecipe(recipe, Fixtures.Recipes.Domain.burger)
     }
 
     // endregion
@@ -188,13 +213,10 @@ class RecipeResourceTest : BaseResourceTest() {
     // region delete
 
     @Test
-    fun testDeleteWithInvalidId() {
+    fun `should not delete a recipe and throw bad-request with invalid id`() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-        } When {
+        When {
             delete(Routes.Recipe.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -202,13 +224,10 @@ class RecipeResourceTest : BaseResourceTest() {
     }
 
     @Test
-    fun testDeleteWithValidRecipe() {
+    fun `should delete a recipe with valid id`() {
         val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-        } When {
+        When {
             delete(Routes.Recipe.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
@@ -219,8 +238,6 @@ class RecipeResourceTest : BaseResourceTest() {
 
     fun postRecipe(recipe: Recipe): Int {
         return Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(recipe)
         } When {
             post(Routes.Recipe.MAIN)
@@ -231,15 +248,19 @@ class RecipeResourceTest : BaseResourceTest() {
         }
     }
 
-    private fun ValidatableResponse.assertRecipe(recipe: Recipe, isInArray: Boolean = false) {
-        val suffix = if (isInArray) "[0]" else ""
+    private fun assertRecipes(recipesActual: List<Recipe>, recipesOther: List<Recipe>) {
+        recipesActual.zip(recipesOther).forEach { (recipeActual, recipeOther) ->
+            assertRecipe(recipeActual, recipeOther)
+        }
+    }
 
-        body("id".plus(suffix), Matchers.greaterThan(0))
-        body("userId".plus(suffix), equalTo(Fixtures.User.USER_ID))
-        body("title".plus(suffix), equalTo(recipe.title))
-        body("description".plus(suffix), equalTo(recipe.description))
-        body("duration".plus(suffix), equalTo(recipe.duration))
-        body("createdAt".plus(suffix), Matchers.greaterThan(0L))
-        body("updatedAt".plus(suffix), Matchers.greaterThan(0L))
+    private fun assertRecipe(recipeActual: Recipe, recipeOther: Recipe) {
+        assertThat(recipeActual.id).isGreaterThan(0)
+        assertThat(recipeActual.userId).isEqualTo(Fixtures.User.USER_ID)
+        assertThat(recipeActual.title).isEqualTo(recipeOther.title)
+        assertThat(recipeActual.description).isEqualTo(recipeOther.description)
+        assertThat(recipeActual.duration).isEqualTo(recipeOther.duration)
+        assertThat(recipeActual.createdAt).isGreaterThan(0)
+        assertThat(recipeActual.updatedAt).isGreaterThan(0)
     }
 }

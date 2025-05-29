@@ -5,7 +5,6 @@ import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Label
 import com.alex.munchies.repository.label.LabelRepository
 import io.restassured.common.mapper.TypeRef
-import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
@@ -35,8 +34,6 @@ class LabelResourceTest : BaseResourceTest() {
     @Test
     fun `should create a label with valid request`() {
         val label = Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
             post(Routes.Label.MAIN)
@@ -47,7 +44,7 @@ class LabelResourceTest : BaseResourceTest() {
         }
 
         assertThat(label).isNotNull
-        assertLabel(label)
+        assertLabel(label, Fixtures.Labels.Domain.vegetarian)
     }
 
     // endregion
@@ -64,6 +61,7 @@ class LabelResourceTest : BaseResourceTest() {
             `as`(object : TypeRef<List<Label>>() {})
         }
 
+        assertThat(labels).isNotNull
         assertThat(labels).isEmpty()
     }
 
@@ -81,14 +79,14 @@ class LabelResourceTest : BaseResourceTest() {
 
         assertThat(labels).isNotEmpty
         assertThat(labels).hasSize(1)
-        assertLabels(labels)
+        assertLabels(labels, listOf(Fixtures.Labels.Domain.vegetarian))
     }
 
     @Test
     fun `should return a list with ten labels`() {
-        (1..10).forEach { _ ->
-            postLabel(Fixtures.Labels.Domain.vegetarian)
-        }
+        val labelsRequest = (1..10).map { Fixtures.Labels.Domain.vegetarian }
+
+        labelsRequest.forEach { postLabel(it) }
 
         val labels = When {
             get(Routes.Label.MAIN)
@@ -100,7 +98,7 @@ class LabelResourceTest : BaseResourceTest() {
 
         assertThat(labels).isNotEmpty
         assertThat(labels).hasSize(10)
-        assertLabels(labels)
+        assertLabels(labels, labelsRequest)
     }
 
     // endregion
@@ -108,7 +106,7 @@ class LabelResourceTest : BaseResourceTest() {
     // region read one
 
     @Test
-    fun `should return bad request with invalid id`() {
+    fun `should throw bad-request with invalid id`() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
@@ -131,7 +129,7 @@ class LabelResourceTest : BaseResourceTest() {
         }
 
         assertThat(label).isNotNull
-        assertLabel(label)
+        assertLabel(label, Fixtures.Labels.Domain.vegetarian)
     }
 
     // endregion
@@ -139,12 +137,10 @@ class LabelResourceTest : BaseResourceTest() {
     // region update
 
     @Test
-    fun `should not update a label and return bad request with invalid id`() {
+    fun `should not update a label and throw bad-request with invalid id`() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegan)
         } When {
             put(Routes.Label.DETAIL, 100)
@@ -158,8 +154,6 @@ class LabelResourceTest : BaseResourceTest() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         val label = Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(Fixtures.Labels.Domain.vegan)
         } When {
             put(Routes.Label.DETAIL, id)
@@ -170,7 +164,7 @@ class LabelResourceTest : BaseResourceTest() {
         }
 
         assertThat(label).isNotNull
-        assertLabel(label)
+        assertLabel(label, Fixtures.Labels.Domain.vegan)
     }
 
     // endregion
@@ -178,13 +172,10 @@ class LabelResourceTest : BaseResourceTest() {
     // region delete
 
     @Test
-    fun `should not delete a label with invalid id`() {
+    fun `should not delete a label and throw bad-request with invalid id`() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-        } When {
+        When {
             delete(Routes.Label.DETAIL, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -195,10 +186,7 @@ class LabelResourceTest : BaseResourceTest() {
     fun `should delete a label with valid id`() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
-        Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
-        } When {
+        When {
             delete(Routes.Label.DETAIL, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
@@ -209,8 +197,6 @@ class LabelResourceTest : BaseResourceTest() {
 
     fun postLabel(label: Label): Int {
         return Given {
-            accept(ContentType.JSON)
-            contentType(ContentType.JSON)
             body(label)
         } When {
             post(Routes.Label.MAIN)
@@ -221,15 +207,17 @@ class LabelResourceTest : BaseResourceTest() {
         }
     }
 
-    private fun assertLabels(labels: List<Label>) {
-        labels.forEach { assertLabel(it) }
+    private fun assertLabels(labelsActual: List<Label>, labelsOther: List<Label>) {
+        labelsActual.zip(labelsOther).forEach { (labelActual, labelOther) ->
+            assertLabel(labelActual, labelOther)
+        }
     }
 
-    private fun assertLabel(label: Label) {
-        assertThat(label.id).isGreaterThan(0)
-        assertThat(label.userId).isEqualTo(Fixtures.User.USER_ID)
-        assertThat(label.name).isNotBlank
-        assertThat(label.createdAt).isGreaterThan(0)
-        assertThat(label.updatedAt).isGreaterThan(0)
+    private fun assertLabel(labelActual: Label, labelOther: Label) {
+        assertThat(labelActual.id).isGreaterThan(0)
+        assertThat(labelActual.userId).isEqualTo(Fixtures.User.USER_ID)
+        assertThat(labelActual.name).isEqualTo(labelOther.name)
+        assertThat(labelActual.createdAt).isGreaterThan(0)
+        assertThat(labelActual.updatedAt).isGreaterThan(0)
     }
 }

@@ -4,6 +4,7 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
+import io.restassured.http.ContentType
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.Mockito
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -24,6 +25,7 @@ open class BaseResourceTest {
     @BeforeEach
     fun beforeEach() {
         RestAssured.port = port
+        RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
 
         Mockito.`when`(userService.userId).thenReturn(Fixtures.User.USER_ID)
     }
