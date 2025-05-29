@@ -9,6 +9,7 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
+import io.restassured.response.ResponseBodyExtractionOptions
 import org.apache.http.HttpStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.equalTo
@@ -41,7 +42,7 @@ class RecipeResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
-            `as`(object : TypeRef<Recipe>() {})
+            asRecipe()
         }
 
         assertThat(recipe).isNotNull
@@ -80,7 +81,7 @@ class RecipeResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
-            `as`(object : TypeRef<Recipe>() {})
+            asRecipe()
         }
 
         assertRecipe(recipeResponse, recipeRequest)
@@ -98,7 +99,7 @@ class RecipeResourceTest : BaseResourceTest() {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
         } Extract {
-            `as`(object : TypeRef<List<Recipe>>() {})
+            asRecipes()
         }
 
         assertThat(recipes).isNotNull
@@ -116,7 +117,7 @@ class RecipeResourceTest : BaseResourceTest() {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
         } Extract {
-            `as`(object : TypeRef<List<Recipe>>() {})
+            asRecipes()
         }
 
         assertThat(recipes).isNotEmpty
@@ -136,7 +137,7 @@ class RecipeResourceTest : BaseResourceTest() {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(10))
         } Extract {
-            `as`(object : TypeRef<List<Recipe>>() {})
+            asRecipes()
         }
 
         assertThat(recipes).isNotEmpty
@@ -168,7 +169,7 @@ class RecipeResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<Recipe>() {})
+            asRecipe()
         }
 
         assertRecipe(recipe, Fixtures.Recipes.Domain.pizza)
@@ -202,7 +203,7 @@ class RecipeResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<Recipe>() {})
+            asRecipe()
         }
 
         assertRecipe(recipe, Fixtures.Recipes.Domain.burger)
@@ -247,6 +248,9 @@ class RecipeResourceTest : BaseResourceTest() {
             path("id")
         }
     }
+
+    private fun ResponseBodyExtractionOptions.asRecipes() = `as`(object : TypeRef<List<Recipe>>() {})
+    private fun ResponseBodyExtractionOptions.asRecipe() = `as`(object : TypeRef<Recipe>() {})
 
     private fun assertRecipes(recipesActual: List<Recipe>, recipesOther: List<Recipe>) {
         recipesActual.zip(recipesOther).forEach { (recipeActual, recipeOther) ->

@@ -9,6 +9,7 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
+import io.restassured.response.ResponseBodyExtractionOptions
 import org.apache.http.HttpStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -40,7 +41,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
-            `as`(object : TypeRef<Label>() {})
+            asLabel()
         }
 
         assertThat(label).isNotNull
@@ -58,7 +59,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<List<Label>>() {})
+            asLabels()
         }
 
         assertThat(labels).isNotNull
@@ -74,7 +75,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<List<Label>>() {})
+            asLabels()
         }
 
         assertThat(labels).isNotEmpty
@@ -93,7 +94,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<List<Label>>() {})
+            asLabels()
         }
 
         assertThat(labels).isNotEmpty
@@ -125,7 +126,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<Label>() {})
+            asLabel()
         }
 
         assertThat(label).isNotNull
@@ -160,7 +161,7 @@ class LabelResourceTest : BaseResourceTest() {
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
-            `as`(object : TypeRef<Label>() {})
+            asLabel()
         }
 
         assertThat(label).isNotNull
@@ -206,6 +207,9 @@ class LabelResourceTest : BaseResourceTest() {
             path("id")
         }
     }
+
+    private fun ResponseBodyExtractionOptions.asLabels() = `as`(object : TypeRef<List<Label>>() {})
+    private fun ResponseBodyExtractionOptions.asLabel() = `as`(object : TypeRef<Label>() {})
 
     private fun assertLabels(labelsActual: List<Label>, labelsOther: List<Label>) {
         labelsActual.zip(labelsOther).forEach { (labelActual, labelOther) ->
