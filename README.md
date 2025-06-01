@@ -16,3 +16,4 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 - RabbitMQ
 - RestAssured
 - Mockito
+- Docker
