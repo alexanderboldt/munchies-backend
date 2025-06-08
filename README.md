@@ -4,9 +4,9 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 
 ## Tech-Stack
 
+### Development
 - Kotlin
 - Spring Boot
-- Gradle
 - Hibernate
 - MySQL
 - Keycloak
@@ -14,6 +14,11 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 - OpenFeign
 - OpenApi (Swagger)
 - RabbitMQ
+
+### Test
 - RestAssured
 - Mockito
-- Docker
+- Docker-Testcontainer
+
+### Buildsystem
+- Gradle
