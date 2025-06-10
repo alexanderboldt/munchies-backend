@@ -1,16 +1,19 @@
 [versions]
-kotlin-version = "2.1.10"
-spring-version = "3.4.5"
+kotlin-version = "2.1.21"
+spring-version = "3.5.0"
+spring-dependency-version = "1.1.7"
+jackson-version = "2.19.0"
 mysql-version = "8.0.33"
-flyway-version = "11.2.0"
-openfeign-version = "4.2.0"
+flyway-version = "11.9.1"
+openfeign-version = "4.3.0"
 rest-assured-version = "5.5.5"
-springdoc-version = "2.8.6"
+springdoc-version = "2.8.8"
 
 [libraries]
+# development libraries
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-version" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
-jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-version" }
 
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-version" }
 spring-boot-starter-data = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-version" }
@@ -29,6 +32,7 @@ springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", vers
 
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
 
+# test libraries
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-version" }
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
@@ -38,5 +42,5 @@ rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin-version" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin-version" }
-spring-boot = { id = "org.springframework.boot", version = "3.4.2" }
-spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.7" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-version" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-version" }

@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-	// project-libraries
+	// development libraries
 	implementation(libs.kotlin.reflect)
 	implementation(libs.kotlin.stdlib)
 	implementation(libs.jackson.kotlin)
@@ -43,7 +43,7 @@ dependencies {
 
 	developmentOnly(libs.spring.boot.devtools)
 
-	// test-libraries
+	// test libraries
 	testImplementation(libs.spring.boot.starter.test) {
 		exclude(module = "junit")
 	}
