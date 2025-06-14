@@ -11,7 +11,8 @@ import org.springframework.data.domain.Sort
  *
  * Example:
  * Using this query parameter: "id,-title,description"
- * This will lead to the following group sort: id in ascending order, title in descending order and description in ascending order.
+ * This will lead to the following group sort: id in ascending order, title in descending order and description in
+ * ascending order.
  */
 class SortConverter : Converter<String, Sort> {
 

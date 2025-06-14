@@ -8,6 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients
 @EnableFeignClients
 class MunchiesApplication
 
+@Suppress("SpreadOperator") // vararg is here required
 fun main(args: Array<String>) {
 	runApplication<MunchiesApplication>(*args)
 }

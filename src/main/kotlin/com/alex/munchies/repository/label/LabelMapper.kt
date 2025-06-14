@@ -5,9 +5,21 @@ import java.util.Date
 
 // from domain to entity
 
-fun Label.toEntity(userId: String) = LabelEntity(0, userId, name, Date().time, Date().time)
+fun Label.toEntity(userId: String) = LabelEntity(
+    0,
+    userId,
+    name,
+    Date().time,
+    Date().time
+)
 
-operator fun Label.plus(existing: LabelEntity) = LabelEntity(existing.id, existing.userId, name,existing.createdAt, Date().time)
+operator fun Label.plus(existing: LabelEntity) = LabelEntity(
+    existing.id,
+    existing.userId,
+    name,
+    existing.createdAt,
+    Date().time
+)
 
 // from entity to domain
 
