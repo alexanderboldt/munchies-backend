@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 @Profile(SpringProfile.DEVELOPMENT)
-class RabbitMqProducer(@Value("\${values.rabbitmq.queue}") private val queue: String) {
+class RabbitMqProducer(@param:Value("\${values.rabbitmq.queue}") private val queue: String) {
 
     @Autowired
     private lateinit var rabbitTemplate: RabbitTemplate

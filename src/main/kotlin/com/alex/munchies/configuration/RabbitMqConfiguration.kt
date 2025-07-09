@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile
 @Suppress("unused")
 @Configuration
 @Profile(SpringProfile.DEVELOPMENT)
-class RabbitMqConfiguration(@Value("\${values.rabbitmq.queue}") private val queue: String) {
+class RabbitMqConfiguration(@param:Value("\${values.rabbitmq.queue}") private val queue: String) {
 
     @Bean
     fun queue(): Queue {
