@@ -1,7 +1,6 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
-import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Label
 import com.alex.munchies.repository.label.LabelRepository
 import io.kotest.matchers.collections.shouldHaveSize
@@ -18,11 +17,7 @@ import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(SpringProfile.TESTS)
 class LabelResourceTest : BaseResourceTest() {
 
     @Autowired

@@ -1,7 +1,6 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
-import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
 import io.kotest.matchers.collections.shouldHaveSize
@@ -19,11 +18,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(SpringProfile.TESTS)
 class RecipeResourceTest : BaseResourceTest() {
 
     @Autowired
