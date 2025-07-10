@@ -1,79 +1,75 @@
 package com.alex.munchies.converter
 
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
 
-class SortConvertTest {
+class SortConvertTest : StringSpec({
 
-    private val sortConverter = SortConverter()
+    val sortConverter = SortConverter()
 
-    @Test
-    fun testIdAsc() {
+    "should convert id asc" {
         val sortList = sortConverter.convert("id").toList()
         val sortId = sortList[0]
 
-        assertThat(sortList.size).isEqualTo(1)
-        assertThat(sortId.property).isEqualTo("id")
-        assertThat(sortId.isAscending).isTrue
+        sortList shouldHaveSize 1
+        sortId.property shouldBe "id"
+        sortId.isAscending shouldBe true
     }
 
-    @Test
-    fun testIdDesc() {
+    "should convert id desc" {
         val sortList = sortConverter.convert("-id").toList()
         val sortId = sortList[0]
 
-        assertThat(sortList.size).isEqualTo(1)
-        assertThat(sortId.property).isEqualTo("id")
-        assertThat(sortId.isDescending).isTrue
+        sortList shouldHaveSize 1
+        sortId.property shouldBe "id"
+        sortId.isDescending shouldBe true
     }
 
-    @Test
-    fun testIdAscAndTitleAsc() {
+    "should convert id asc and title asc" {
         val sortList = sortConverter.convert("id,title").toList()
         val sortId = sortList[0]
         val sortTitle = sortList[1]
 
-        assertThat(sortList.size).isEqualTo(2)
+        sortList shouldHaveSize 2
 
-        assertThat(sortId.property).isEqualTo("id")
-        assertThat(sortId.isAscending).isTrue
+        sortId.property shouldBe "id"
+        sortId.isAscending shouldBe true
 
-        assertThat(sortTitle.property).isEqualTo("title")
-        assertThat(sortTitle.isAscending).isTrue
+        sortTitle.property shouldBe "title"
+        sortTitle.isAscending shouldBe true
     }
 
-    @Test
-    fun testIdDescAndTitleAsc() {
+    "should convert id desc and title asc" {
         val sortList = sortConverter.convert("-id,title").toList()
         val sortId = sortList[0]
         val sortTitle = sortList[1]
 
-        assertThat(sortList.size).isEqualTo(2)
+        sortList shouldHaveSize 2
 
-        assertThat(sortId.property).isEqualTo("id")
-        assertThat(sortId.isDescending).isTrue
+        sortId.property shouldBe "id"
+        sortId.isDescending shouldBe true
 
-        assertThat(sortTitle.property).isEqualTo("title")
-        assertThat(sortTitle.isAscending).isTrue
+        sortTitle.property shouldBe "title"
+        sortTitle.isAscending shouldBe true
     }
 
-    @Test
-    fun testIdAscAndTitleDesc() {
+    "should convert id asc and title desc" {
         val sortList = sortConverter.convert("id,-title").toList()
         val sortId = sortList[0]
         val sortTitle = sortList[1]
 
-        assertThat(sortList.size).isEqualTo(2)
+        sortList shouldHaveSize 2
 
-        assertThat(sortId.property).isEqualTo("id")
-        assertThat(sortId.isAscending).isTrue
+        sortId.property shouldBe "id"
+        sortId.isAscending shouldBe true
 
-        assertThat(sortTitle.property).isEqualTo("title")
-        assertThat(sortTitle.isDescending).isTrue
+        sortTitle.property shouldBe "title"
+        sortTitle.isDescending shouldBe true
     }
 
-    @Test
-    fun testIdDescAndTitleDesc() {
+    "should convert id desc and title desc" {
         val sortList = sortConverter.convert("-id,-title").toList()
         val sortId = sortList[0]
         val sortTitle = sortList[1]
@@ -86,4 +82,4 @@ class SortConvertTest {
         assertThat(sortTitle.property).isEqualTo("title")
         assertThat(sortTitle.isDescending).isTrue
     }
-}
+})

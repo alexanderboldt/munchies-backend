@@ -8,6 +8,7 @@ flyway-version = "11.10.1"
 openfeign-version = "4.3.0"
 rest-assured-version = "5.5.5"
 springdoc-version = "2.8.9"
+kotest-version = "5.9.1"
 detekt-version = "1.23.8"
 
 [libraries]
@@ -35,8 +36,13 @@ spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools
 
 # test libraries
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-version" }
+
+kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest-version" }
+
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
+
 rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
 
 [plugins]

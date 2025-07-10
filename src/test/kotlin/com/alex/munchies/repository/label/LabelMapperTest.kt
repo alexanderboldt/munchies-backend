@@ -1,47 +1,46 @@
 package com.alex.munchies.repository.label
 
 import com.alex.munchies.Fixtures
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 
-class LabelMapperTest {
+class LabelMapperTest : StringSpec({
 
-    @Test
-    fun `should map domain to entity`() {
+    "should map domain to entity" {
         val domain = Fixtures.Labels.Domain.vegetarian
         val entity = domain.toEntity(Fixtures.User.USER_ID) // information like id, createdAt and updatedAt will be set automatically
 
-        assertThat(entity.id).isEqualTo(0)
-        assertThat(entity.userId).isEqualTo(Fixtures.User.USER_ID)
-        assertThat(entity.name).isEqualTo(domain.name)
-        assertThat(entity.createdAt).isGreaterThan(0)
-        assertThat(entity.updatedAt).isGreaterThan(0)
+        entity.id shouldBe 0
+        entity.userId shouldBe Fixtures.User.USER_ID
+        entity.name shouldBe domain.name
+        entity.createdAt shouldBeGreaterThan 0
+        entity.updatedAt shouldBeGreaterThan 0
     }
 
-    @Test
-    fun `should combine a new domain with an existing entity`() {
+    "should combine a new domain with an existing entity" {
         val domain = Fixtures.Labels.Domain.vegan
         val entity = Fixtures.Labels.Entity.vegetarian
 
         val combined = domain + entity
 
-        assertThat(combined.id).isEqualTo(entity.id)
-        assertThat(combined.userId).isEqualTo(entity.userId)
-        assertThat(combined.name).isEqualTo(domain.name)
-        assertThat(combined.createdAt).isEqualTo(entity.createdAt)
-        assertThat(combined.updatedAt).isGreaterThan(0)
-        assertThat(combined.updatedAt).isNotEqualTo(entity.updatedAt)
+        combined.id shouldBe entity.id
+        combined.userId shouldBe entity.userId
+        combined.name shouldBe domain.name
+        combined.createdAt shouldBe entity.createdAt
+        combined.updatedAt shouldBeGreaterThan 0
+        combined.updatedAt shouldNotBe entity.updatedAt
     }
 
-    @Test
-    fun `should map entity to domain`() {
+    "should map entity to domain" {
         val entity = Fixtures.Labels.Entity.vegetarian
         val domain = entity.toDomain()
 
-        assertThat(domain.id).isEqualTo(entity.id)
-        assertThat(domain.userId).isEqualTo(entity.userId)
-        assertThat(domain.name).isEqualTo(entity.name)
-        assertThat(domain.createdAt).isEqualTo(entity.createdAt)
-        assertThat(domain.updatedAt).isEqualTo(entity.updatedAt)
+        domain.id shouldBe entity.id
+        domain.userId shouldBe entity.userId
+        domain.name shouldBe entity.name
+        domain.createdAt shouldBe entity.createdAt
+        domain.updatedAt shouldBe entity.updatedAt
     }
-}
+})
