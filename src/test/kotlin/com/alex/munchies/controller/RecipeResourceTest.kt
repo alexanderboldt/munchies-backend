@@ -4,6 +4,10 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import io.restassured.common.mapper.TypeRef
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
@@ -11,7 +15,6 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import io.restassured.response.ResponseBodyExtractionOptions
 import org.apache.http.HttpStatus
-import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -45,8 +48,8 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipe()
         }
 
-        assertThat(recipe).isNotNull
-        assertRecipe(recipe, Fixtures.Recipes.Domain.pizza)
+        recipe.shouldNotBeNull()
+        recipe shouldBeRecipe Fixtures.Recipes.Domain.pizza
     }
 
     @Test
@@ -84,7 +87,7 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipe()
         }
 
-        assertRecipe(recipeResponse, recipeRequest)
+        recipeResponse shouldBeRecipe recipeRequest
     }
 
     // endregion
@@ -102,8 +105,8 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipes()
         }
 
-        assertThat(recipes).isNotNull
-        assertThat(recipes).isEmpty()
+        recipes.shouldNotBeNull()
+        recipes shouldBe emptyList()
     }
 
 
@@ -120,9 +123,8 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipes()
         }
 
-        assertThat(recipes).isNotEmpty
-        assertThat(recipes).hasSize(1)
-        assertRecipes(recipes, listOf(Fixtures.Recipes.Domain.pizza))
+        recipes shouldHaveSize 1
+        recipes shouldBeRecipes listOf(Fixtures.Recipes.Domain.pizza)
     }
 
     @Test
@@ -140,9 +142,8 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipes()
         }
 
-        assertThat(recipes).isNotEmpty
-        assertThat(recipes).hasSize(10)
-        assertRecipes(recipes, recipesRequest)
+        recipes shouldHaveSize 10
+        recipes shouldBeRecipes recipesRequest
     }
 
     // endregion
@@ -172,7 +173,7 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipe()
         }
 
-        assertRecipe(recipe, Fixtures.Recipes.Domain.pizza)
+        recipe shouldBeRecipe Fixtures.Recipes.Domain.pizza
     }
 
     // endregion
@@ -206,7 +207,7 @@ class RecipeResourceTest : BaseResourceTest() {
             asRecipe()
         }
 
-        assertRecipe(recipe, Fixtures.Recipes.Domain.burger)
+        recipe shouldBeRecipe Fixtures.Recipes.Domain.burger
     }
 
     // endregion
@@ -251,20 +252,20 @@ class RecipeResourceTest : BaseResourceTest() {
 
     private fun ResponseBodyExtractionOptions.asRecipes() = `as`(object : TypeRef<List<Recipe>>() {})
     private fun ResponseBodyExtractionOptions.asRecipe() = `as`(object : TypeRef<Recipe>() {})
-
-    private fun assertRecipes(recipesActual: List<Recipe>, recipesOther: List<Recipe>) {
-        recipesActual.zip(recipesOther).forEach { (recipeActual, recipeOther) ->
-            assertRecipe(recipeActual, recipeOther)
+    
+    private infix fun List<Recipe>.shouldBeRecipes(expected: List<Recipe>) {
+        zip(expected).forEach { (recipeActual, recipeExpected) ->
+            recipeActual shouldBeRecipe recipeExpected
         }
     }
-
-    private fun assertRecipe(recipeActual: Recipe, recipeOther: Recipe) {
-        assertThat(recipeActual.id).isGreaterThan(0)
-        assertThat(recipeActual.userId).isEqualTo(Fixtures.User.USER_ID)
-        assertThat(recipeActual.title).isEqualTo(recipeOther.title)
-        assertThat(recipeActual.description).isEqualTo(recipeOther.description)
-        assertThat(recipeActual.duration).isEqualTo(recipeOther.duration)
-        assertThat(recipeActual.createdAt).isGreaterThan(0)
-        assertThat(recipeActual.updatedAt).isGreaterThan(0)
+    
+    private infix fun Recipe.shouldBeRecipe(expected: Recipe) {
+        id shouldBeGreaterThan 0
+        userId shouldBe Fixtures.User.USER_ID
+        title shouldBe expected.title
+        description shouldBe expected.description
+        duration shouldBe expected.duration
+        createdAt shouldBeGreaterThan 0
+        updatedAt shouldBeGreaterThan 0
     }
 }

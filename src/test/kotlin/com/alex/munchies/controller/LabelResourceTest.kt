@@ -4,6 +4,10 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.domain.Label
 import com.alex.munchies.repository.label.LabelRepository
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import io.restassured.common.mapper.TypeRef
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
@@ -11,7 +15,6 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import io.restassured.response.ResponseBodyExtractionOptions
 import org.apache.http.HttpStatus
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,8 +47,8 @@ class LabelResourceTest : BaseResourceTest() {
             asLabel()
         }
 
-        assertThat(label).isNotNull
-        assertLabel(label, Fixtures.Labels.Domain.vegetarian)
+        label.shouldNotBeNull()
+        label shouldBeLabel Fixtures.Labels.Domain.vegetarian
     }
 
     // endregion
@@ -62,8 +65,8 @@ class LabelResourceTest : BaseResourceTest() {
             asLabels()
         }
 
-        assertThat(labels).isNotNull
-        assertThat(labels).isEmpty()
+        labels.shouldNotBeNull()
+        labels shouldBe emptyList()
     }
 
     @Test
@@ -78,9 +81,8 @@ class LabelResourceTest : BaseResourceTest() {
             asLabels()
         }
 
-        assertThat(labels).isNotEmpty
-        assertThat(labels).hasSize(1)
-        assertLabels(labels, listOf(Fixtures.Labels.Domain.vegetarian))
+        labels shouldHaveSize 1
+        labels shouldBeLabels listOf(Fixtures.Labels.Domain.vegetarian)
     }
 
     @Test
@@ -97,9 +99,8 @@ class LabelResourceTest : BaseResourceTest() {
             asLabels()
         }
 
-        assertThat(labels).isNotEmpty
-        assertThat(labels).hasSize(10)
-        assertLabels(labels, labelsRequest)
+        labels shouldHaveSize 10
+        labels shouldBeLabels labelsRequest
     }
 
     // endregion
@@ -129,8 +130,8 @@ class LabelResourceTest : BaseResourceTest() {
             asLabel()
         }
 
-        assertThat(label).isNotNull
-        assertLabel(label, Fixtures.Labels.Domain.vegetarian)
+        label.shouldNotBeNull()
+        label shouldBeLabel Fixtures.Labels.Domain.vegetarian
     }
 
     // endregion
@@ -164,8 +165,8 @@ class LabelResourceTest : BaseResourceTest() {
             asLabel()
         }
 
-        assertThat(label).isNotNull
-        assertLabel(label, Fixtures.Labels.Domain.vegan)
+        label.shouldNotBeNull()
+        label shouldBeLabel Fixtures.Labels.Domain.vegan
     }
 
     // endregion
@@ -211,17 +212,17 @@ class LabelResourceTest : BaseResourceTest() {
     private fun ResponseBodyExtractionOptions.asLabels() = `as`(object : TypeRef<List<Label>>() {})
     private fun ResponseBodyExtractionOptions.asLabel() = `as`(object : TypeRef<Label>() {})
 
-    private fun assertLabels(labelsActual: List<Label>, labelsOther: List<Label>) {
-        labelsActual.zip(labelsOther).forEach { (labelActual, labelOther) ->
-            assertLabel(labelActual, labelOther)
+    private infix fun List<Label>.shouldBeLabels(expected: List<Label>) {
+        zip(expected).forEach { (labelActual, labelExpected) ->
+            labelActual shouldBeLabel labelExpected
         }
     }
 
-    private fun assertLabel(labelActual: Label, labelOther: Label) {
-        assertThat(labelActual.id).isGreaterThan(0)
-        assertThat(labelActual.userId).isEqualTo(Fixtures.User.USER_ID)
-        assertThat(labelActual.name).isEqualTo(labelOther.name)
-        assertThat(labelActual.createdAt).isGreaterThan(0)
-        assertThat(labelActual.updatedAt).isGreaterThan(0)
+    private infix fun Label.shouldBeLabel(expected: Label) {
+        id shouldBeGreaterThan 0
+        userId shouldBe Fixtures.User.USER_ID
+        name shouldBe expected.name
+        createdAt shouldBeGreaterThan 0
+        updatedAt shouldBeGreaterThan 0
     }
 }
