@@ -18,6 +18,7 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 ### Test
 - RestAssured
 - Mockito
+- Kotest
 - Docker-Testcontainer
 
 ### Buildsystem
