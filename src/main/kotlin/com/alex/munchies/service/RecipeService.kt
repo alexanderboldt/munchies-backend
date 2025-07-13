@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service
 class RecipeService(
     private val userService: UserService,
     private val recipeRepository: RecipeRepository,
-    private val theMealDbClient: TheMealDbClient,
-    private val rabbitMqProducer: RabbitMqProducer
+    private val theMealDbClient: TheMealDbClient
 ) {
 
     fun create(recipe: Recipe): Recipe {
-        rabbitMqProducer.sendMessage("created recipe")
         return recipeRepository.save(recipe.toEntity(userService.userId)).toDomain()
     }
 

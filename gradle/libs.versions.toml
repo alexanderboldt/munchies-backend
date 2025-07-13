@@ -22,7 +22,6 @@ spring-boot-starter-data = { module = "org.springframework.boot:spring-boot-star
 spring-boot-starter-oauth2-client = { module = "org.springframework.boot:spring-boot-starter-oauth2-client", version.ref = "spring-version" }
 spring-boot-starter-oauth2-resource = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server", version.ref = "spring-version" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-version" }
-spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp", version.ref = "spring-version" }
 
 mysql = { module = "mysql:mysql-connector-java", version.ref = "mysql-version" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway-version" }

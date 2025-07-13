@@ -23,11 +23,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/munchies
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: admin
-    password: admin
 
 springdoc:
   api-docs.path: /docs
@@ -38,5 +33,3 @@ values:
     doc: ${springdoc.api-docs.path}/**
     ui: ${springdoc.swagger-ui.path}
     ui-all: /swagger-ui/**
-  rabbitmq:
-    queue: statistic

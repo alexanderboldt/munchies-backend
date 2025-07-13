@@ -13,7 +13,6 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 - Flyway
 - OpenFeign
 - OpenApi (Swagger)
-- RabbitMQ
 
 ### Test
 - RestAssured

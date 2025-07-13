@@ -11,12 +11,10 @@ import org.springframework.stereotype.Service
 @Service
 class LabelService(
     private val userService: UserService,
-    private val labelRepository: LabelRepository,
-    private val rabbitMqProducer: RabbitMqProducer
+    private val labelRepository: LabelRepository
 ) {
 
     fun create(label: Label): Label {
-        rabbitMqProducer.sendMessage("created label")
         return labelRepository.save(label.toEntity(userService.userId)).toDomain()
     }
 

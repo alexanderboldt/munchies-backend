@@ -2,7 +2,6 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.configuration.SpringProfile
-import com.alex.munchies.service.RabbitMqProducer
 import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
@@ -19,10 +18,6 @@ class BaseResourceTest {
 
     @MockitoBean
     private lateinit var userService: UserService
-
-    @Suppress("unused")
-    @MockitoBean
-    private lateinit var rabbitMqProducer: RabbitMqProducer
 
     @LocalServerPort
     private var port: Int = 0
