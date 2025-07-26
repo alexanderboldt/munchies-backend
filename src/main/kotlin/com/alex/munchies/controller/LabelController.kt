@@ -2,6 +2,7 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.domain.Label
 import com.alex.munchies.service.LabelService
+import com.alex.munchies.util.Path
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
 @RestController
-@RequestMapping("api/v1/labels")
+@RequestMapping(Path.LABEL)
 class LabelController(private val labelService: LabelService) {
 
     // create
@@ -29,17 +30,17 @@ class LabelController(private val labelService: LabelService) {
     @GetMapping
     fun readAll() = labelService.readAll()
 
-    @GetMapping("{id}")
-    fun read(@PathVariable("id") id: Long) = labelService.read(id)
+    @GetMapping(Path.ID)
+    fun read(@PathVariable id: Long) = labelService.read(id)
 
     // update
 
-    @PutMapping("{id}")
-    fun update(@PathVariable("id") id: Long, @RequestBody labelNew: Label) = labelService.update(id, labelNew)
+    @PutMapping(Path.ID)
+    fun update(@PathVariable id: Long, @RequestBody labelNew: Label) = labelService.update(id, labelNew)
 
     // delete
 
-    @DeleteMapping("{id}")
+    @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable("id") id: Long) = labelService.delete(id)
+    fun delete(@PathVariable id: Long) = labelService.delete(id)
 }

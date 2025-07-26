@@ -3,6 +3,7 @@ package com.alex.munchies.controller
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.util.Path
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -36,7 +37,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val recipe = Given {
             body(Fixtures.Recipes.Domain.pizza)
         } When {
-            post(Routes.Recipe.MAIN)
+            post(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -52,7 +53,7 @@ class RecipeResourceTest : BaseResourceTest() {
         Given {
             body(Fixtures.Recipes.Domain.pizza.copy(labelId = 100))
         } When {
-            post(Routes.Recipe.MAIN)
+            post(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
         }
@@ -63,7 +64,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val labelId: Int = Given {
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
-            post(Routes.Label.MAIN)
+            post(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -75,7 +76,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val recipeResponse = Given {
             body(recipeRequest)
         } When {
-            post(Routes.Recipe.MAIN)
+            post(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -92,7 +93,7 @@ class RecipeResourceTest : BaseResourceTest() {
     @Test
     fun `should return an empty list`() {
         val recipes = When {
-            get(Routes.Recipe.MAIN)
+            get(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(0))
@@ -110,7 +111,7 @@ class RecipeResourceTest : BaseResourceTest() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
         val recipes = When {
-            get(Routes.Recipe.MAIN)
+            get(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(1))
@@ -129,7 +130,7 @@ class RecipeResourceTest : BaseResourceTest() {
         recipesRequest.forEach { postRecipe(it) }
 
         val recipes = When {
-            get(Routes.Recipe.MAIN)
+            get(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_OK)
             body("size()", equalTo(10))
@@ -150,7 +151,7 @@ class RecipeResourceTest : BaseResourceTest() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
-            get(Routes.Recipe.DETAIL, 100)
+            get(Path.RECIPE_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -161,7 +162,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         val recipe = When {
-            get(Routes.Recipe.DETAIL, id)
+            get(Path.RECIPE_ID, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -182,7 +183,7 @@ class RecipeResourceTest : BaseResourceTest() {
         Given {
             body(Fixtures.Recipes.Domain.burger)
         } When {
-            put(Routes.Recipe.DETAIL, 100)
+            put(Path.RECIPE_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -195,7 +196,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val recipe = Given {
             body(Fixtures.Recipes.Domain.burger)
         } When {
-            put(Routes.Recipe.DETAIL, id)
+            put(Path.RECIPE_ID, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -214,7 +215,7 @@ class RecipeResourceTest : BaseResourceTest() {
         postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
-            delete(Routes.Recipe.DETAIL, 100)
+            delete(Path.RECIPE_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -225,7 +226,7 @@ class RecipeResourceTest : BaseResourceTest() {
         val id = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
-            delete(Routes.Recipe.DETAIL, id)
+            delete(Path.RECIPE_ID, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -237,7 +238,7 @@ class RecipeResourceTest : BaseResourceTest() {
         return Given {
             body(recipe)
         } When {
-            post(Routes.Recipe.MAIN)
+            post(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {

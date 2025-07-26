@@ -3,6 +3,7 @@ package com.alex.munchies.controller
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.Label
 import com.alex.munchies.repository.label.LabelRepository
+import com.alex.munchies.util.Path
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -35,7 +36,7 @@ class LabelResourceTest : BaseResourceTest() {
         val label = Given {
             body(Fixtures.Labels.Domain.vegetarian)
         } When {
-            post(Routes.Label.MAIN)
+            post(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {
@@ -53,7 +54,7 @@ class LabelResourceTest : BaseResourceTest() {
     @Test
     fun `should return an empty list`() {
         val labels = When {
-            get(Routes.Label.MAIN)
+            get(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -69,7 +70,7 @@ class LabelResourceTest : BaseResourceTest() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         val labels = When {
-            get(Routes.Label.MAIN)
+            get(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -87,7 +88,7 @@ class LabelResourceTest : BaseResourceTest() {
         labelsRequest.forEach { postLabel(it) }
 
         val labels = When {
-            get(Routes.Label.MAIN)
+            get(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -107,7 +108,7 @@ class LabelResourceTest : BaseResourceTest() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
-            get(Routes.Label.DETAIL, 100)
+            get(Path.LABEL_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -118,7 +119,7 @@ class LabelResourceTest : BaseResourceTest() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         val label = When {
-            get(Routes.Label.DETAIL, id)
+            get(Path.LABEL_ID, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -140,7 +141,7 @@ class LabelResourceTest : BaseResourceTest() {
         Given {
             body(Fixtures.Labels.Domain.vegan)
         } When {
-            put(Routes.Label.DETAIL, 100)
+            put(Path.LABEL_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -153,7 +154,7 @@ class LabelResourceTest : BaseResourceTest() {
         val label = Given {
             body(Fixtures.Labels.Domain.vegan)
         } When {
-            put(Routes.Label.DETAIL, id)
+            put(Path.LABEL_ID, id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -173,7 +174,7 @@ class LabelResourceTest : BaseResourceTest() {
         postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
-            delete(Routes.Label.DETAIL, 100)
+            delete(Path.LABEL_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -184,7 +185,7 @@ class LabelResourceTest : BaseResourceTest() {
         val id = postLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
-            delete(Routes.Label.DETAIL, id)
+            delete(Path.LABEL_ID, id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -196,7 +197,7 @@ class LabelResourceTest : BaseResourceTest() {
         return Given {
             body(label)
         } When {
-            post(Routes.Label.MAIN)
+            post(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_CREATED)
         } Extract {

@@ -3,6 +3,7 @@ package com.alex.munchies.controller
 import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.service.RecipeService
+import com.alex.munchies.util.Path
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
 @RestController
-@RequestMapping("api/v1/recipes")
+@RequestMapping(Path.RECIPE)
 class RecipeController(private val recipeService: RecipeService) {
 
     // create
@@ -27,7 +28,7 @@ class RecipeController(private val recipeService: RecipeService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody recipe: Recipe) = recipeService.create(recipe)
 
-    @PostMapping("/themealdb")
+    @PostMapping(Path.THE_MEAL_DB)
     @ResponseStatus(HttpStatus.CREATED)
     fun createFromTheMealDb(@RequestBody meal: Meal) = recipeService.createFromTheMealDb(meal)
 
@@ -40,17 +41,17 @@ class RecipeController(private val recipeService: RecipeService) {
         @RequestParam pageSize: Int = -1
     ) = recipeService.readAll(sort, pageNumber, pageSize)
 
-    @GetMapping("{id}")
-    fun read(@PathVariable("id") id: Long) = recipeService.read(id)
+    @GetMapping(Path.ID)
+    fun read(@PathVariable id: Long) = recipeService.read(id)
 
     // update
 
-    @PutMapping("{id}")
-    fun update(@PathVariable("id") id: Long, @RequestBody recipeNew: Recipe) = recipeService.update(id, recipeNew)
+    @PutMapping(Path.ID)
+    fun update(@PathVariable id: Long, @RequestBody recipeNew: Recipe) = recipeService.update(id, recipeNew)
 
     // delete
 
-    @DeleteMapping("{id}")
+    @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable("id") id: Long) = recipeService.delete(id)
+    fun delete(@PathVariable id: Long) = recipeService.delete(id)
 }
