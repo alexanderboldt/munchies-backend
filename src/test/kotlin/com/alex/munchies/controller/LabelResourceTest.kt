@@ -2,18 +2,18 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.Label
+import com.alex.munchies.extension.asLabel
+import com.alex.munchies.extension.asLabels
 import com.alex.munchies.repository.label.LabelRepository
 import com.alex.munchies.util.Path
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.restassured.common.mapper.TypeRef
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.response.ResponseBodyExtractionOptions
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -33,15 +33,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should create a label with valid request`() {
-        val label = Given {
-            body(Fixtures.Labels.Domain.vegetarian)
-        } When {
-            post(Path.LABEL)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        } Extract {
-            asLabel()
-        }
+        val label = createLabel(Fixtures.Labels.Domain.vegetarian)
 
         label.shouldNotBeNull()
         label shouldBeLabel Fixtures.Labels.Domain.vegetarian
@@ -67,7 +59,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return a list with one label`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        createLabel(Fixtures.Labels.Domain.vegetarian)
 
         val labels = When {
             get(Path.LABEL)
@@ -85,7 +77,7 @@ class LabelResourceTest : BaseResourceTest() {
     fun `should return a list with ten labels`() {
         val labelsRequest = (1..10).map { Fixtures.Labels.Domain.vegetarian }
 
-        labelsRequest.forEach { postLabel(it) }
+        labelsRequest.forEach { createLabel(it) }
 
         val labels = When {
             get(Path.LABEL)
@@ -105,7 +97,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        createLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
             get(Path.LABEL_ID, 100)
@@ -116,10 +108,10 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return one label with valid id`() {
-        val id = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.Domain.vegetarian)
 
         val label = When {
-            get(Path.LABEL_ID, id)
+            get(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -136,7 +128,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not update a label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        createLabel(Fixtures.Labels.Domain.vegetarian)
 
         Given {
             body(Fixtures.Labels.Domain.vegan)
@@ -149,12 +141,12 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should update and return a label with valid id`() {
-        val id = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.Domain.vegetarian)
 
         val label = Given {
             body(Fixtures.Labels.Domain.vegan)
         } When {
-            put(Path.LABEL_ID, id)
+            put(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -171,7 +163,7 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not delete a label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        createLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
             delete(Path.LABEL_ID, 100)
@@ -182,31 +174,16 @@ class LabelResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete a label with valid id`() {
-        val id = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.Domain.vegetarian)
 
         When {
-            delete(Path.LABEL_ID, id)
+            delete(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
     }
 
     // endregion
-
-    fun postLabel(label: Label): Int {
-        return Given {
-            body(label)
-        } When {
-            post(Path.LABEL)
-        } Then {
-            statusCode(HttpStatus.SC_CREATED)
-        } Extract {
-            path("id")
-        }
-    }
-
-    private fun ResponseBodyExtractionOptions.asLabels() = `as`(object : TypeRef<List<Label>>() {})
-    private fun ResponseBodyExtractionOptions.asLabel() = `as`(object : TypeRef<Label>() {})
 
     private infix fun List<Label>.shouldBeLabels(expected: List<Label>) {
         zip(expected).forEach { (labelActual, labelExpected) ->
