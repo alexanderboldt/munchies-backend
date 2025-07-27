@@ -4,9 +4,9 @@ import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.exception.RecipeNotFoundException
 import com.alex.munchies.repository.recipe.RecipeRepository
-import com.alex.munchies.repository.recipe.plus
-import com.alex.munchies.repository.recipe.toDomain
-import com.alex.munchies.repository.recipe.toEntity
+import com.alex.munchies.mapper.plus
+import com.alex.munchies.mapper.toDomain
+import com.alex.munchies.mapper.toEntity
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service

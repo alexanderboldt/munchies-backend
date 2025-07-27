@@ -1,7 +1,8 @@
-package com.alex.munchies.repository.recipe
+package com.alex.munchies.mapper
 
 import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.Recipe
+import com.alex.munchies.repository.recipe.RecipeEntity
 import java.util.Date
 
 // from domain to entity

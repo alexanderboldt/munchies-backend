@@ -1,6 +1,7 @@
-package com.alex.munchies.repository.label
+package com.alex.munchies.mapper
 
 import com.alex.munchies.domain.Label
+import com.alex.munchies.repository.label.LabelEntity
 import java.util.Date
 
 // from domain to entity

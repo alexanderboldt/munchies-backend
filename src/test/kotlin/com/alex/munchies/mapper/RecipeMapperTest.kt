@@ -1,4 +1,4 @@
-package com.alex.munchies.repository.recipe
+package com.alex.munchies.mapper
 
 import com.alex.munchies.Fixtures
 import io.kotest.core.spec.style.StringSpec

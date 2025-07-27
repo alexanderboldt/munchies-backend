@@ -3,9 +3,9 @@ package com.alex.munchies.service
 import com.alex.munchies.domain.Label
 import com.alex.munchies.exception.LabelNotFoundException
 import com.alex.munchies.repository.label.LabelRepository
-import com.alex.munchies.repository.label.plus
-import com.alex.munchies.repository.label.toDomain
-import com.alex.munchies.repository.label.toEntity
+import com.alex.munchies.mapper.plus
+import com.alex.munchies.mapper.toDomain
+import com.alex.munchies.mapper.toEntity
 import org.springframework.stereotype.Service
 
 @Service
