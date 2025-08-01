@@ -49,6 +49,10 @@ class RecipeService(
         return recipeRepository.save(recipeNew + recipeExisting).toDomain()
     }
 
+    fun deleteAll() {
+        recipeRepository.deleteAll()
+    }
+
     fun delete(id: Long) {
         recipeRepository.apply {
             if (!existsByIdAndUserId(id, userService.userId)) throw RecipeNotFoundException()

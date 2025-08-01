@@ -51,6 +51,10 @@ class RecipeController(private val recipeService: RecipeService) {
 
     // delete
 
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteAll() = recipeService.deleteAll()
+
     @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = recipeService.delete(id)
