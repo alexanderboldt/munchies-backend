@@ -16,9 +16,9 @@ import org.springframework.security.web.SecurityFilterChain
 @EnableWebSecurity
 @Profile(SpringProfile.DEVELOPMENT)
 class SecurityConfiguration(
-    @param:Value("\${values.swagger.doc}") val swaggerDoc: String,
-    @param:Value("\${values.swagger.ui}") val swaggerUi: String,
-    @param:Value("\${values.swagger.ui-all}") val swaggerUiAll: String
+    @param:Value($$"${values.swagger.doc}") val swaggerDoc: String,
+    @param:Value($$"${values.swagger.ui}") val swaggerUi: String,
+    @param:Value($$"${values.swagger.ui-all}") val swaggerUiAll: String
 ) {
 
     @Bean

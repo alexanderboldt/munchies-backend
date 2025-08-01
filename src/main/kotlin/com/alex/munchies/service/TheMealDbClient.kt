@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 /**
  * Interface manages the rest-calls for `The Meal DB`.
  */
-@FeignClient(name = "TheMealDbClient", url = "\${values.themealdb.url}")
+@FeignClient(name = "TheMealDbClient", url = $$"${values.themealdb.url}")
 interface TheMealDbClient {
 
     /**
