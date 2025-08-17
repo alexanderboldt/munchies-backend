@@ -1,7 +1,7 @@
 services:
   mysql:
     container_name: munchies_mysql
-    image: mysql:9.2.0
+    image: mysql:9.4.0
     environment:
       MYSQL_DATABASE: munchies
       MYSQL_USER: admin
@@ -9,12 +9,14 @@ services:
       MYSQL_ROOT_PASSWORD: admin
     ports:
       - 127.0.0.1:3306:3306
+    volumes:
+      - munchies_mysql:/var/lib/mysql
     networks:
-      - munchies_default
+      - munchies
 
   keycloak:
     container_name: munchies_keycloak
-    image: quay.io/keycloak/keycloak:26.1.0
+    image: quay.io/keycloak/keycloak:26.3.2
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
@@ -22,10 +24,15 @@ services:
       - 8080:8080
     command:
       - start-dev
+    volumes:
+      - munchies_keycloak:/opt/keycloak/data
     networks:
-      - munchies_default
+      - munchies
+
+volumes:
+  munchies_mysql:
+  munchies_keycloak:
 
 networks:
-  munchies_default:
+  munchies:
     driver: bridge
-    external: true

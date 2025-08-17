@@ -1,7 +1,7 @@
 spring:
   jpa.hibernate.ddl-auto: none
   datasource:
-    url: jdbc:tc:mysql://localhost:3306/munchies
+    url: jdbc:tc:mysql:9.2.0:///munchies
     username: admin
     password: admin
   flyway:
