@@ -2,48 +2,67 @@ services:
   mysql:
     image: mysql:9.4.0
     environment:
-      MYSQL_DATABASE: munchies
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
-      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: ${DB_MAIN_DB}
+      MYSQL_USER: ${DB_MAIN_USERNAME}
+      MYSQL_PASSWORD: ${DB_MAIN_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_MAIN_ROOT_PASSWORD}
     ports:
-      - 127.0.0.1:3306:3306
+      - ${DB_MAIN_PORT}:3306
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+
+  mysql-keycloak:
+    image: mysql:9.4.0
+    environment:
+      MYSQL_DATABASE: ${DB_KEYCLOAK_DB}
+      MYSQL_USER: ${DB_KEYCLOAK_USERNAME}
+      MYSQL_PASSWORD: ${DB_KEYCLOAK_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_KEYCLOAK_ROOT_PASSWORD}
+    ports:
+      - ${DB_KEYCLOAK_PORT}:3306
+    volumes:
+      - mysql_keycloak_data:/var/lib/mysql
     networks:
       - backend
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
     environment:
-      KC_BOOTSTRAP_ADMIN_USERNAME: admin
-      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql-keycloak:3306/${DB_KEYCLOAK_DB}
+      KC_DB_USERNAME: ${DB_KEYCLOAK_USERNAME}
+      KC_DB_PASSWORD: ${DB_KEYCLOAK_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_HOSTNAME_STRICT: false
     ports:
-      - 8080:8080
+      - ${KEYCLOAK_PORT}:8080
     command:
       - start-dev
-    volumes:
-      - keycloak_data:/opt/keycloak/data
     networks:
       - backend
+    depends_on:
+      - mysql-keycloak
 
   minio:
     image: minio/minio
     ports:
-      - 9000:9000 # S3 API port
-      - 9001:9001 # Web UI port
+      - ${MINIO_S3_PORT}:9000
+      - ${MINIO_WEB_PORT}:9001
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_USERNAME}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
       - minio_data:/data
-    command: server --console-address ":9001" /data
+    command: server --console-address ":${MINIO_WEB_PORT}" /data
     networks:
       - backend
 
 volumes:
   mysql_data:
-  keycloak_data:
+  mysql_keycloak_data:
   minio_data:
 
 networks:

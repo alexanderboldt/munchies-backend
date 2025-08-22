@@ -5,9 +5,9 @@ server:
 spring:
   jpa.hibernate.ddl-auto: none
   datasource:
-    url: jdbc:mysql://localhost:3306/munchies
-    username: admin
-    password: admin
+    url: jdbc:mysql://localhost:${DB_MAIN_PORT}/${DB_MAIN_DB}
+    username: ${DB_MAIN_USERNAME}
+    password: ${DB_MAIN_PASSWORD}
   flyway:
     enabled: true
     baselineOnMigrate: true
@@ -19,11 +19,11 @@ spring:
           authorization-grant-type: authorization_code
           scope: openid
         provider.keycloak:
-          issuer-uri: http://localhost:8080/realms/munchies
+          issuer-uri: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
           user-name-attribute: preferred_username
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/munchies
+          issuer-uri: http://localhost:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
 
 springdoc:
   api-docs.path: /docs
