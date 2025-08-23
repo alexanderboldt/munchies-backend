@@ -44,6 +44,8 @@ dependencies {
 
 	implementation(libs.openfeign)
 
+    implementation(libs.minio)
+
 	implementation(libs.springdoc)
 
 	developmentOnly(libs.spring.boot.devtools)

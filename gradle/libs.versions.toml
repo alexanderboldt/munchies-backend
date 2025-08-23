@@ -6,6 +6,7 @@ jackson-version = "2.19.1"
 mysql-version = "8.0.33"
 flyway-version = "11.10.1"
 openfeign-version = "4.3.0"
+minio-version = "8.5.17"
 rest-assured-version = "5.5.5"
 springdoc-version = "2.8.9"
 kotest-version = "6.0.0"
@@ -28,6 +29,8 @@ flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway-versi
 flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway-version" }
 
 openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "openfeign-version" }
+
+minio = { module = "io.minio:minio", version.ref = "minio-version" }
 
 springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-version" }
 

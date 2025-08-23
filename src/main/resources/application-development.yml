@@ -25,6 +25,11 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/munchies
 
+minio:
+  endpoint: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+
 springdoc:
   api-docs.path: /docs
   swagger-ui.path: /docs.html
