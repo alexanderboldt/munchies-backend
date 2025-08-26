@@ -1,5 +1,5 @@
 package com.alex.munchies.service
 
-enum class MinioBucket(val bucketName: String) {
+enum class S3Bucket(val bucketName: String) {
     RECIPE("recipe")
 }

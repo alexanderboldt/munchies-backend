@@ -1,4 +1,5 @@
 [versions]
+# development versions
 kotlin-version = "2.2.10"
 spring-version = "3.5.4"
 spring-dependency-version = "1.1.7"
@@ -6,10 +7,15 @@ jackson-version = "2.19.1"
 mysql-version = "8.0.33"
 flyway-version = "11.10.1"
 openfeign-version = "4.3.0"
-minio-version = "8.5.17"
-rest-assured-version = "5.5.5"
+aws-s3-version = "2.32.29"
 springdoc-version = "2.8.9"
+
+# test versions
 kotest-version = "6.0.0"
+rest-assured-version = "5.5.5"
+testcontainer-version = "1.21.3"
+
+# plugin versions
 detekt-version = "1.23.8"
 
 [libraries]
@@ -30,7 +36,7 @@ flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway-ver
 
 openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "openfeign-version" }
 
-minio = { module = "io.minio:minio", version.ref = "minio-version" }
+aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3-version" }
 
 springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-version" }
 
@@ -42,10 +48,10 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest-version" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest-version" }
 
-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter" }
-testcontainers-mysql = { module = "org.testcontainers:mysql" }
-
 rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured-version" }
+
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainer-version"  }
+testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainer-version"  }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }

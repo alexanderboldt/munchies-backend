@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.alex"
-version = "0.0.1-SNAPSHOT"
+version = "2.0.0"
 
 kotlin {
 	jvmToolchain(17)
@@ -44,7 +44,7 @@ dependencies {
 
 	implementation(libs.openfeign)
 
-    implementation(libs.minio)
+    implementation(libs.aws.s3)
 
 	implementation(libs.springdoc)
 
