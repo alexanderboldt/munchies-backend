@@ -7,6 +7,7 @@ data class Recipe(
     val title: String,
     val description: String?,
     val duration: Int,
+    val filename: String?,
     val createdAt: Long,
     val updatedAt: Long
 )

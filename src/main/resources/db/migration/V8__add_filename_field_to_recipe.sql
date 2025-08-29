@@ -1,0 +1,1 @@
+alter table recipe_entity add filename varchar(255);
