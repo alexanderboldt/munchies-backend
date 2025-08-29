@@ -5,6 +5,7 @@ import com.alex.munchies.domain.Label
 import com.alex.munchies.extension.asLabel
 import com.alex.munchies.extension.asLabels
 import com.alex.munchies.repository.label.LabelRepository
+import com.alex.munchies.util.LABEL_ID
 import com.alex.munchies.util.Path
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
