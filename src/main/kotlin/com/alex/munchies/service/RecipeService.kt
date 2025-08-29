@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service
 @Service
 class RecipeService(
     private val userService: UserService,
+    private val s3Service: S3Service,
     private val recipeRepository: RecipeRepository,
     private val theMealDbClient: TheMealDbClient
 ) {
+    // create
 
     fun create(recipe: Recipe): Recipe {
         return recipeRepository.save(recipe.toEntity(userService.userId)).toDomain()
@@ -32,6 +34,8 @@ class RecipeService(
         return recipeRepository.save(recipe).toDomain()
     }
 
+    // read
+
     fun readAll(sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<Recipe> {
         return when (pageNumber >= 0 && pageSize >= 1) {
             true -> recipeRepository.findAllByUserId(userService.userId, PageRequest.of(pageNumber, pageSize, sort))
@@ -44,19 +48,24 @@ class RecipeService(
         return recipe.toDomain()
     }
 
+    // update
+
     fun update(id: Long, recipeNew: Recipe): Recipe {
         val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
         return recipeRepository.save(recipeNew + recipeExisting).toDomain()
     }
+
+    // delete
 
     fun deleteAll() {
         recipeRepository.deleteAll()
     }
 
     fun delete(id: Long) {
-        recipeRepository.apply {
-            if (!existsByIdAndUserId(id, userService.userId)) throw RecipeNotFoundException()
-            deleteById(id)
-        }
+        val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
+
+        // delete an existing image from the storage and the recipe
+        recipeExisting.filename?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
+        recipeRepository.deleteById(id)
     }
 }
