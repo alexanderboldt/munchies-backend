@@ -32,8 +32,8 @@ spring:
       credentials:
         type: static
         static-provider:
-          access-key-id: minioadmin
-          secret-access-key: minioadmin
+          access-key-id: adminadmin
+          secret-access-key: adminadmin
 
 springdoc:
   api-docs.path: /docs
