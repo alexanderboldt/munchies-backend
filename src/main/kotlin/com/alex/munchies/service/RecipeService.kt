@@ -2,8 +2,6 @@ package com.alex.munchies.service
 
 import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.Recipe
-import com.alex.munchies.exception.LabelNotFoundException
-import com.alex.munchies.exception.RecipeNotFoundException
 import com.alex.munchies.repository.recipe.RecipeRepository
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.label.LabelRepository
@@ -77,9 +75,8 @@ class RecipeService(
 
     fun read(id: Long): Recipe {
         return recipeRepository
-            .findByIdAndUserId(id, userService.userId)
-            ?.toDomain()
-            ?: throw RecipeNotFoundException()
+            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .toDomain()
     }
 
     // update
@@ -88,19 +85,18 @@ class RecipeService(
     fun update(id: Long, recipeUpdate: Recipe): Recipe {
         // check if the label-id exists
         recipeUpdate.labelId?.let {
-            if (!labelRepository.existsByIdAndUserId(it, userService.userId)) throw LabelNotFoundException()
+            labelRepository.existsByIdAndUserIdOrThrow(it, userService.userId)
         }
 
         return recipeRepository
-            .findByIdAndUserId(id, userService.userId)
-            ?.apply {
+            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .apply {
                 labelId = recipeUpdate.labelId
                 title = recipeUpdate.title
                 description = recipeUpdate.description
                 duration = recipeUpdate.duration
                 updatedAt = Date().time
-            }?.toDomain()
-            ?: throw RecipeNotFoundException()
+            }.toDomain()
     }
 
     // delete
@@ -110,10 +106,13 @@ class RecipeService(
     }
 
     fun delete(id: Long) {
-        val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
+        // try to delete the file from the storage
+        recipeRepository
+            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .filename
+            ?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
 
-        // delete an existing image from the storage and the recipe
-        recipeExisting.filename?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
+        // delete the recipe
         recipeRepository.deleteById(id)
     }
 }

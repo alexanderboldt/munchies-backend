@@ -1,7 +1,6 @@
 package com.alex.munchies.service
 
 import com.alex.munchies.domain.Label
-import com.alex.munchies.exception.LabelNotFoundException
 import com.alex.munchies.repository.label.LabelRepository
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.label.LabelEntity
@@ -40,9 +39,8 @@ class LabelService(
 
     fun read(id: Long): Label {
         return labelRepository
-            .findByIdAndUserId(id, userService.userId)
-            ?.toDomain()
-            ?: throw LabelNotFoundException()
+            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .toDomain()
     }
 
     // update
@@ -50,19 +48,18 @@ class LabelService(
     @Transactional
     fun update(id: Long, labelUpdate: Label): Label {
         return labelRepository
-            .findByIdAndUserId(id, userService.userId)
-            ?.apply {
+            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .apply {
                 name = labelUpdate.name
                 updatedAt = Date().time
-            }?.toDomain()
-            ?: throw LabelNotFoundException()
+            }.toDomain()
     }
 
     // delete
 
     fun delete(id: Long) {
         labelRepository.apply {
-            if (!existsByIdAndUserId(id, userService.userId)) throw LabelNotFoundException()
+            existsByIdAndUserIdOrThrow(id, userService.userId)
             deleteById(id)
         }
     }

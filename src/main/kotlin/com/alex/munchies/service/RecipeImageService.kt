@@ -1,7 +1,7 @@
 package com.alex.munchies.service
 
 import com.alex.munchies.domain.Recipe
-import com.alex.munchies.exception.RecipeNotFoundException
+import com.alex.munchies.exception.BadRequestException
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.recipe.RecipeRepository
 import jakarta.transaction.Transactional
@@ -18,7 +18,7 @@ class RecipeImageService(
     @Transactional
     fun uploadImage(id: Long, image: MultipartFile): Recipe {
         // check if the recipe exists
-        val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
+        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userService.userId)
 
         // 1. if there is already an image saved, delete it first
         recipeExisting.filename?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
@@ -34,7 +34,10 @@ class RecipeImageService(
 
     fun downloadImage(id: Long): Pair<ByteArray,String> {
         // check if the recipe and the image are existing
-        val filename = recipeRepository.findByIdAndUserId(id, userService.userId)?.filename ?: throw RecipeNotFoundException()
+        val filename = recipeRepository
+            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .filename
+            ?: throw BadRequestException()
 
         // download the file and return it with the filename
         return s3Service
@@ -45,8 +48,8 @@ class RecipeImageService(
     @Transactional
     fun deleteImage(id: Long) {
         // check if the recipe and the image are existing
-        val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
-        val filename = recipeExisting.filename ?: throw RecipeNotFoundException()
+        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userService.userId)
+        val filename = recipeExisting.filename ?: throw BadRequestException()
 
         // delete the file
         s3Service.deleteFile(S3Bucket.RECIPE, filename)
