@@ -21,7 +21,7 @@ data class RecipeEntity(
 
     var duration: Int,
 
-    val filename: String?,
+    var filename: String?,
 
     val createdAt: Long,
 

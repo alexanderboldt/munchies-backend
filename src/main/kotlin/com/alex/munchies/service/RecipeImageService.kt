@@ -4,6 +4,7 @@ import com.alex.munchies.domain.Recipe
 import com.alex.munchies.exception.RecipeNotFoundException
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.recipe.RecipeRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -14,6 +15,7 @@ class RecipeImageService(
     private val recipeRepository: RecipeRepository
 ) {
 
+    @Transactional
     fun uploadImage(id: Long, image: MultipartFile): Recipe {
         // check if the recipe exists
         val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
@@ -24,8 +26,10 @@ class RecipeImageService(
         // 2. upload the new image and get the filename
         val filename = s3Service.uploadFile(S3Bucket.RECIPE, image.bytes, image.originalFilename)
 
-        // 3. update the artist with the filename
-        return recipeRepository.save(recipeExisting.copy(filename = filename)).toDomain()
+        // 3. update the recipe with the filename
+        recipeExisting.filename = filename
+
+        return recipeExisting.toDomain()
     }
 
     fun downloadImage(id: Long): Pair<ByteArray,String> {
@@ -38,6 +42,7 @@ class RecipeImageService(
             .readBytes() to filename
     }
 
+    @Transactional
     fun deleteImage(id: Long) {
         // check if the recipe and the image are existing
         val recipeExisting = recipeRepository.findByIdAndUserId(id, userService.userId) ?: throw RecipeNotFoundException()
@@ -46,7 +51,6 @@ class RecipeImageService(
         // delete the file
         s3Service.deleteFile(S3Bucket.RECIPE, filename)
 
-        // update the recipe by deleting the filename
-        recipeRepository.save(recipeExisting.copy(filename = null))
+        recipeExisting.filename = null
     }
 }

@@ -88,7 +88,7 @@ class RecipeService(
     fun update(id: Long, recipeUpdate: Recipe): Recipe {
         // check if the label-id exists
         recipeUpdate.labelId?.let {
-            labelRepository.findByIdAndUserId(it, userService.userId) ?: throw LabelNotFoundException()
+            if (!labelRepository.existsByIdAndUserId(it, userService.userId)) throw LabelNotFoundException()
         }
 
         return recipeRepository
