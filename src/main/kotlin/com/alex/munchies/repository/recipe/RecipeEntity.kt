@@ -13,17 +13,17 @@ data class RecipeEntity(
 
     val userId: String,
 
-    val labelId: Long?,
+    var labelId: Long?,
 
-    val title: String,
+    var title: String,
 
-    val description: String?,
+    var description: String?,
 
-    val duration: Int,
+    var duration: Int,
 
     val filename: String?,
 
     val createdAt: Long,
 
-    val updatedAt: Long
+    var updatedAt: Long
 )

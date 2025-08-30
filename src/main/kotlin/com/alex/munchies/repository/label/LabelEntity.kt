@@ -13,9 +13,9 @@ data class LabelEntity(
 
     val userId: String,
 
-    val name: String,
+    var name: String,
 
     val createdAt: Long,
 
-    val updatedAt: Long
+    var updatedAt: Long
 )
