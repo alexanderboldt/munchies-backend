@@ -1,4 +1,4 @@
-package com.alex.munchies.extension
+package com.alex.munchies.util
 
 import com.alex.munchies.domain.Label
 import com.alex.munchies.domain.Recipe

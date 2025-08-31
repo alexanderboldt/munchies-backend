@@ -2,9 +2,7 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.Recipe
-import com.alex.munchies.extension.asRecipe
-import com.alex.munchies.initializer.MinioTestInitializer
-import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.Path
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -15,30 +13,17 @@ import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
-import java.io.File
 
-@ContextConfiguration(initializers = [MinioTestInitializer::class])
 class RecipeImageResourceTest : BaseResourceTest() {
-
-    @Autowired
-    private lateinit var recipeRepository: RecipeRepository
 
     private lateinit var recipeCreated: Recipe
 
     @BeforeEach
     fun beforeEach() {
         // precondition to all tests: post a recipe
-        recipeCreated = createRecipe(Fixtures.Recipes.Domain.pizza)
-    }
-
-    @AfterEach
-    fun afterEach() {
-        recipeRepository.deleteAll()
+        recipeCreated = postRecipe(Fixtures.Recipes.Domain.pizza)
     }
 
     // region upload image

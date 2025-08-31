@@ -1,17 +1,16 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
-import com.alex.munchies.domain.Recipe
-import com.alex.munchies.extension.asRecipe
-import com.alex.munchies.extension.asRecipes
+import com.alex.munchies.util.asRecipe
+import com.alex.munchies.util.asRecipes
 import com.alex.munchies.initializer.MinioTestInitializer
-import com.alex.munchies.repository.recipe.RecipeRepository
 import com.alex.munchies.service.S3Bucket
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
+import com.alex.munchies.util.shouldBeRecipe
+import com.alex.munchies.util.shouldBeRecipes
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.restassured.module.kotlin.extensions.Extract
@@ -19,28 +18,18 @@ import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 @ContextConfiguration(initializers = [MinioTestInitializer::class])
 class RecipeResourceTest : BaseResourceTest() {
 
-    @Autowired
-    private lateinit var recipeRepository: RecipeRepository
-
-    @AfterEach
-    fun afterEach() {
-        recipeRepository.deleteAll()
-    }
-
     // region create
 
     @Test
     fun `should create a recipe with valid request`() {
-        val recipe = createRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipe = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         recipe.shouldNotBeNull()
         recipe shouldBeRecipe Fixtures.Recipes.Domain.pizza
@@ -59,13 +48,13 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should create a recipe with valid label-id`() {
-        val labelCreated = createLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelPosted = postLabel(Fixtures.Labels.Domain.vegetarian)
 
-        val recipeRequest = Fixtures.Recipes.Domain.pizza.copy(labelId = labelCreated.id)
+        val recipeRequest = Fixtures.Recipes.Domain.pizza.copy(labelId = labelPosted.id)
 
-        val recipeCreated = createRecipe(recipeRequest)
+        val recipePosted = postRecipe(recipeRequest)
 
-        recipeCreated shouldBeRecipe recipeRequest
+        recipePosted shouldBeRecipe recipeRequest
     }
 
     // endregion
@@ -89,7 +78,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return a list with one recipe`() {
-        createRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         val recipes = When {
             get(Path.RECIPE)
@@ -107,7 +96,7 @@ class RecipeResourceTest : BaseResourceTest() {
     fun `should return a list with ten recipes`() {
         val recipesRequest = (1..10).map { Fixtures.Recipes.Domain.pizza }
 
-        recipesRequest.forEach { createRecipe(it) }
+        recipesRequest.forEach { postRecipe(it) }
 
         val recipes = When {
             get(Path.RECIPE)
@@ -127,7 +116,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        createRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
             get(Path.RECIPE_ID, 100)
@@ -138,10 +127,10 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should return one recipe with valid id`() {
-        val recipeCreated = createRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipePosted = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         val recipe = When {
-            get(Path.RECIPE_ID, recipeCreated.id)
+            get(Path.RECIPE_ID, recipePosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -157,7 +146,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not update a recipe and throw bad-request with invalid id`() {
-        createRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         Given {
             body(Fixtures.Recipes.Domain.burger)
@@ -170,12 +159,12 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should update and return a recipe with valid id`() {
-        val recipeCreated = createRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipePosted = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         val recipe = Given {
             body(Fixtures.Recipes.Domain.burger)
         } When {
-            put(Path.RECIPE_ID, recipeCreated.id)
+            put(Path.RECIPE_ID, recipePosted.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -191,7 +180,7 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should not delete a recipe and throw bad-request with invalid id`() {
-        createRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
             delete(Path.RECIPE_ID, 100)
@@ -202,10 +191,10 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete a recipe with valid id`() {
-        val recipeCreated = createRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipePosted = postRecipe(Fixtures.Recipes.Domain.pizza)
 
         When {
-            delete(Path.RECIPE_ID, recipeCreated.id)
+            delete(Path.RECIPE_ID, recipePosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -213,36 +202,20 @@ class RecipeResourceTest : BaseResourceTest() {
 
     @Test
     fun `should delete a recipe and an image with valid id`() {
-        val recipeCreated = uploadImage(createRecipe(Fixtures.Recipes.Domain.pizza).id)
+        val recipePosted = uploadImage(postRecipe(Fixtures.Recipes.Domain.pizza).id)
 
         // execute the delete and verify
         When {
-            delete(Path.RECIPE_ID, recipeCreated.id)
+            delete(Path.RECIPE_ID, recipePosted.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
 
         // try to download the image and verify, that it is deleted
         shouldThrow<NoSuchKeyException> {
-            s3Service.downloadFile(S3Bucket.RECIPE, recipeCreated.filename!!)
+            s3Service.downloadFile(S3Bucket.RECIPE, recipePosted.filename!!)
         }
     }
 
     // endregion
-    
-    private infix fun List<Recipe>.shouldBeRecipes(expected: List<Recipe>) {
-        zip(expected).forEach { (recipeActual, recipeExpected) ->
-            recipeActual shouldBeRecipe recipeExpected
-        }
-    }
-    
-    private infix fun Recipe.shouldBeRecipe(expected: Recipe) {
-        id shouldBeGreaterThan 0
-        userId shouldBe Fixtures.User.USER_ID
-        title shouldBe expected.title
-        description shouldBe expected.description
-        duration shouldBe expected.duration
-        createdAt shouldBeGreaterThan 0
-        updatedAt shouldBeGreaterThan 0
-    }
 }
