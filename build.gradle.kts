@@ -58,6 +58,7 @@ dependencies {
 	testImplementation(libs.kotest.assertions.core)
 	testImplementation(libs.testcontainers.junit.jupiter)
 	testImplementation(libs.testcontainers.mysql)
+    testImplementation(libs.testcontainers.minio)
 	testImplementation(libs.rest.assured)
 }
 

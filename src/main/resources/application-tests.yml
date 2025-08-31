@@ -1,9 +1,15 @@
 spring:
   jpa.hibernate.ddl-auto: none
   datasource:
-    url: jdbc:tc:mysql:9.4.0:///munchies
+    url: jdbc:tc:mysql:9.2.0://localhost:3306/munchies
     username: admin
     password: admin
   flyway:
     enabled: true
     baselineOnMigrate: true
+  s3:
+    path-style-access: true
+    aws:
+      region: us-east-1
+      credentials:
+        type: static

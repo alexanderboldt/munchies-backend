@@ -33,7 +33,7 @@ open class BaseResourceTest {
     private var port: Int = 0
 
     @BeforeEach
-    fun beforeEach() {
+    fun beforeEachBase() {
         RestAssured.port = port
         RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
 

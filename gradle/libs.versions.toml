@@ -52,6 +52,7 @@ rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.
 
 testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainer-version"  }
 testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainer-version"  }
+testcontainers-minio = { group = "org.testcontainers", name = "minio", version.ref = "testcontainer-version"  }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
