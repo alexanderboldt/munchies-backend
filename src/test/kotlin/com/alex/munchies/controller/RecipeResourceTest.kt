@@ -4,9 +4,12 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.extension.asRecipe
 import com.alex.munchies.extension.asRecipes
+import com.alex.munchies.initializer.MinioTestInitializer
 import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.service.S3Bucket
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -19,7 +22,10 @@ import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ContextConfiguration
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
+@ContextConfiguration(initializers = [MinioTestInitializer::class])
 class RecipeResourceTest : BaseResourceTest() {
 
     @Autowired
@@ -202,6 +208,23 @@ class RecipeResourceTest : BaseResourceTest() {
             delete(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+    }
+
+    @Test
+    fun `should delete a recipe and an image with valid id`() {
+        val recipeCreated = uploadImage(createRecipe(Fixtures.Recipes.Domain.pizza).id)
+
+        // execute the delete and verify
+        When {
+            delete(Path.RECIPE_ID, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+
+        // try to download the image and verify, that it is deleted
+        shouldThrow<NoSuchKeyException> {
+            s3Service.downloadFile(S3Bucket.RECIPE, recipeCreated.filename!!)
         }
     }
 
