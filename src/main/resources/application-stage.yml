@@ -1,0 +1,38 @@
+server:
+  port: 4000
+  servlet.context-path: /api
+
+spring:
+  jpa.hibernate.ddl-auto: none
+  datasource:
+    url: jdbc:mysql://mysql:3306/munchies
+    username: admin
+    password: admin
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/munchies
+  s3:
+    endpoint-override: http://minio:9000
+    path-style-access: true
+    aws:
+      region: us-east-1
+      credentials:
+        type: static
+        static-provider:
+          access-key-id: adminadmin
+          secret-access-key: adminadmin
+
+springdoc:
+  api-docs.path: /docs
+  swagger-ui.path: /docs.html
+
+values:
+  swagger:
+    doc: ${springdoc.api-docs.path}/**
+    ui: ${springdoc.swagger-ui.path}
+    ui-all: /swagger-ui/**

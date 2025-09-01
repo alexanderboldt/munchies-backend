@@ -60,6 +60,20 @@ services:
     networks:
       - backend
 
+  app:
+    image: munchies:3.0.0
+    build: .
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      - mysql
+      - keycloak
+      - minio
+    env_file:
+      - .env
+    networks:
+      - backend
+
 volumes:
   mysql_data:
   mysql_keycloak_data:
