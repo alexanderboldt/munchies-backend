@@ -42,7 +42,7 @@ class SecurityConfiguration(
 
                 // other routes are only accessible with authentication
                 authorize(HttpMethod.DELETE, Path.RECIPE, hasRole(Role.ADMIN))
-                authorize(anyRequest, authenticated)
+                authorize(anyRequest, hasRole(Role.USER))
             }
             oauth2ResourceServer {
                 jwt {
