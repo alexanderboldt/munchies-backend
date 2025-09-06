@@ -1,14 +1,13 @@
 [versions]
 # development versions
 kotlin-version = "2.2.10"
-spring-version = "3.5.4"
-spring-dependency-version = "1.1.7"
+spring-version = "3.5.5"
 jackson-version = "2.19.1"
 mysql-version = "8.0.33"
-flyway-version = "11.10.1"
+flyway-version = "11.12.0"
 openfeign-version = "4.3.0"
 aws-s3-version = "2.32.29"
-springdoc-version = "2.8.9"
+springdoc-version = "2.8.12"
 
 # test versions
 kotest-version = "6.0.0"
@@ -16,6 +15,7 @@ rest-assured-version = "5.5.5"
 testcontainer-version = "1.21.3"
 
 # plugin versions
+spring-dependency-version = "1.1.7"
 detekt-version = "1.23.8"
 
 [libraries]
