@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: mysql:9.4.0
+    image: mysql:9.2.0
     environment:
       MYSQL_DATABASE: ${DB_MAIN_DB}
       MYSQL_USER: ${DB_MAIN_USERNAME}
@@ -14,7 +14,7 @@ services:
       - backend
 
   mysql-keycloak:
-    image: mysql:9.4.0
+    image: mysql:9.2.0
     environment:
       MYSQL_DATABASE: ${DB_KEYCLOAK_DB}
       MYSQL_USER: ${DB_KEYCLOAK_USERNAME}
