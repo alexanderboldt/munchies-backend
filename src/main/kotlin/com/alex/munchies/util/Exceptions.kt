@@ -1,4 +1,4 @@
-package com.alex.munchies.exception
+package com.alex.munchies.util
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException

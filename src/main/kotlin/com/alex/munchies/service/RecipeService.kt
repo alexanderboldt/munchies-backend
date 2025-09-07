@@ -2,10 +2,10 @@ package com.alex.munchies.service
 
 import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.Recipe
-import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.repository.RecipeRepository
 import com.alex.munchies.mapper.toDomain
-import com.alex.munchies.repository.label.LabelRepository
-import com.alex.munchies.repository.recipe.RecipeEntity
+import com.alex.munchies.repository.LabelRepository
+import com.alex.munchies.entity.RecipeEntity
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

@@ -1,9 +1,9 @@
 package com.alex.munchies.service
 
 import com.alex.munchies.domain.Label
-import com.alex.munchies.repository.label.LabelRepository
+import com.alex.munchies.repository.LabelRepository
 import com.alex.munchies.mapper.toDomain
-import com.alex.munchies.repository.label.LabelEntity
+import com.alex.munchies.entity.LabelEntity
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.Date

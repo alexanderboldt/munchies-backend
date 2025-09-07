@@ -7,8 +7,8 @@ import com.alex.munchies.domain.Recipe
 import com.alex.munchies.initializer.MinioTestInitializer
 import com.alex.munchies.util.asLabel
 import com.alex.munchies.util.asRecipe
-import com.alex.munchies.repository.label.LabelRepository
-import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.repository.LabelRepository
+import com.alex.munchies.repository.RecipeRepository
 import com.alex.munchies.service.S3Service
 import com.alex.munchies.service.UserService
 import com.alex.munchies.util.Path

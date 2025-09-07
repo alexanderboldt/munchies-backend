@@ -1,7 +1,7 @@
-package com.alex.munchies.repository.recipe
+package com.alex.munchies.repository
 
-import com.alex.munchies.exception.BadRequestException
-import com.alex.munchies.repository.Repository
+import com.alex.munchies.entity.RecipeEntity
+import com.alex.munchies.util.BadRequestException
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.CrudRepository

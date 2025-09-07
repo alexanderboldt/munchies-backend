@@ -1,9 +1,9 @@
 package com.alex.munchies.service
 
 import com.alex.munchies.domain.Recipe
-import com.alex.munchies.exception.BadRequestException
+import com.alex.munchies.util.BadRequestException
 import com.alex.munchies.mapper.toDomain
-import com.alex.munchies.repository.recipe.RecipeRepository
+import com.alex.munchies.repository.RecipeRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile

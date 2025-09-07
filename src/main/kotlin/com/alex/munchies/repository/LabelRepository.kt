@@ -1,7 +1,7 @@
-package com.alex.munchies.repository.label
+package com.alex.munchies.repository
 
-import com.alex.munchies.exception.BadRequestException
-import com.alex.munchies.repository.Repository
+import com.alex.munchies.entity.LabelEntity
+import com.alex.munchies.util.BadRequestException
 import org.springframework.data.repository.CrudRepository
 
 interface LabelRepository : CrudRepository<LabelEntity, Long>, Repository<LabelEntity> {

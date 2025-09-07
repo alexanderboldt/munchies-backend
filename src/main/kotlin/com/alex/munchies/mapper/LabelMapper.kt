@@ -1,7 +1,7 @@
 package com.alex.munchies.mapper
 
 import com.alex.munchies.domain.Label
-import com.alex.munchies.repository.label.LabelEntity
+import com.alex.munchies.entity.LabelEntity
 
 // from entity to domain
 
