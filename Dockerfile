@@ -10,4 +10,4 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=builder /app/build/libs/munchies.jar app.jar
 EXPOSE 4000
-ENTRYPOINT ["java", "-Dspring.profiles.active=stage", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

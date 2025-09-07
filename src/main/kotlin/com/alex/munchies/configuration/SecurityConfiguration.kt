@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain
 @Suppress("unused")
 @Configuration
 @EnableWebSecurity
-@Profile(SpringProfile.DEVELOPMENT)
+@Profile(SpringProfile.STAGE, SpringProfile.DEVELOPMENT)
 class SecurityConfiguration(
     @param:Value($$"${values.swagger.doc}") val swaggerDoc: String,
     @param:Value($$"${values.swagger.ui}") val swaggerUi: String,

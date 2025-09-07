@@ -8,7 +8,6 @@ plugins {
 }
 
 group = "com.alex"
-version = "3.0.0"
 
 kotlin {
 	jvmToolchain(17)
