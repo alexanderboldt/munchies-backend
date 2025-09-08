@@ -21,7 +21,8 @@ import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.mockito.Mockito
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -55,7 +56,7 @@ open class BaseResourceTest {
         RestAssured.port = port
         RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
 
-        Mockito.`when`(userService.userId).thenReturn(Fixtures.User.USER_ID)
+        whenever(userService.userId).doReturn(Fixtures.User.USER_ID)
     }
 
     @AfterEach
