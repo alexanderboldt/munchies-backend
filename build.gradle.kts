@@ -33,7 +33,6 @@ dependencies {
 
 	implementation(libs.spring.boot.starter.web)
 	implementation(libs.spring.boot.starter.data)
-	implementation(libs.spring.boot.starter.oauth2.client)
 	implementation(libs.spring.boot.starter.oauth2.resource)
 	implementation(libs.spring.boot.starter.security)
 

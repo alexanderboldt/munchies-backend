@@ -27,7 +27,6 @@ jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin"
 
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-version" }
 spring-boot-starter-data = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-version" }
-spring-boot-starter-oauth2-client = { module = "org.springframework.boot:spring-boot-starter-oauth2-client", version.ref = "spring-version" }
 spring-boot-starter-oauth2-resource = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server", version.ref = "spring-version" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring-version" }
 
