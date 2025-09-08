@@ -64,7 +64,7 @@ services:
     image: munchies:3.0.0
     build: .
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - ${APP_PORT}:4000
     environment:
       SPRING_PROFILES_ACTIVE: stage
     depends_on:
