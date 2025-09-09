@@ -12,7 +12,7 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 - Keycloak
 - Flyway
 - OpenFeign
-- OpenApi (Swagger)
+- OpenApi
 
 ### Test
 - RestAssured
