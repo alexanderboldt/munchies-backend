@@ -27,12 +27,4 @@ spring:
           access-key-id: adminadmin
           secret-access-key: adminadmin
 
-springdoc:
-  api-docs.path: /docs
-  swagger-ui.path: /docs.html
-
-values:
-  swagger:
-    doc: ${springdoc.api-docs.path}/**
-    ui: ${springdoc.swagger-ui.path}
-    ui-all: /swagger-ui/**
+springdoc.api-docs.path: /docs

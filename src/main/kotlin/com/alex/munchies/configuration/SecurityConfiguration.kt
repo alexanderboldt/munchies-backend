@@ -22,11 +22,7 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 @Profile(SpringProfile.STAGE, SpringProfile.DEVELOPMENT)
-class SecurityConfiguration(
-    @param:Value($$"${values.swagger.doc}") val swaggerDoc: String,
-    @param:Value($$"${values.swagger.ui}") val swaggerUi: String,
-    @param:Value($$"${values.swagger.ui-all}") val swaggerUiAll: String
-) {
+class SecurityConfiguration(@param:Value($$"${springdoc.api-docs.path}") val swaggerDoc: String) {
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
@@ -36,8 +32,6 @@ class SecurityConfiguration(
             authorizeHttpRequests {
                 // swagger paths are available for everyone
                 authorize(swaggerDoc, permitAll)
-                authorize(swaggerUi, permitAll)
-                authorize(swaggerUiAll, permitAll)
 
                 // other routes are only accessible with authentication
                 authorize(HttpMethod.DELETE, Path.RECIPE, hasRole(Role.ADMIN))

@@ -36,5 +36,5 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: Long) = recipeImageService.deleteImage(id)
+    fun deleteImage(@PathVariable id: Long) = recipeImageService.deleteImage(id)
 }

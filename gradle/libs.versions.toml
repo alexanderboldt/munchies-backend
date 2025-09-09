@@ -7,7 +7,7 @@ mysql-version = "8.0.33"
 flyway-version = "11.12.0"
 openfeign-version = "4.3.0"
 aws-s3-version = "2.32.29"
-springdoc-version = "2.8.12"
+springdoc-version = "2.8.13"
 
 # test versions
 mockito-kotlin-version = "6.0.0"
@@ -38,7 +38,7 @@ openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign
 
 aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3-version" }
 
-springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-version" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc-version" }
 
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools" }
 
