@@ -1,6 +1,6 @@
 [versions]
 # development versions
-kotlin-version = "2.2.10"
+kotlin-version = "2.2.20"
 spring-version = "3.5.5"
 jackson-version = "2.19.1"
 mysql-version = "8.0.33"
