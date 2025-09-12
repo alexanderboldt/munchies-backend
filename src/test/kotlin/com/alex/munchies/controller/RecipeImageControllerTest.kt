@@ -16,7 +16,7 @@ import org.apache.http.HttpStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class RecipeImageResourceTest : BaseResourceTest() {
+class RecipeImageControllerTest : BaseControllerTest() {
 
     private lateinit var recipeCreated: Recipe
 

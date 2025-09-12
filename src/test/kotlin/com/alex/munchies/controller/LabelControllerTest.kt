@@ -17,7 +17,7 @@ import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Test
 
-class LabelResourceTest : BaseResourceTest() {
+class LabelControllerTest : BaseControllerTest() {
 
     // region create
 

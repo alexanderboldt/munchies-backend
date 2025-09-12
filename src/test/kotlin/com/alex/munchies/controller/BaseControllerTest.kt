@@ -34,7 +34,7 @@ import java.io.File
 @ContextConfiguration(initializers = [MinioTestInitializer::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SpringProfile.TESTS)
-open class BaseResourceTest {
+open class BaseControllerTest {
 
     @MockitoBean
     private lateinit var userService: UserService

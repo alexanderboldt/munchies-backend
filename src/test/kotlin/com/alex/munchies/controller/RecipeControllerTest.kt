@@ -23,7 +23,7 @@ import org.springframework.test.context.ContextConfiguration
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 @ContextConfiguration(initializers = [MinioTestInitializer::class])
-class RecipeResourceTest : BaseResourceTest() {
+class RecipeControllerTest : BaseControllerTest() {
 
     // region create
 
