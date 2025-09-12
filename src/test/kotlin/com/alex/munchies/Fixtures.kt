@@ -2,6 +2,7 @@ package com.alex.munchies
 
 import com.alex.munchies.domain.Label
 import com.alex.munchies.domain.Recipe
+import java.io.File
 
 object Fixtures {
 
@@ -53,5 +54,10 @@ object Fixtures {
                 1747138632
             )
         }
+    }
+
+    val image: File = File.createTempFile("image", ".jpg").apply {
+        writeText("Image Content")
+        deleteOnExit()
     }
 }

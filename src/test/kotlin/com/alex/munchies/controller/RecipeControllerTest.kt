@@ -7,8 +7,11 @@ import com.alex.munchies.initializer.MinioTestInitializer
 import com.alex.munchies.service.S3Bucket
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
+import com.alex.munchies.util.postLabel
+import com.alex.munchies.util.postRecipe
 import com.alex.munchies.util.shouldBeRecipe
 import com.alex.munchies.util.shouldBeRecipes
+import com.alex.munchies.util.uploadRecipeImage
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -202,7 +205,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a recipe and an image with valid id`() {
-        val recipePosted = uploadImage(postRecipe(Fixtures.Recipes.Domain.pizza).id)
+        val recipePosted = uploadRecipeImage(postRecipe(Fixtures.Recipes.Domain.pizza).id)
 
         // execute the delete and verify
         When {

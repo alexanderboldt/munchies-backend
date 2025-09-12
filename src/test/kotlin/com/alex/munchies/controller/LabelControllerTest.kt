@@ -5,6 +5,7 @@ import com.alex.munchies.util.asLabel
 import com.alex.munchies.util.asLabels
 import com.alex.munchies.util.LABEL_ID
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.postLabel
 import com.alex.munchies.util.shouldBeLabel
 import com.alex.munchies.util.shouldBeLabels
 import io.kotest.matchers.collections.shouldHaveSize

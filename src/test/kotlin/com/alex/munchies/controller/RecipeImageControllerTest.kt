@@ -4,6 +4,8 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.Recipe
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.postRecipe
+import com.alex.munchies.util.uploadRecipeImage
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.string.shouldNotBeBlank
@@ -31,7 +33,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should throw bad-request with invalid id`() {
         Given {
-            multiPart("image", image)
+            multiPart("image", Fixtures.image)
             contentType(ContentType.MULTIPART)
         } When {
             post(Path.RECIPE_IMAGE, 100)
@@ -43,7 +45,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should upload image and return ok with valid id`() {
         val recipe = Given {
-            multiPart("image", image)
+            multiPart("image", Fixtures.image)
             contentType(ContentType.MULTIPART)
         } When {
             post(Path.RECIPE_IMAGE, recipeCreated.id)
@@ -65,7 +67,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not download an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadImage(recipeCreated.id)
+        uploadRecipeImage(recipeCreated.id)
 
         When {
             get(Path.RECIPE_IMAGE, 100)
@@ -77,7 +79,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should download an image and with valid id`() {
         // precondition: upload an image
-        uploadImage(recipeCreated.id)
+        uploadRecipeImage(recipeCreated.id)
 
         val bytes = When {
             get(Path.RECIPE_IMAGE, recipeCreated.id)
@@ -99,7 +101,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete an image and throw bad-request with invalid id`() {
         // precondition: upload an image
-        uploadImage(recipeCreated.id)
+        uploadRecipeImage(recipeCreated.id)
 
         When {
             delete(Path.RECIPE_IMAGE, 100)
@@ -120,7 +122,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should delete an image and with valid id and existing image`() {
         // precondition: upload an image
-        uploadImage(recipeCreated.id)
+        uploadRecipeImage(recipeCreated.id)
 
         When {
             delete(Path.RECIPE_IMAGE, recipeCreated.id)
