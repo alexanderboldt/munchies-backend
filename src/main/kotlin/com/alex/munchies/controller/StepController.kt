@@ -27,4 +27,7 @@ class StepController(private val stepService: StepService) {
 
     @GetMapping
     fun readAll(@PathVariable("recipe_id") recipeId: Long) = stepService.readAll(recipeId)
+
+    @GetMapping(Path.ID)
+    fun read(@PathVariable("recipe_id") recipeId: Long, @PathVariable id: Long) = stepService.read(id, recipeId)
 }
