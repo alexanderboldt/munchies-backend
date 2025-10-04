@@ -22,4 +22,9 @@ class StepController(private val stepService: StepService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@PathVariable("recipe_id") recipeId: Long, @RequestBody step: Step) = stepService.create(recipeId, step)
+
+    // read
+
+    @GetMapping
+    fun readAll(@PathVariable("recipe_id") recipeId: Long) = stepService.readAll(recipeId)
 }
