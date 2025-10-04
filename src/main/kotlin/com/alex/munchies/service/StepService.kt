@@ -31,4 +31,12 @@ class StepService(
             .save(entity)
             .toDomain()
     }
+
+    // read
+
+    fun readAll(recipeId: Long): List<Step> {
+        return stepRepository
+            .findAllByUserIdAndRecipeId(userService.userId, recipeId)
+            .map { it.toDomain() }
+    }
 }
