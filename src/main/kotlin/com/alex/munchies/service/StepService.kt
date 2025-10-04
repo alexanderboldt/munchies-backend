@@ -39,4 +39,10 @@ class StepService(
             .findAllByUserIdAndRecipeId(userService.userId, recipeId)
             .map { it.toDomain() }
     }
+
+    fun read(id: Long, recipeId: Long): Step {
+        return stepRepository
+            .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+            .toDomain()
+    }
 }
