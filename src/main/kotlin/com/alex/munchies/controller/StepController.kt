@@ -4,6 +4,7 @@ import com.alex.munchies.domain.Step
 import com.alex.munchies.service.StepService
 import com.alex.munchies.util.Path
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -30,4 +31,10 @@ class StepController(private val stepService: StepService) {
 
     @GetMapping(Path.ID)
     fun read(@PathVariable("recipe_id") recipeId: Long, @PathVariable id: Long) = stepService.read(id, recipeId)
+
+    // delete
+
+    @DeleteMapping(Path.ID)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun delete(@PathVariable("recipe_id") recipeId: Long, @PathVariable id: Long) = stepService.delete(id, recipeId)
 }
