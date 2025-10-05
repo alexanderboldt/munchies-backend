@@ -1,5 +1,7 @@
 package com.alex.munchies.repository
 
+import jakarta.transaction.Transactional
+
 /**
  * Interface contains base functionalities for all repositories.
  *
@@ -12,4 +14,7 @@ interface Repository<T> {
     fun findAllByUserId(userId: String): List<T>
 
     fun findByIdAndUserId(id: Long, userId: String): T?
+
+    @Transactional
+    fun deleteByIdAndUserId(id: Long, userId: String)
 }
