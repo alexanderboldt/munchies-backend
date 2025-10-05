@@ -5,6 +5,7 @@ import com.alex.munchies.repository.LabelRepository
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.entity.LabelEntity
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.Date
 
@@ -33,7 +34,7 @@ class LabelService(
 
     fun readAll(): List<Label> {
         return labelRepository
-            .findAllByUserId(userService.userId)
+            .findAllByUserId(userService.userId, Sort.unsorted())
             .map { it.toDomain() }
     }
 
@@ -60,7 +61,7 @@ class LabelService(
     fun delete(id: Long) {
         labelRepository.apply {
             existsByIdAndUserIdOrThrow(id, userService.userId)
-            deleteById(id)
+            deleteByIdAndUserId(id, userService.userId)
         }
     }
 }

@@ -1,18 +1,6 @@
 package com.alex.munchies.repository
 
 import com.alex.munchies.entity.RecipeEntity
-import com.alex.munchies.util.BadRequestException
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.data.repository.CrudRepository
 
-interface RecipeRepository : CrudRepository<RecipeEntity, Long>, Repository<RecipeEntity> {
-
-    fun findByIdAndUserIdOrThrow(id: Long, userId: String): RecipeEntity {
-        return findByIdAndUserId(id, userId) ?: throw BadRequestException()
-    }
-
-    fun findAllByUserId(userId: String, sort: Sort): List<RecipeEntity>
-
-    fun findAllByUserId(userId: String, page: Pageable): List<RecipeEntity>
-}
+interface RecipeRepository : CrudRepository<RecipeEntity, Long>, BaseRepository<RecipeEntity>

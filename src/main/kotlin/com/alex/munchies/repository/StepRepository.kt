@@ -4,7 +4,7 @@ import com.alex.munchies.entity.StepEntity
 import com.alex.munchies.util.BadRequestException
 import org.springframework.data.repository.CrudRepository
 
-interface StepRepository : CrudRepository<StepEntity, Long>, Repository<StepEntity> {
+interface StepRepository : CrudRepository<StepEntity, Long>, BaseRepository<StepEntity> {
 
     fun existsByIdAndUserIdAndRecipeId(id: Long, userId: String, recipeId: Long): Boolean
     fun existsByIdAndUserIdAndRecipeIdOrThrow(id: Long, userId: String, recipeId: Long) {

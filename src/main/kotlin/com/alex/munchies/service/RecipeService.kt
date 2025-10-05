@@ -113,6 +113,6 @@ class RecipeService(
             ?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
 
         // delete the recipe
-        recipeRepository.deleteById(id)
+        recipeRepository.deleteByIdAndUserId(id, userService.userId)
     }
 }
