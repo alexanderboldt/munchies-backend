@@ -45,4 +45,13 @@ class StepService(
             .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
             .toDomain()
     }
+
+    // delete
+
+    fun delete(id: Long, recipeId: Long) {
+        stepRepository.apply {
+            existsByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+            deleteByIdAndUserId(id, userService.userId)
+        }
+    }
 }
