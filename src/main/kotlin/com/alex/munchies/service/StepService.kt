@@ -4,6 +4,7 @@ import com.alex.munchies.domain.Step
 import com.alex.munchies.entity.StepEntity
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.StepRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.Date
 
@@ -44,6 +45,20 @@ class StepService(
         return stepRepository
             .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
             .toDomain()
+    }
+
+    // update
+
+    @Transactional
+    fun update(id: Long, recipeId: Long, stepUpdate: Step): Step {
+        return stepRepository
+            .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+            .apply {
+                number = stepUpdate.number
+                title = stepUpdate.title
+                description = stepUpdate.description
+                updatedAt = Date().time
+            }.toDomain()
     }
 
     // delete

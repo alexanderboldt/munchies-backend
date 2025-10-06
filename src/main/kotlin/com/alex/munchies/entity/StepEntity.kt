@@ -12,9 +12,9 @@ data class StepEntity(
     val id: Long,
     val userId: String,
     val recipeId: Long,
-    val number: Int,
-    val title: String,
-    val description: String,
+    var number: Int,
+    var title: String,
+    var description: String,
     val createdAt: Long,
     var updatedAt: Long
 )
