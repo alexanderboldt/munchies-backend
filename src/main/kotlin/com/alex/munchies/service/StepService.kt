@@ -1,6 +1,7 @@
 package com.alex.munchies.service
 
-import com.alex.munchies.domain.Step
+import com.alex.munchies.domain.StepRequest
+import com.alex.munchies.domain.StepResponse
 import com.alex.munchies.entity.StepEntity
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.StepRepository
@@ -16,7 +17,7 @@ class StepService(
 
     // create
 
-    fun create(recipeId: Long, step: Step): Step {
+    fun create(recipeId: Long, step: StepRequest): StepResponse {
         val entity = StepEntity(
             0,
             userService.userId,
@@ -35,31 +36,25 @@ class StepService(
 
     // read
 
-    fun readAll(recipeId: Long): List<Step> {
-        return stepRepository
-            .findAllByUserIdAndRecipeId(userService.userId, recipeId)
-            .map { it.toDomain() }
-    }
+    fun readAll(recipeId: Long) = stepRepository
+        .findAllByUserIdAndRecipeId(userService.userId, recipeId)
+        .map { it.toDomain() }
 
-    fun read(id: Long, recipeId: Long): Step {
-        return stepRepository
-            .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
-            .toDomain()
-    }
+    fun read(id: Long, recipeId: Long) = stepRepository
+        .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+        .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, recipeId: Long, stepUpdate: Step): Step {
-        return stepRepository
-            .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
-            .apply {
-                number = stepUpdate.number
-                title = stepUpdate.title
-                description = stepUpdate.description
-                updatedAt = Date().time
-            }.toDomain()
-    }
+    fun update(id: Long, recipeId: Long, stepUpdate: StepRequest) = stepRepository
+        .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+        .apply {
+            number = stepUpdate.number
+            title = stepUpdate.title
+            description = stepUpdate.description
+            updatedAt = Date().time
+        }.toDomain()
 
     // delete
 

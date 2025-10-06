@@ -1,6 +1,6 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.domain.Step
+import com.alex.munchies.domain.StepRequest
 import com.alex.munchies.service.StepService
 import com.alex.munchies.util.Path
 import org.springframework.http.HttpStatus
@@ -23,7 +23,7 @@ class StepController(private val stepService: StepService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@PathVariable("recipe_id") recipeId: Long, @RequestBody step: Step) = stepService.create(recipeId, step)
+    fun create(@PathVariable("recipe_id") recipeId: Long, @RequestBody step: StepRequest) = stepService.create(recipeId, step)
 
     // read
 
@@ -39,7 +39,7 @@ class StepController(private val stepService: StepService) {
     fun update(
         @PathVariable("recipe_id") recipeId: Long,
         @PathVariable id: Long,
-        @RequestBody step: Step
+        @RequestBody step: StepRequest
     ) = stepService.update(id, recipeId, step)
 
     // delete

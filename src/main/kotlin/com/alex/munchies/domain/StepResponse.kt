@@ -1,8 +1,8 @@
 package com.alex.munchies.domain
 
-data class Step(
+data class StepResponse(
     val id: Long,
-    val userId: String?,
+    val userId: String,
     val recipeId: Long,
     val number: Int,
     val title: String,
