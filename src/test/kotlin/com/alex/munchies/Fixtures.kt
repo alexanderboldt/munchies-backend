@@ -1,6 +1,6 @@
 package com.alex.munchies
 
-import com.alex.munchies.domain.Label
+import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.domain.Recipe
 import java.io.File
 
@@ -11,22 +11,8 @@ object Fixtures {
     }
 
     object Labels {
-        object Domain {
-            val vegetarian = Label(
-                0,
-                "",
-                "Vegetarian",
-                1747138632,
-                1747138632
-            )
-            val vegan = Label(
-                0,
-                "",
-                "Vegan",
-                1747138632,
-                1747138632
-            )
-        }
+        val vegetarian = LabelRequest("Vegetarian")
+        val vegan = LabelRequest("Vegan")
     }
 
     object Recipes {

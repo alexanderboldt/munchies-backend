@@ -24,10 +24,10 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a label with valid request`() {
-        val label = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val label = postLabel(Fixtures.Labels.vegetarian)
 
         label.shouldNotBeNull()
-        label shouldBeLabel Fixtures.Labels.Domain.vegetarian
+        label shouldBeLabel Fixtures.Labels.vegetarian
     }
 
     // endregion
@@ -50,7 +50,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return a list with one label`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         val labels = When {
             get(Path.LABEL)
@@ -61,12 +61,12 @@ class LabelControllerTest : BaseControllerTest() {
         }
 
         labels shouldHaveSize 1
-        labels shouldBeLabels listOf(Fixtures.Labels.Domain.vegetarian)
+        labels shouldBeLabels listOf(Fixtures.Labels.vegetarian)
     }
 
     @Test
     fun `should return a list with ten labels`() {
-        val labelsRequest = (1..10).map { Fixtures.Labels.Domain.vegetarian }
+        val labelsRequest = (1..10).map { Fixtures.Labels.vegetarian }
 
         labelsRequest.forEach { postLabel(it) }
 
@@ -88,7 +88,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         When {
             get(Path.LABEL_ID, 100)
@@ -99,7 +99,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return one label with valid id`() {
-        val labelPosted = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
         val label = When {
             get(Path.LABEL_ID, labelPosted.id)
@@ -110,7 +110,7 @@ class LabelControllerTest : BaseControllerTest() {
         }
 
         label.shouldNotBeNull()
-        label shouldBeLabel Fixtures.Labels.Domain.vegetarian
+        label shouldBeLabel Fixtures.Labels.vegetarian
     }
 
     // endregion
@@ -119,10 +119,10 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update a label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         Given {
-            body(Fixtures.Labels.Domain.vegan)
+            body(Fixtures.Labels.vegan)
         } When {
             put(Path.LABEL_ID, 100)
         } Then {
@@ -132,10 +132,10 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should update and return a label with valid id`() {
-        val labelPosted = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {
-            body(Fixtures.Labels.Domain.vegan)
+            body(Fixtures.Labels.vegan)
         } When {
             put(Path.LABEL_ID, labelPosted.id)
         } Then {
@@ -145,7 +145,7 @@ class LabelControllerTest : BaseControllerTest() {
         }
 
         label.shouldNotBeNull()
-        label shouldBeLabel Fixtures.Labels.Domain.vegan
+        label shouldBeLabel Fixtures.Labels.vegan
     }
 
     // endregion
@@ -154,7 +154,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.Domain.vegetarian)
+        postLabel(Fixtures.Labels.vegetarian)
 
         When {
             delete(Path.LABEL_ID, 100)
@@ -165,7 +165,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a label with valid id`() {
-        val labelPosted = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
         When {
             delete(Path.LABEL_ID, labelPosted.id)

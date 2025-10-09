@@ -1,7 +1,8 @@
 package com.alex.munchies.util
 
 import com.alex.munchies.Fixtures
-import com.alex.munchies.domain.Label
+import com.alex.munchies.domain.LabelRequest
+import com.alex.munchies.domain.LabelResponse
 import com.alex.munchies.domain.Recipe
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
@@ -10,7 +11,7 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 
-fun postLabel(label: Label): Label {
+fun postLabel(label: LabelRequest): LabelResponse {
     return Given {
         body(label)
     } When {

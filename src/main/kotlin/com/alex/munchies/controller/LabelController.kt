@@ -1,6 +1,6 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.domain.Label
+import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.service.LabelService
 import com.alex.munchies.util.Path
 import org.springframework.http.HttpStatus
@@ -23,7 +23,7 @@ class LabelController(private val labelService: LabelService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody label: Label) = labelService.create(label)
+    fun create(@RequestBody label: LabelRequest) = labelService.create(label)
 
     // read
 
@@ -36,7 +36,7 @@ class LabelController(private val labelService: LabelService) {
     // update
 
     @PutMapping(Path.ID)
-    fun update(@PathVariable id: Long, @RequestBody labelNew: Label) = labelService.update(id, labelNew)
+    fun update(@PathVariable id: Long, @RequestBody labelNew: LabelRequest) = labelService.update(id, labelNew)
 
     // delete
 

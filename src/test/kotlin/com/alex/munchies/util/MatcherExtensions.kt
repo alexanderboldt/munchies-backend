@@ -1,20 +1,21 @@
 package com.alex.munchies.util
 
 import com.alex.munchies.Fixtures
-import com.alex.munchies.domain.Label
+import com.alex.munchies.domain.LabelRequest
+import com.alex.munchies.domain.LabelResponse
 import com.alex.munchies.domain.Recipe
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 
 // region label
 
-infix fun List<Label>.shouldBeLabels(expected: List<Label>) {
+infix fun List<LabelResponse>.shouldBeLabels(expected: List<LabelRequest>) {
     zip(expected).forEach { (labelActual, labelExpected) ->
         labelActual shouldBeLabel labelExpected
     }
 }
 
-infix fun Label.shouldBeLabel(expected: Label) {
+infix fun LabelResponse.shouldBeLabel(expected: LabelRequest) {
     id shouldBeGreaterThan 0
     userId shouldBe Fixtures.User.USER_ID
     name shouldBe expected.name

@@ -1,6 +1,7 @@
 package com.alex.munchies.service
 
-import com.alex.munchies.domain.Label
+import com.alex.munchies.domain.LabelRequest
+import com.alex.munchies.domain.LabelResponse
 import com.alex.munchies.repository.LabelRepository
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.entity.LabelEntity
@@ -16,7 +17,7 @@ class LabelService(
 ) {
     // create
 
-    fun create(label: Label): Label {
+    fun create(label: LabelRequest): LabelResponse {
         val entity = LabelEntity(
             0,
             userService.userId,
@@ -32,29 +33,23 @@ class LabelService(
 
     // read
 
-    fun readAll(): List<Label> {
-        return labelRepository
-            .findAllByUserId(userService.userId, Sort.unsorted())
-            .map { it.toDomain() }
-    }
+    fun readAll() = labelRepository
+        .findAllByUserId(userService.userId, Sort.unsorted())
+        .map { it.toDomain() }
 
-    fun read(id: Long): Label {
-        return labelRepository
-            .findByIdAndUserIdOrThrow(id, userService.userId)
-            .toDomain()
-    }
+    fun read(id: Long) = labelRepository
+        .findByIdAndUserIdOrThrow(id, userService.userId)
+        .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, labelUpdate: Label): Label {
-        return labelRepository
-            .findByIdAndUserIdOrThrow(id, userService.userId)
-            .apply {
-                name = labelUpdate.name
-                updatedAt = Date().time
-            }.toDomain()
-    }
+    fun update(id: Long, labelUpdate: LabelRequest) = labelRepository
+        .findByIdAndUserIdOrThrow(id, userService.userId)
+        .apply {
+            name = labelUpdate.name
+            updatedAt = Date().time
+        }.toDomain()
 
     // delete
 

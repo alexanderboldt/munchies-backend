@@ -51,7 +51,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a recipe with valid label-id`() {
-        val labelPosted = postLabel(Fixtures.Labels.Domain.vegetarian)
+        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
         val recipeRequest = Fixtures.Recipes.Domain.pizza.copy(labelId = labelPosted.id)
 
