@@ -3,7 +3,6 @@ package com.alex.munchies.controller
 import com.alex.munchies.Fixtures
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.asRecipes
-import com.alex.munchies.initializer.MinioTestInitializer
 import com.alex.munchies.service.S3Bucket
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
@@ -22,10 +21,8 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Test
-import org.springframework.test.context.ContextConfiguration
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
-@ContextConfiguration(initializers = [MinioTestInitializer::class])
 class RecipeControllerTest : BaseControllerTest() {
 
     // region create

@@ -25,20 +25,20 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 @ActiveProfiles(SpringProfile.TESTS)
 abstract class BaseControllerTest {
 
-    @MockitoBean
-    private lateinit var userService: UserService
-
     @LocalServerPort
     private var port: Int = 0
+
+    @MockitoBean
+    private lateinit var userService: UserService
 
     @Autowired
     protected lateinit var s3Service: S3Service
 
     @Autowired
-    protected lateinit var labelRepository: LabelRepository
+    private lateinit var labelRepository: LabelRepository
 
     @Autowired
-    protected lateinit var recipeRepository: RecipeRepository
+    private lateinit var recipeRepository: RecipeRepository
 
     @BeforeEach
     fun beforeEachBase() {
