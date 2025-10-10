@@ -3,7 +3,8 @@ package com.alex.munchies.util
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.domain.LabelResponse
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeRequest
+import com.alex.munchies.domain.RecipeResponse
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 
@@ -27,13 +28,13 @@ infix fun LabelResponse.shouldBeLabel(expected: LabelRequest) {
 
 // region recipe
 
-infix fun List<Recipe>.shouldBeRecipes(expected: List<Recipe>) {
+infix fun List<RecipeResponse>.shouldBeRecipes(expected: List<RecipeRequest>) {
     zip(expected).forEach { (recipeActual, recipeExpected) ->
         recipeActual shouldBeRecipe recipeExpected
     }
 }
 
-infix fun Recipe.shouldBeRecipe(expected: Recipe) {
+infix fun RecipeResponse.shouldBeRecipe(expected: RecipeRequest) {
     id shouldBeGreaterThan 0
     userId shouldBe Fixtures.User.USER_ID
     title shouldBe expected.title

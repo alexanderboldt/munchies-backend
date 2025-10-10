@@ -1,7 +1,8 @@
 package com.alex.munchies.service
 
 import com.alex.munchies.domain.Meal
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeRequest
+import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.repository.RecipeRepository
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.LabelRepository
@@ -22,7 +23,7 @@ class RecipeService(
 ) {
     // create
 
-    fun create(recipe: Recipe): Recipe {
+    fun create(recipe: RecipeRequest): RecipeResponse {
         val entity = RecipeEntity(
             0,
             userService.userId,
@@ -40,7 +41,7 @@ class RecipeService(
             .toDomain()
     }
 
-    fun createFromTheMealDb(meal: Meal): Recipe {
+    fun createFromTheMealDb(meal: Meal): RecipeResponse {
         val recipe = theMealDbClient
             .getMeal(meal.idMeal)
             .meals
@@ -66,23 +67,21 @@ class RecipeService(
 
     // read
 
-    fun readAll(sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<Recipe> {
+    fun readAll(sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<RecipeResponse> {
         return when (pageNumber >= 0 && pageSize >= 1) {
             true -> recipeRepository.findAllByUserId(userService.userId, PageRequest.of(pageNumber, pageSize, sort))
             false -> recipeRepository.findAllByUserId(userService.userId, sort)
         }.map { it.toDomain() }
     }
 
-    fun read(id: Long): Recipe {
-        return recipeRepository
-            .findByIdAndUserIdOrThrow(id, userService.userId)
-            .toDomain()
-    }
+    fun read(id: Long) = recipeRepository
+        .findByIdAndUserIdOrThrow(id, userService.userId)
+        .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, recipeUpdate: Recipe): Recipe {
+    fun update(id: Long, recipeUpdate: RecipeRequest): RecipeResponse {
         // check if the label-id exists
         recipeUpdate.labelId?.let {
             labelRepository.existsByIdAndUserIdOrThrow(it, userService.userId)

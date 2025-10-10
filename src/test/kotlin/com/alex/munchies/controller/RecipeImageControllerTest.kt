@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.postRecipe
@@ -20,12 +20,12 @@ import org.junit.jupiter.api.Test
 
 class RecipeImageControllerTest : BaseControllerTest() {
 
-    private lateinit var recipeCreated: Recipe
+    private lateinit var recipeCreated: RecipeResponse
 
     @BeforeEach
     fun beforeEach() {
         // precondition to all tests: post a recipe
-        recipeCreated = postRecipe(Fixtures.Recipes.Domain.pizza)
+        recipeCreated = postRecipe(Fixtures.Recipes.pizza)
     }
 
     // region upload image

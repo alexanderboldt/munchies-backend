@@ -32,16 +32,16 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a recipe with valid request`() {
-        val recipe = postRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipe = postRecipe(Fixtures.Recipes.pizza)
 
         recipe.shouldNotBeNull()
-        recipe shouldBeRecipe Fixtures.Recipes.Domain.pizza
+        recipe shouldBeRecipe Fixtures.Recipes.pizza
     }
 
     @Test
     fun `should not create a recipe with invalid label-id`() {
         Given {
-            body(Fixtures.Recipes.Domain.pizza.copy(labelId = 100))
+            body(Fixtures.Recipes.pizza.copy(labelId = 100))
         } When {
             post(Path.RECIPE)
         } Then {
@@ -53,7 +53,7 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should create a recipe with valid label-id`() {
         val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
-        val recipeRequest = Fixtures.Recipes.Domain.pizza.copy(labelId = labelPosted.id)
+        val recipeRequest = Fixtures.Recipes.pizza.copy(labelId = labelPosted.id)
 
         val recipePosted = postRecipe(recipeRequest)
 
@@ -81,7 +81,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return a list with one recipe`() {
-        postRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.pizza)
 
         val recipes = When {
             get(Path.RECIPE)
@@ -92,12 +92,12 @@ class RecipeControllerTest : BaseControllerTest() {
         }
 
         recipes shouldHaveSize 1
-        recipes shouldBeRecipes listOf(Fixtures.Recipes.Domain.pizza)
+        recipes shouldBeRecipes listOf(Fixtures.Recipes.pizza)
     }
 
     @Test
     fun `should return a list with ten recipes`() {
-        val recipesRequest = (1..10).map { Fixtures.Recipes.Domain.pizza }
+        val recipesRequest = (1..10).map { Fixtures.Recipes.pizza }
 
         recipesRequest.forEach { postRecipe(it) }
 
@@ -119,7 +119,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should throw bad-request with invalid id`() {
-        postRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.pizza)
 
         When {
             get(Path.RECIPE_ID, 100)
@@ -130,7 +130,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should return one recipe with valid id`() {
-        val recipePosted = postRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipePosted = postRecipe(Fixtures.Recipes.pizza)
 
         val recipe = When {
             get(Path.RECIPE_ID, recipePosted.id)
@@ -140,7 +140,7 @@ class RecipeControllerTest : BaseControllerTest() {
             asRecipe()
         }
 
-        recipe shouldBeRecipe Fixtures.Recipes.Domain.pizza
+        recipe shouldBeRecipe Fixtures.Recipes.pizza
     }
 
     // endregion
@@ -149,10 +149,10 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update a recipe and throw bad-request with invalid id`() {
-        postRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.pizza)
 
         Given {
-            body(Fixtures.Recipes.Domain.burger)
+            body(Fixtures.Recipes.burger)
         } When {
             put(Path.RECIPE_ID, 100)
         } Then {
@@ -162,10 +162,10 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should update and return a recipe with valid id`() {
-        val recipePosted = postRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipePosted = postRecipe(Fixtures.Recipes.pizza)
 
         val recipe = Given {
-            body(Fixtures.Recipes.Domain.burger)
+            body(Fixtures.Recipes.burger)
         } When {
             put(Path.RECIPE_ID, recipePosted.id)
         } Then {
@@ -174,7 +174,7 @@ class RecipeControllerTest : BaseControllerTest() {
             asRecipe()
         }
 
-        recipe shouldBeRecipe Fixtures.Recipes.Domain.burger
+        recipe shouldBeRecipe Fixtures.Recipes.burger
     }
 
     // endregion
@@ -183,7 +183,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a recipe and throw bad-request with invalid id`() {
-        postRecipe(Fixtures.Recipes.Domain.pizza)
+        postRecipe(Fixtures.Recipes.pizza)
 
         When {
             delete(Path.RECIPE_ID, 100)
@@ -194,7 +194,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a recipe with valid id`() {
-        val recipePosted = postRecipe(Fixtures.Recipes.Domain.pizza)
+        val recipePosted = postRecipe(Fixtures.Recipes.pizza)
 
         When {
             delete(Path.RECIPE_ID, recipePosted.id)
@@ -205,7 +205,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a recipe and an image with valid id`() {
-        val recipePosted = uploadRecipeImage(postRecipe(Fixtures.Recipes.Domain.pizza).id)
+        val recipePosted = uploadRecipeImage(postRecipe(Fixtures.Recipes.pizza).id)
 
         // execute the delete and verify
         When {

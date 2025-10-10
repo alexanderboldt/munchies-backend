@@ -3,7 +3,8 @@ package com.alex.munchies.util
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.domain.LabelResponse
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeRequest
+import com.alex.munchies.domain.RecipeResponse
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
@@ -23,7 +24,7 @@ fun postLabel(label: LabelRequest): LabelResponse {
     }
 }
 
-fun postRecipe(recipe: Recipe): Recipe {
+fun postRecipe(recipe: RecipeRequest): RecipeResponse {
     return Given {
         body(recipe)
     } When {
@@ -35,7 +36,7 @@ fun postRecipe(recipe: Recipe): Recipe {
     }
 }
 
-fun uploadRecipeImage(id: Long): Recipe {
+fun uploadRecipeImage(id: Long): RecipeResponse {
     return Given {
         multiPart("image", Fixtures.image)
         contentType(ContentType.MULTIPART)

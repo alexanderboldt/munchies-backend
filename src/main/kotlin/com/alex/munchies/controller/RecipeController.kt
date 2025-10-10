@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.domain.Meal
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeRequest
 import com.alex.munchies.service.RecipeService
 import com.alex.munchies.util.Path
 import org.springframework.data.domain.Sort
@@ -26,7 +26,7 @@ class RecipeController(private val recipeService: RecipeService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody recipe: Recipe) = recipeService.create(recipe)
+    fun create(@RequestBody recipe: RecipeRequest) = recipeService.create(recipe)
 
     @PostMapping(Path.THE_MEAL_DB)
     @ResponseStatus(HttpStatus.CREATED)
@@ -47,7 +47,7 @@ class RecipeController(private val recipeService: RecipeService) {
     // update
 
     @PutMapping(Path.ID)
-    fun update(@PathVariable id: Long, @RequestBody recipeNew: Recipe) = recipeService.update(id, recipeNew)
+    fun update(@PathVariable id: Long, @RequestBody recipeNew: RecipeRequest) = recipeService.update(id, recipeNew)
 
     // delete
 

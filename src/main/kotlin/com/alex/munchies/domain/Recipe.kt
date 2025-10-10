@@ -1,6 +1,13 @@
 package com.alex.munchies.domain
 
-data class Recipe(
+data class RecipeRequest(
+    val labelId: Long?,
+    val title: String,
+    val description: String?,
+    val duration: Int
+)
+
+data class RecipeResponse(
     val id: Long,
     val userId: String?,
     val labelId: Long?,

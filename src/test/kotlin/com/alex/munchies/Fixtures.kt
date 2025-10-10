@@ -1,7 +1,7 @@
 package com.alex.munchies
 
 import com.alex.munchies.domain.LabelRequest
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeRequest
 import java.io.File
 
 object Fixtures {
@@ -16,30 +16,19 @@ object Fixtures {
     }
 
     object Recipes {
-        object Domain {
-            val pizza = Recipe(
-                0,
-                "",
-                null,
-                "Pizza",
-                "Italian Style",
-                1000,
-                null,
-                1747138632,
-                1747138632
-            )
-            val burger = Recipe(
-                0,
-                "",
-                null,
-                "Burger",
-                "juicy",
-                2000,
-                null,
-                1747138632,
-                1747138632
-            )
-        }
+        val pizza = RecipeRequest(
+            null,
+            "Pizza",
+            "Italian Style",
+            1000
+        )
+
+        val burger = RecipeRequest(
+            null,
+            "Burger",
+            "juicy",
+            2000
+        )
     }
 
     val image: File = File.createTempFile("image", ".jpg").apply {

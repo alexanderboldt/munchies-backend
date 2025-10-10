@@ -1,6 +1,6 @@
 package com.alex.munchies.service
 
-import com.alex.munchies.domain.Recipe
+import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.BadRequestException
 import com.alex.munchies.mapper.toDomain
 import com.alex.munchies.repository.RecipeRepository
@@ -16,7 +16,7 @@ class RecipeImageService(
 ) {
 
     @Transactional
-    fun uploadImage(id: Long, image: MultipartFile): Recipe {
+    fun uploadImage(id: Long, image: MultipartFile): RecipeResponse {
         // check if the recipe exists
         val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userService.userId)
 
