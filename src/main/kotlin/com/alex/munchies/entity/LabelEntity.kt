@@ -10,12 +10,8 @@ data class LabelEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-
     val userId: String,
-
     var name: String,
-
     val createdAt: Long,
-
     var updatedAt: Long
 )
