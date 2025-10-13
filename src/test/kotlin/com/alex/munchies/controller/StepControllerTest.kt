@@ -3,10 +3,15 @@ package com.alex.munchies.controller
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.asSteps
 import com.alex.munchies.util.postRecipe
 import com.alex.munchies.util.postStep
 import com.alex.munchies.util.shouldBeStep
+import com.alex.munchies.util.shouldBeSteps
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
@@ -43,6 +48,58 @@ class StepControllerTest : BaseControllerTest() {
 
         step.shouldNotBeNull()
         step shouldBeStep Fixtures.Steps.dough
+    }
+
+    // endregion
+
+    // region read all
+
+    @Test
+    fun `should return an empty list`() {
+        val steps = When {
+            get(Path.STEP, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asSteps()
+        }
+
+        steps.shouldNotBeNull()
+        steps shouldBe emptyList()
+    }
+
+    @Test
+    fun `should return a list with one step`() {
+        postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        val steps = When {
+            get(Path.STEP, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asSteps()
+        }
+
+        steps shouldHaveSize 1
+        steps shouldBeSteps listOf(Fixtures.Steps.dough)
+    }
+
+    @Test
+    fun `should return a list with ten steps`() {
+        val stepsRequest = (1..10).map { Fixtures.Steps.dough.copy(number = it) }
+
+        stepsRequest.forEach { postStep(recipeCreated.id, it) }
+
+        val steps = When {
+            get(Path.STEP, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asSteps()
+        }
+
+        steps shouldHaveSize 10
+        steps shouldBeSteps stepsRequest
     }
 
     // endregion
