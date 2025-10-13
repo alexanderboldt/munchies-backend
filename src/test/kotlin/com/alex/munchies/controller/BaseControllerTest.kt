@@ -5,6 +5,7 @@ import com.alex.munchies.configuration.SpringProfile
 import com.alex.munchies.initializer.MinioTestInitializer
 import com.alex.munchies.repository.LabelRepository
 import com.alex.munchies.repository.RecipeRepository
+import com.alex.munchies.repository.StepRepository
 import com.alex.munchies.service.S3Service
 import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
@@ -40,6 +41,9 @@ abstract class BaseControllerTest {
     @Autowired
     private lateinit var recipeRepository: RecipeRepository
 
+    @Autowired
+    private lateinit var stepRepository: StepRepository
+
     @BeforeEach
     fun beforeEachBase() {
         RestAssured.port = port
@@ -52,5 +56,6 @@ abstract class BaseControllerTest {
     fun afterEachBase() {
         labelRepository.deleteAll()
         recipeRepository.deleteAll()
+        stepRepository.deleteAll()
     }
 }
