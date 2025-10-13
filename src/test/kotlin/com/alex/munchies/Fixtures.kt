@@ -2,6 +2,7 @@ package com.alex.munchies
 
 import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.domain.RecipeRequest
+import com.alex.munchies.domain.StepRequest
 import java.io.File
 
 object Fixtures {
@@ -28,6 +29,14 @@ object Fixtures {
             "Burger",
             "juicy",
             2000
+        )
+    }
+
+    object Steps {
+        val dough = StepRequest(
+            1,
+            "Create the dough",
+            "Mix flour, salt and water."
         )
     }
 

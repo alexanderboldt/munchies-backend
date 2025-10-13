@@ -5,6 +5,8 @@ import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.domain.LabelResponse
 import com.alex.munchies.domain.RecipeRequest
 import com.alex.munchies.domain.RecipeResponse
+import com.alex.munchies.domain.StepRequest
+import com.alex.munchies.domain.StepResponse
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
@@ -46,5 +48,17 @@ fun uploadRecipeImage(id: Long): RecipeResponse {
         statusCode(HttpStatus.SC_OK)
     } Extract {
         asRecipe()
+    }
+}
+
+fun postStep(recipeId: Long, step: StepRequest): StepResponse {
+    return Given {
+        body(step)
+    } When {
+        post(Path.STEP, recipeId)
+    } Then {
+        statusCode(HttpStatus.SC_CREATED)
+    } Extract {
+        asStep()
     }
 }

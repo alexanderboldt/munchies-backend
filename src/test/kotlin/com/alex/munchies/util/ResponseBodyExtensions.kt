@@ -2,6 +2,7 @@ package com.alex.munchies.util
 
 import com.alex.munchies.domain.LabelResponse
 import com.alex.munchies.domain.RecipeResponse
+import com.alex.munchies.domain.StepResponse
 import io.restassured.common.mapper.TypeRef
 import io.restassured.response.ResponseBodyExtractionOptions
 
@@ -10,3 +11,6 @@ fun ResponseBodyExtractionOptions.asLabel(): LabelResponse = `as`(object : TypeR
 
 fun ResponseBodyExtractionOptions.asRecipes(): List<RecipeResponse> = `as`(object : TypeRef<List<RecipeResponse>>() {})
 fun ResponseBodyExtractionOptions.asRecipe(): RecipeResponse = `as`(object : TypeRef<RecipeResponse>() {})
+
+fun ResponseBodyExtractionOptions.asSteps(): List<StepResponse> = `as`(object : TypeRef<List<StepResponse>>() {})
+fun ResponseBodyExtractionOptions.asStep(): StepResponse = `as`(object : TypeRef<StepResponse>() {})
