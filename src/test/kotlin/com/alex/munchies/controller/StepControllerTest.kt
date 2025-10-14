@@ -148,4 +148,41 @@ class StepControllerTest : BaseControllerTest() {
 
     // endregion
 
+    // region delete
+
+    @Test
+    fun `should not delete a step and throw bad-request with invalid recipe-id`() {
+        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        When {
+            delete(Path.STEP_ID, 100, stepPosted.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not delete a step and throw bad-request with invalid id`() {
+        postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        When {
+            delete(Path.STEP_ID, recipeCreated.id, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should delete a step with valid id`() {
+        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        When {
+            delete(Path.STEP_ID, recipeCreated.id, stepPosted.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+    }
+
+
+    // endregion
 }
