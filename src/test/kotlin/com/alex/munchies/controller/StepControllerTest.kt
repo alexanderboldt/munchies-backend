@@ -3,6 +3,8 @@ package com.alex.munchies.controller
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.STEP_ID
+import com.alex.munchies.util.asStep
 import com.alex.munchies.util.asSteps
 import com.alex.munchies.util.postRecipe
 import com.alex.munchies.util.postStep
@@ -100,6 +102,48 @@ class StepControllerTest : BaseControllerTest() {
 
         steps shouldHaveSize 10
         steps shouldBeSteps stepsRequest
+    }
+
+    // endregion
+
+    // region read one
+
+    @Test
+    fun `should throw bad-request with invalid recipe-id`() {
+        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        When {
+            get(Path.STEP_ID, 100, stepPosted.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should throw bad-request with invalid id`() {
+        postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        When {
+            get(Path.STEP_ID, recipeCreated.id, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should return one step with valid id`() {
+        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        val step = When {
+            get(Path.STEP_ID, recipeCreated.id, stepPosted.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asStep()
+        }
+
+        step.shouldNotBeNull()
+        step shouldBeStep Fixtures.Steps.dough
     }
 
     // endregion

@@ -5,3 +5,6 @@ val Path.LABEL_ID: String
 
 val Path.RECIPE_ID: String
     get() = "$RECIPE/$ID"
+
+val Path.STEP_ID: String
+    get() = "$STEP/$ID"
