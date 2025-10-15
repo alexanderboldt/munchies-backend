@@ -22,6 +22,3 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 
 ### Buildsystem
 - Gradle
-
-### Code Analysis
-- Detekt

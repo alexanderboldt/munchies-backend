@@ -4,7 +4,6 @@ plugins {
 	alias(libs.plugins.kotlin.jpa)
 	alias(libs.plugins.spring.boot)
 	alias(libs.plugins.spring.dependency.management)
-	alias(libs.plugins.detekt)
 }
 
 group = "com.alex"
@@ -18,11 +17,6 @@ kotlin {
 
 repositories {
 	mavenCentral()
-}
-
-detekt {
-	config.setFrom("detekt.yml")
-	buildUponDefaultConfig = true
 }
 
 dependencies {

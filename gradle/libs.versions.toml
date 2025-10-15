@@ -17,7 +17,6 @@ testcontainer-version = "1.21.3"
 
 # plugin versions
 spring-dependency-version = "1.1.7"
-detekt-version = "1.23.8"
 
 [libraries]
 # development libraries
@@ -62,4 +61,3 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin-version" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-version" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-version" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-version" }
