@@ -38,6 +38,12 @@ object Fixtures {
             "Create the dough",
             "Mix flour, salt and water."
         )
+
+        val sauce = StepRequest(
+            1,
+            "Create the sauce",
+            "Mix tomato, salt and olive oil."
+        )
     }
 
     val image: File = File.createTempFile("image", ".jpg").apply {
