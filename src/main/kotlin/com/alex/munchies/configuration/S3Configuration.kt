@@ -11,6 +11,7 @@ import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import java.net.URI
 
+@Suppress("unused")
 @Configuration
 class S3Configuration(
     @param:Value($$"${spring.s3.endpoint-override}") private val endpoint: String,
@@ -30,7 +31,7 @@ class S3Configuration(
         ).build()
 
     @Bean
-    fun s3Client() = s3Client
+    fun s3Client(): S3Client = s3Client
 
     @PostConstruct
     fun init() {

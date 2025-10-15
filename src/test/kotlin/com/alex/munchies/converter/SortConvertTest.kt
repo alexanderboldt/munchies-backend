@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
+@Suppress("unused")
 class SortConvertTest : StringSpec({
 
     val sortConverter = SortConverter()

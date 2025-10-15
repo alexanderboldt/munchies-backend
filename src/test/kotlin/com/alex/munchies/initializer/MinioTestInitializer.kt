@@ -10,8 +10,8 @@ class MinioTestInitializer : ApplicationContextInitializer<ConfigurableApplicati
 
     @Container
     private val minio = MinIOContainer("minio/minio:latest")
-        .withUserName("testtest")
-        .withPassword("testtest")
+        .withUserName("minio-test")
+        .withPassword("minio-test")
 
     override fun initialize(context: ConfigurableApplicationContext) {
         minio.start()
