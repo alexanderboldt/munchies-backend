@@ -57,7 +57,7 @@ class StepControllerTest : BaseControllerTest() {
     // region read all
 
     @Test
-    fun `should return an empty list`() {
+    fun `should read all steps and return an empty list`() {
         val steps = When {
             get(Path.STEP, recipeCreated.id)
         } Then {
@@ -71,7 +71,7 @@ class StepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return a list with one step`() {
+    fun `should read all steps and return a list with one step`() {
         postStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val steps = When {
@@ -87,7 +87,7 @@ class StepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return a list with ten steps`() {
+    fun `should read all steps and return a list with ten steps`() {
         val stepsRequest = (1..10).map { Fixtures.Steps.dough.copy(number = it) }
 
         stepsRequest.forEach { postStep(recipeCreated.id, it) }
@@ -109,7 +109,7 @@ class StepControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
-    fun `should throw bad-request with invalid recipe-id`() {
+    fun `should not read one step and throw bad-request with invalid recipe-id`() {
         val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
@@ -120,7 +120,7 @@ class StepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should throw bad-request with invalid id`() {
+    fun `should not read one step and throw bad-request with invalid id`() {
         postStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
@@ -131,7 +131,7 @@ class StepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return one step with valid id`() {
+    fun `should read one step and return it with valid id`() {
         val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = When {
@@ -177,7 +177,7 @@ class StepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update and return a step with valid id`() {
+    fun `should update a step and return it with valid id`() {
         val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = Given {

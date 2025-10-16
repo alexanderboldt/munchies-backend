@@ -35,7 +35,7 @@ class LabelControllerTest : BaseControllerTest() {
     // region read all
 
     @Test
-    fun `should return an empty list`() {
+    fun `should read all labels and return an empty list`() {
         val labels = When {
             get(Path.LABEL)
         } Then {
@@ -49,7 +49,7 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return a list with one label`() {
+    fun `should read all labels and return a list with one label`() {
         postLabel(Fixtures.Labels.vegetarian)
 
         val labels = When {
@@ -65,7 +65,7 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return a list with ten labels`() {
+    fun `should read all labels and return a list with ten labels`() {
         val labelsRequest = (1..10).map { Fixtures.Labels.vegetarian }
 
         labelsRequest.forEach { postLabel(it) }
@@ -87,7 +87,7 @@ class LabelControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
-    fun `should throw bad-request with invalid id`() {
+    fun `should not read one label and throw bad-request with invalid id`() {
         postLabel(Fixtures.Labels.vegetarian)
 
         When {
@@ -98,7 +98,7 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return one label with valid id`() {
+    fun `should read one label and return it with valid id`() {
         val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
         val label = When {
@@ -131,7 +131,7 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update and return a label with valid id`() {
+    fun `should update a label and return it with valid id`() {
         val labelPosted = postLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {

@@ -62,7 +62,7 @@ class RecipeControllerTest : BaseControllerTest() {
     // region read all
 
     @Test
-    fun `should return an empty list`() {
+    fun `should read all recipes and return an empty list`() {
         val recipes = When {
             get(Path.RECIPE)
         } Then {
@@ -77,7 +77,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
 
     @Test
-    fun `should return a list with one recipe`() {
+    fun `should read all recipes and return a list with one recipe`() {
         postRecipe(Fixtures.Recipes.pizza)
 
         val recipes = When {
@@ -93,7 +93,7 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return a list with ten recipes`() {
+    fun `should read all recipes and return a list with ten recipes`() {
         val recipesRequest = (1..10).map { Fixtures.Recipes.pizza }
 
         recipesRequest.forEach { postRecipe(it) }
@@ -115,7 +115,7 @@ class RecipeControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
-    fun `should throw bad-request with invalid id`() {
+    fun `should not read one recipe and throw bad-request with invalid id`() {
         postRecipe(Fixtures.Recipes.pizza)
 
         When {
@@ -126,7 +126,7 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should return one recipe with valid id`() {
+    fun `should read one recipe and return it with valid id`() {
         val recipePosted = postRecipe(Fixtures.Recipes.pizza)
 
         val recipe = When {
@@ -158,7 +158,7 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update and return a recipe with valid id`() {
+    fun `should update a recipe and return it with valid id`() {
         val recipePosted = postRecipe(Fixtures.Recipes.pizza)
 
         val recipe = Given {

@@ -31,7 +31,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     // region upload image
 
     @Test
-    fun `should throw bad-request with invalid id`() {
+    fun `should not upload a recipe-image and throw bad-request with invalid id`() {
         Given {
             multiPart("image", Fixtures.image)
             contentType(ContentType.MULTIPART)
@@ -43,7 +43,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should upload image and return ok with valid id`() {
+    fun `should upload a recipe-image and return ok with valid id`() {
         val recipe = Given {
             multiPart("image", Fixtures.image)
             contentType(ContentType.MULTIPART)
@@ -65,7 +65,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     // region download image
 
     @Test
-    fun `should not download an image and throw bad-request with invalid id`() {
+    fun `should not download a recipe-image and throw bad-request with invalid id`() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
@@ -77,7 +77,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should download an image and with valid id`() {
+    fun `should download a recipe-image with valid id`() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
@@ -99,7 +99,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     // region delete image
 
     @Test
-    fun `should not delete an image and throw bad-request with invalid id`() {
+    fun `should not delete a recipe-image and throw bad-request with invalid id`() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
@@ -111,7 +111,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not delete an image and with non existing image`() {
+    fun `should not delete a recipe-image with non existing image`() {
         When {
             delete(Path.RECIPE_IMAGE, recipeCreated.id)
         } Then {
@@ -120,7 +120,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should delete an image and with valid id and existing image`() {
+    fun `should delete a recipe-image with valid id and existing image`() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
