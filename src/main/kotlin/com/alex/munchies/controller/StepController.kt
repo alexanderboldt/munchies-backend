@@ -23,21 +23,21 @@ class StepController(private val stepService: StepService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@PathVariable("recipe_id") recipeId: Long, @RequestBody step: StepRequest) = stepService.create(recipeId, step)
+    fun create(@PathVariable recipeId: Long, @RequestBody step: StepRequest) = stepService.create(recipeId, step)
 
     // read
 
     @GetMapping
-    fun readAll(@PathVariable("recipe_id") recipeId: Long) = stepService.readAll(recipeId)
+    fun readAll(@PathVariable recipeId: Long) = stepService.readAll(recipeId)
 
     @GetMapping(Path.ID)
-    fun read(@PathVariable("recipe_id") recipeId: Long, @PathVariable id: Long) = stepService.read(id, recipeId)
+    fun read(@PathVariable recipeId: Long, @PathVariable id: Long) = stepService.read(id, recipeId)
 
     // update
 
     @PutMapping(Path.ID)
     fun update(
-        @PathVariable("recipe_id") recipeId: Long,
+        @PathVariable recipeId: Long,
         @PathVariable id: Long,
         @RequestBody step: StepRequest
     ) = stepService.update(id, recipeId, step)
@@ -46,5 +46,5 @@ class StepController(private val stepService: StepService) {
 
     @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable("recipe_id") recipeId: Long, @PathVariable id: Long) = stepService.delete(id, recipeId)
+    fun delete(@PathVariable recipeId: Long, @PathVariable id: Long) = stepService.delete(id, recipeId)
 }
