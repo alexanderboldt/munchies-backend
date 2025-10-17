@@ -14,7 +14,7 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 
-fun postLabel(label: LabelRequest): LabelResponse {
+fun createLabel(label: LabelRequest): LabelResponse {
     return Given {
         body(label)
     } When {
@@ -26,7 +26,7 @@ fun postLabel(label: LabelRequest): LabelResponse {
     }
 }
 
-fun postRecipe(recipe: RecipeRequest): RecipeResponse {
+fun createRecipe(recipe: RecipeRequest): RecipeResponse {
     return Given {
         body(recipe)
     } When {
@@ -51,7 +51,7 @@ fun uploadRecipeImage(id: Long): RecipeResponse {
     }
 }
 
-fun postStep(recipeId: Long, step: StepRequest): StepResponse {
+fun createStep(recipeId: Long, step: StepRequest): StepResponse {
     return Given {
         body(step)
     } When {

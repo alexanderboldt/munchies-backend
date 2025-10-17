@@ -4,7 +4,7 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.Path
-import com.alex.munchies.util.postRecipe
+import com.alex.munchies.util.createRecipe
 import com.alex.munchies.util.uploadRecipeImage
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -24,8 +24,8 @@ class RecipeImageControllerTest : BaseControllerTest() {
 
     @BeforeEach
     fun beforeEach() {
-        // precondition to all tests: post a recipe
-        recipeCreated = postRecipe(Fixtures.Recipes.pizza)
+        // precondition to all tests: create a recipe
+        recipeCreated = createRecipe(Fixtures.Recipes.pizza)
     }
 
     // region upload image

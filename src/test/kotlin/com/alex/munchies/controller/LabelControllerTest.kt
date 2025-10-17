@@ -5,7 +5,7 @@ import com.alex.munchies.util.asLabel
 import com.alex.munchies.util.asLabels
 import com.alex.munchies.util.LABEL_ID
 import com.alex.munchies.util.Path
-import com.alex.munchies.util.postLabel
+import com.alex.munchies.util.createLabel
 import com.alex.munchies.util.shouldBeLabel
 import com.alex.munchies.util.shouldBeLabels
 import io.kotest.matchers.collections.shouldHaveSize
@@ -24,7 +24,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a label with valid request`() {
-        val label = postLabel(Fixtures.Labels.vegetarian)
+        val label = createLabel(Fixtures.Labels.vegetarian)
 
         label.shouldNotBeNull()
         label shouldBeLabel Fixtures.Labels.vegetarian
@@ -50,7 +50,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read all labels and return a list with one label`() {
-        postLabel(Fixtures.Labels.vegetarian)
+        createLabel(Fixtures.Labels.vegetarian)
 
         val labels = When {
             get(Path.LABEL)
@@ -68,7 +68,7 @@ class LabelControllerTest : BaseControllerTest() {
     fun `should read all labels and return a list with ten labels`() {
         val labelsRequest = (1..10).map { Fixtures.Labels.vegetarian }
 
-        labelsRequest.forEach { postLabel(it) }
+        labelsRequest.forEach { createLabel(it) }
 
         val labels = When {
             get(Path.LABEL)
@@ -88,7 +88,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not read one label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.vegetarian)
+        createLabel(Fixtures.Labels.vegetarian)
 
         When {
             get(Path.LABEL_ID, 100)
@@ -99,10 +99,10 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read one label and return it with valid id`() {
-        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         val label = When {
-            get(Path.LABEL_ID, labelPosted.id)
+            get(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -119,7 +119,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update a label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.vegetarian)
+        createLabel(Fixtures.Labels.vegetarian)
 
         Given {
             body(Fixtures.Labels.vegan)
@@ -132,12 +132,12 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should update a label and return it with valid id`() {
-        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {
             body(Fixtures.Labels.vegan)
         } When {
-            put(Path.LABEL_ID, labelPosted.id)
+            put(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -154,7 +154,7 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a label and throw bad-request with invalid id`() {
-        postLabel(Fixtures.Labels.vegetarian)
+        createLabel(Fixtures.Labels.vegetarian)
 
         When {
             delete(Path.LABEL_ID, 100)
@@ -165,10 +165,10 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a label with valid id`() {
-        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         When {
-            delete(Path.LABEL_ID, labelPosted.id)
+            delete(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }

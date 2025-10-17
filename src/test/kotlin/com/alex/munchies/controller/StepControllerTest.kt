@@ -6,8 +6,8 @@ import com.alex.munchies.util.Path
 import com.alex.munchies.util.STEP_ID
 import com.alex.munchies.util.asStep
 import com.alex.munchies.util.asSteps
-import com.alex.munchies.util.postRecipe
-import com.alex.munchies.util.postStep
+import com.alex.munchies.util.createRecipe
+import com.alex.munchies.util.createStep
 import com.alex.munchies.util.shouldBeStep
 import com.alex.munchies.util.shouldBeSteps
 import io.kotest.matchers.collections.shouldHaveSize
@@ -27,8 +27,8 @@ class StepControllerTest : BaseControllerTest() {
 
     @BeforeEach
     fun beforeEach() {
-        // precondition to all tests: post a recipe
-        recipeCreated = postRecipe(Fixtures.Recipes.pizza)
+        // precondition to all tests: create a recipe
+        recipeCreated = createRecipe(Fixtures.Recipes.pizza)
     }
 
     // region create
@@ -46,7 +46,7 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a step with valid request`() {
-        val step = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         step.shouldNotBeNull()
         step shouldBeStep Fixtures.Steps.dough
@@ -72,7 +72,7 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read all steps and return a list with one step`() {
-        postStep(recipeCreated.id, Fixtures.Steps.dough)
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val steps = When {
             get(Path.STEP, recipeCreated.id)
@@ -90,7 +90,7 @@ class StepControllerTest : BaseControllerTest() {
     fun `should read all steps and return a list with ten steps`() {
         val stepsRequest = (1..10).map { Fixtures.Steps.dough.copy(number = it) }
 
-        stepsRequest.forEach { postStep(recipeCreated.id, it) }
+        stepsRequest.forEach { createStep(recipeCreated.id, it) }
 
         val steps = When {
             get(Path.STEP, recipeCreated.id)
@@ -110,10 +110,10 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not read one step and throw bad-request with invalid recipe-id`() {
-        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
-            get(Path.STEP_ID, 100, stepPosted.id)
+            get(Path.STEP_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -121,7 +121,7 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not read one step and throw bad-request with invalid id`() {
-        postStep(recipeCreated.id, Fixtures.Steps.dough)
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
             get(Path.STEP_ID, recipeCreated.id, 100)
@@ -132,10 +132,10 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read one step and return it with valid id`() {
-        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = When {
-            get(Path.STEP_ID, recipeCreated.id, stepPosted.id)
+            get(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -152,12 +152,12 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update a step and throw bad-request with invalid recipe-id`() {
-        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
             body(Fixtures.Steps.sauce)
         } When {
-            put(Path.STEP_ID, 100, stepPosted.id)
+            put(Path.STEP_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -165,7 +165,7 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update a step and throw bad-request with invalid id`() {
-        postStep(recipeCreated.id, Fixtures.Steps.dough)
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
             body(Fixtures.Steps.sauce)
@@ -178,12 +178,12 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should update a step and return it with valid id`() {
-        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = Given {
             body(Fixtures.Steps.sauce)
         } When {
-            put(Path.STEP_ID, recipeCreated.id, stepPosted.id)
+            put(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -200,10 +200,10 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a step and throw bad-request with invalid recipe-id`() {
-        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
-            delete(Path.STEP_ID, 100, stepPosted.id)
+            delete(Path.STEP_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -211,7 +211,7 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a step and throw bad-request with invalid id`() {
-        postStep(recipeCreated.id, Fixtures.Steps.dough)
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
             delete(Path.STEP_ID, recipeCreated.id, 100)
@@ -222,10 +222,10 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a step with valid id`() {
-        val stepPosted = postStep(recipeCreated.id, Fixtures.Steps.dough)
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         When {
-            delete(Path.STEP_ID, recipeCreated.id, stepPosted.id)
+            delete(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }

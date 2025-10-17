@@ -6,8 +6,8 @@ import com.alex.munchies.util.asRecipes
 import com.alex.munchies.service.S3Bucket
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
-import com.alex.munchies.util.postLabel
-import com.alex.munchies.util.postRecipe
+import com.alex.munchies.util.createLabel
+import com.alex.munchies.util.createRecipe
 import com.alex.munchies.util.shouldBeRecipe
 import com.alex.munchies.util.shouldBeRecipes
 import com.alex.munchies.util.uploadRecipeImage
@@ -29,7 +29,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a recipe with valid request`() {
-        val recipe = postRecipe(Fixtures.Recipes.pizza)
+        val recipe = createRecipe(Fixtures.Recipes.pizza)
 
         recipe.shouldNotBeNull()
         recipe shouldBeRecipe Fixtures.Recipes.pizza
@@ -48,13 +48,13 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should create a recipe with valid label-id`() {
-        val labelPosted = postLabel(Fixtures.Labels.vegetarian)
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
-        val recipeRequest = Fixtures.Recipes.pizza.copy(labelId = labelPosted.id)
+        val recipeRequest = Fixtures.Recipes.pizza.copy(labelId = labelCreated.id)
 
-        val recipePosted = postRecipe(recipeRequest)
+        val recipeCreated = createRecipe(recipeRequest)
 
-        recipePosted shouldBeRecipe recipeRequest
+        recipeCreated shouldBeRecipe recipeRequest
     }
 
     // endregion
@@ -78,7 +78,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read all recipes and return a list with one recipe`() {
-        postRecipe(Fixtures.Recipes.pizza)
+        createRecipe(Fixtures.Recipes.pizza)
 
         val recipes = When {
             get(Path.RECIPE)
@@ -96,7 +96,7 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should read all recipes and return a list with ten recipes`() {
         val recipesRequest = (1..10).map { Fixtures.Recipes.pizza }
 
-        recipesRequest.forEach { postRecipe(it) }
+        recipesRequest.forEach { createRecipe(it) }
 
         val recipes = When {
             get(Path.RECIPE)
@@ -116,7 +116,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not read one recipe and throw bad-request with invalid id`() {
-        postRecipe(Fixtures.Recipes.pizza)
+        createRecipe(Fixtures.Recipes.pizza)
 
         When {
             get(Path.RECIPE_ID, 100)
@@ -127,10 +127,10 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read one recipe and return it with valid id`() {
-        val recipePosted = postRecipe(Fixtures.Recipes.pizza)
+        val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         val recipe = When {
-            get(Path.RECIPE_ID, recipePosted.id)
+            get(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -146,7 +146,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not update a recipe and throw bad-request with invalid id`() {
-        postRecipe(Fixtures.Recipes.pizza)
+        createRecipe(Fixtures.Recipes.pizza)
 
         Given {
             body(Fixtures.Recipes.burger)
@@ -159,12 +159,12 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should update a recipe and return it with valid id`() {
-        val recipePosted = postRecipe(Fixtures.Recipes.pizza)
+        val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         val recipe = Given {
             body(Fixtures.Recipes.burger)
         } When {
-            put(Path.RECIPE_ID, recipePosted.id)
+            put(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -180,7 +180,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a recipe and throw bad-request with invalid id`() {
-        postRecipe(Fixtures.Recipes.pizza)
+        createRecipe(Fixtures.Recipes.pizza)
 
         When {
             delete(Path.RECIPE_ID, 100)
@@ -191,10 +191,10 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a recipe with valid id`() {
-        val recipePosted = postRecipe(Fixtures.Recipes.pizza)
+        val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         When {
-            delete(Path.RECIPE_ID, recipePosted.id)
+            delete(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -202,18 +202,18 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should delete a recipe and an image with valid id`() {
-        val recipePosted = uploadRecipeImage(postRecipe(Fixtures.Recipes.pizza).id)
+        val recipeCreated = uploadRecipeImage(createRecipe(Fixtures.Recipes.pizza).id)
 
         // execute the delete and verify
         When {
-            delete(Path.RECIPE_ID, recipePosted.id)
+            delete(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
 
         // try to download the image and verify, that it is deleted
         shouldThrow<NoSuchKeyException> {
-            s3Service.downloadFile(S3Bucket.RECIPE, recipePosted.filename!!)
+            s3Service.downloadFile(S3Bucket.RECIPE, recipeCreated.filename!!)
         }
     }
 
