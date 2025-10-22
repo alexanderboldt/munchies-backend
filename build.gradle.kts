@@ -29,6 +29,7 @@ dependencies {
 	implementation(libs.spring.boot.starter.data)
 	implementation(libs.spring.boot.starter.oauth2.resource)
 	implementation(libs.spring.boot.starter.security)
+	implementation(libs.spring.boot.starter.aop)
 
 	implementation(libs.mysql)
 	implementation(libs.flyway.core)
@@ -37,6 +38,8 @@ dependencies {
 	implementation(libs.openfeign)
 
     implementation(libs.aws.s3)
+
+    implementation(libs.resilience4j)
 
 	implementation(libs.springdoc)
 
