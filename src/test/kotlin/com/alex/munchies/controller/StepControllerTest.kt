@@ -3,6 +3,7 @@ package com.alex.munchies.controller
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.RECIPE_ID
 import com.alex.munchies.util.STEP_ID
 import com.alex.munchies.util.asStep
 import com.alex.munchies.util.asSteps
@@ -228,6 +229,25 @@ class StepControllerTest : BaseControllerTest() {
             delete(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+    }
+
+    @Test
+    fun `should delete a step when deleting a recipe`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        // delete the recipe
+        When {
+            delete(Path.RECIPE_ID, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+
+        // try to read the step
+        When {
+            get(Path.STEP_ID, recipeCreated.id, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
         }
     }
 

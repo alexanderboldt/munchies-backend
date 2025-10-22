@@ -39,6 +39,7 @@ infix fun List<RecipeResponse>.shouldBeRecipes(expected: List<RecipeRequest>) {
 infix fun RecipeResponse.shouldBeRecipe(expected: RecipeRequest) {
     id shouldBeGreaterThan 0
     userId shouldBe Fixtures.User.USER_ID
+    labelId shouldBe expected.labelId
     title shouldBe expected.title
     description shouldBe expected.description
     duration shouldBe expected.duration

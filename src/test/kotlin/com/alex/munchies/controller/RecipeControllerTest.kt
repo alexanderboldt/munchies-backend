@@ -4,6 +4,7 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.asRecipes
 import com.alex.munchies.service.S3Bucket
+import com.alex.munchies.util.LABEL_ID
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
 import com.alex.munchies.util.createLabel
@@ -172,6 +173,34 @@ class RecipeControllerTest : BaseControllerTest() {
         }
 
         recipe shouldBeRecipe Fixtures.Recipes.burger
+    }
+
+    @Test
+    fun `should update label-id to null when deleting a label`() {
+        // precondition: create a label and connect it to a created recipe
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
+
+        val recipeRequest = Fixtures.Recipes.pizza.copy(labelId = labelCreated.id)
+
+        val recipeCreated = createRecipe(recipeRequest)
+
+        // execute: delete the label
+        When {
+            delete(Path.LABEL_ID, labelCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
+
+        // verify: the label-id of a recipe is null
+        val recipe = When {
+            get(Path.RECIPE_ID, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_OK)
+        } Extract {
+            asRecipe()
+        }
+
+        recipe shouldBeRecipe Fixtures.Recipes.pizza
     }
 
     // endregion
