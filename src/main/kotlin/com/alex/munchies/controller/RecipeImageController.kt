@@ -2,6 +2,8 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.service.RecipeImageService
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.RateLimit
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
 @Suppress("unused")
+@RateLimiter(name = RateLimit.BASIC)
 @RestController
 @RequestMapping(Path.RECIPE_IMAGE)
 class RecipeImageController(private val recipeImageService: RecipeImageService) {

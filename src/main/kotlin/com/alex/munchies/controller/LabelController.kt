@@ -3,6 +3,8 @@ package com.alex.munchies.controller
 import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.service.LabelService
 import com.alex.munchies.util.Path
+import com.alex.munchies.util.RateLimit
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
+@RateLimiter(name = RateLimit.BASIC)
 @RestController
 @RequestMapping(Path.LABEL)
 class LabelController(private val labelService: LabelService) {
