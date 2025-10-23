@@ -1,3 +1,11 @@
 values:
   themealdb:
     url: https://www.themealdb.com/api/json
+
+resilience4j:
+  ratelimiter:
+    instances:
+      basic:
+        limit-for-period: 50       # Max 5 calls
+        limit-refresh-period: 10s  # Per 10 seconds
+        timeout-duration: 0        # No wait if limit is exceeded
