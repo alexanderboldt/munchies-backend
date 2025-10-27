@@ -61,7 +61,7 @@ services:
       - backend
 
   app:
-    image: munchies:4.0.0
+    image: munchies:5.0.0
     build: .
     ports:
       - ${APP_PORT}:4000
