@@ -2,7 +2,7 @@
 # development versions
 kotlin-version = "2.2.21"
 spring-version = "3.5.7"
-jackson-version = "2.19.1"
+jackson-version = "2.20.1"
 mysql-version = "8.0.33"
 flyway-version = "11.12.0"
 openfeign-version = "4.3.0"
