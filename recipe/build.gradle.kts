@@ -2,21 +2,8 @@ plugins {
 	alias(libs.plugins.kotlin.jvm)
 	alias(libs.plugins.kotlin.spring)
 	alias(libs.plugins.kotlin.jpa)
-	alias(libs.plugins.spring.boot)
-	alias(libs.plugins.spring.dependency.management)
-}
-
-group = "com.alex"
-
-kotlin {
-	jvmToolchain(21)
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
-	}
-}
-
-repositories {
-	mavenCentral()
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
 }
 
 dependencies {
@@ -42,8 +29,6 @@ dependencies {
     implementation(libs.resilience4j)
 
 	implementation(libs.springdoc)
-
-	developmentOnly(libs.spring.boot.devtools)
 
 	// test libraries
 	testImplementation(libs.spring.boot.starter.test) {
