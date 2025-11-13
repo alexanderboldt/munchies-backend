@@ -10,6 +10,7 @@ dependencies {
 
     implementation(libs.spring.cloud.starter.gateway)
 
+    implementation(libs.spring.boot.starter.webflux)
     implementation(libs.spring.boot.starter.oauth2.resource)
     implementation(libs.spring.boot.starter.security)
 

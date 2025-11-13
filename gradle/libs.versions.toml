@@ -29,6 +29,7 @@ jackson-kotlin = { group = "com.fasterxml.jackson.module", name ="jackson-module
 spring-cloud-starter-gateway = { group = "org.springframework.cloud", name = "spring-cloud-starter-gateway", version.ref = "spring-cloud-version" }
 
 spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring-version" }
+spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux", version.ref = "spring-version" }
 spring-boot-starter-data = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring-version" }
 spring-boot-starter-oauth2-resource = { group = "org.springframework.boot", name = "spring-boot-starter-oauth2-resource-server", version.ref = "spring-version" }
 spring-boot-starter-security = { group = "org.springframework.boot", name = "spring-boot-starter-security", version.ref = "spring-version" }
