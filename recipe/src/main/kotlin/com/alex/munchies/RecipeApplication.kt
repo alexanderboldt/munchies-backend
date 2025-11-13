@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients
 
 @SpringBootApplication
 @EnableFeignClients
-class MunchiesApplication
+class RecipeApplication
 
 @Suppress("SpreadOperator") // vararg is here required
 fun main(args: Array<String>) {
-	runApplication<MunchiesApplication>(*args)
+	runApplication<RecipeApplication>(*args)
 }
