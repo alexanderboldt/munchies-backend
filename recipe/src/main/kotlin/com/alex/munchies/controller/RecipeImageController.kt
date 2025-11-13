@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -25,11 +26,15 @@ import org.springframework.web.multipart.MultipartFile
 class RecipeImageController(private val recipeImageService: RecipeImageService) {
 
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun uploadImage(@PathVariable id: Long, @RequestParam image: MultipartFile) = recipeImageService.uploadImage(id, image)
+    fun uploadImage(
+        @RequestHeader userId: String,
+        @PathVariable id: Long,
+        @RequestParam image: MultipartFile
+    ) = recipeImageService.uploadImage(userId, id, image)
 
     @GetMapping(produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-    fun downloadImage(@PathVariable id: Long): ResponseEntity<ByteArray> {
-        val (bytes, filename) = recipeImageService.downloadImage(id)
+    fun downloadImage(@RequestHeader userId: String, @PathVariable id: Long): ResponseEntity<ByteArray> {
+        val (bytes, filename) = recipeImageService.downloadImage(userId, id)
 
         return ResponseEntity
             .ok()
@@ -39,5 +44,5 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteImage(@PathVariable id: Long) = recipeImageService.deleteImage(id)
+    fun deleteImage(@RequestHeader userId: String, @PathVariable id: Long) = recipeImageService.deleteImage(userId, id)
 }

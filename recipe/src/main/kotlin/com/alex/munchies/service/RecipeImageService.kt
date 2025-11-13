@@ -10,15 +10,14 @@ import org.springframework.web.multipart.MultipartFile
 
 @Service
 class RecipeImageService(
-    private val userService: UserService,
     private val s3Service: S3Service,
     private val recipeRepository: RecipeRepository
 ) {
 
     @Transactional
-    fun uploadImage(id: Long, image: MultipartFile): RecipeResponse {
+    fun uploadImage(userId: String, id: Long, image: MultipartFile): RecipeResponse {
         // check if the recipe exists
-        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userService.userId)
+        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
 
         // 1. if there is already an image saved, delete it first
         recipeExisting.filename?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
@@ -32,10 +31,10 @@ class RecipeImageService(
         return recipeExisting.toDomain()
     }
 
-    fun downloadImage(id: Long): Pair<ByteArray,String> {
+    fun downloadImage(userId: String, id: Long): Pair<ByteArray,String> {
         // check if the recipe and the image are existing
         val filename = recipeRepository
-            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .findByIdAndUserIdOrThrow(id, userId)
             .filename
             ?: throw BadRequestException()
 
@@ -46,9 +45,9 @@ class RecipeImageService(
     }
 
     @Transactional
-    fun deleteImage(id: Long) {
+    fun deleteImage(userId: String, id: Long) {
         // check if the recipe and the image are existing
-        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userService.userId)
+        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
         val filename = recipeExisting.filename ?: throw BadRequestException()
 
         // delete the file

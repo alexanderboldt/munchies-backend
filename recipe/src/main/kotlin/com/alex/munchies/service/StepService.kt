@@ -12,21 +12,20 @@ import java.util.Date
 
 @Service
 class StepService(
-    private val userService: UserService,
     private val recipeRepository: RecipeRepository,
     private val stepRepository: StepRepository
 ) {
 
     // create
 
-    fun create(recipeId: Long, step: StepRequest): StepResponse {
+    fun create(userId: String, recipeId: Long, step: StepRequest): StepResponse {
         // check if the recipe exists
-        recipeRepository.existsByIdAndUserIdOrThrow(recipeId, userService.userId)
+        recipeRepository.existsByIdAndUserIdOrThrow(recipeId, userId)
 
         // arrange the information
         val entity = StepEntity(
             0,
-            userService.userId,
+            userId,
             recipeId,
             step.number,
             step.title,
@@ -43,19 +42,19 @@ class StepService(
 
     // read
 
-    fun readAll(recipeId: Long) = stepRepository
-        .findAllByUserIdAndRecipeId(userService.userId, recipeId)
+    fun readAll(userId: String, recipeId: Long) = stepRepository
+        .findAllByUserIdAndRecipeId(userId, recipeId)
         .map { it.toDomain() }
 
-    fun read(id: Long, recipeId: Long) = stepRepository
-        .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+    fun read(userId: String, id: Long, recipeId: Long) = stepRepository
+        .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
         .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, recipeId: Long, stepUpdate: StepRequest) = stepRepository
-        .findByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
+    fun update(userId: String, id: Long, recipeId: Long, stepUpdate: StepRequest) = stepRepository
+        .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
         .apply {
             number = stepUpdate.number
             title = stepUpdate.title
@@ -65,10 +64,10 @@ class StepService(
 
     // delete
 
-    fun delete(id: Long, recipeId: Long) {
+    fun delete(userId: String, id: Long, recipeId: Long) {
         stepRepository.apply {
-            existsByIdAndUserIdAndRecipeIdOrThrow(id, userService.userId, recipeId)
-            deleteByIdAndUserId(id, userService.userId)
+            existsByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
+            deleteByIdAndUserId(id, userId)
         }
     }
 }

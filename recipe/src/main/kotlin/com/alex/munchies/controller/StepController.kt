@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
@@ -26,28 +27,41 @@ class StepController(private val stepService: StepService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@PathVariable recipeId: Long, @RequestBody step: StepRequest) = stepService.create(recipeId, step)
+    fun create(
+        @RequestHeader userId: String,
+        @PathVariable recipeId: Long,
+        @RequestBody step: StepRequest
+    ) = stepService.create(userId, recipeId, step)
 
     // read
 
     @GetMapping
-    fun readAll(@PathVariable recipeId: Long) = stepService.readAll(recipeId)
+    fun readAll(@RequestHeader userId: String, @PathVariable recipeId: Long) = stepService.readAll(userId, recipeId)
 
     @GetMapping(Path.ID)
-    fun read(@PathVariable recipeId: Long, @PathVariable id: Long) = stepService.read(id, recipeId)
+    fun read(
+        @RequestHeader userId: String,
+        @PathVariable recipeId: Long,
+        @PathVariable id: Long
+    ) = stepService.read(userId, id, recipeId)
 
     // update
 
     @PutMapping(Path.ID)
     fun update(
+        @RequestHeader userId: String,
         @PathVariable recipeId: Long,
         @PathVariable id: Long,
         @RequestBody step: StepRequest
-    ) = stepService.update(id, recipeId, step)
+    ) = stepService.update(userId, id, recipeId, step)
 
     // delete
 
     @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable recipeId: Long, @PathVariable id: Long) = stepService.delete(id, recipeId)
+    fun delete(
+        @RequestHeader userId: String,
+        @PathVariable recipeId: Long,
+        @PathVariable id: Long
+    ) = stepService.delete(userId, id, recipeId)
 }

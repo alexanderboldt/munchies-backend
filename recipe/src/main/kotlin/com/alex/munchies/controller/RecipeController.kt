@@ -2,6 +2,7 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.RecipeRequest
+import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.service.RecipeService
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RateLimit
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -29,28 +31,32 @@ class RecipeController(private val recipeService: RecipeService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody recipe: RecipeRequest) = recipeService.create(recipe)
+    fun create(@RequestHeader userId: String, @RequestBody recipe: RecipeRequest) = recipeService.create(userId, recipe)
 
     @PostMapping(Path.THE_MEAL_DB)
     @ResponseStatus(HttpStatus.CREATED)
-    fun createFromTheMealDb(@RequestBody meal: Meal) = recipeService.createFromTheMealDb(meal)
+    fun createFromTheMealDb(@RequestHeader userId: String, @RequestBody meal: Meal) = recipeService.createFromTheMealDb(userId, meal)
 
     // read
 
     @GetMapping
     fun readAll(
+        @RequestHeader userId: String,
         @RequestParam sort: Sort = Sort.unsorted(),
         @RequestParam pageNumber: Int = -1,
         @RequestParam pageSize: Int = -1
-    ) = recipeService.readAll(sort, pageNumber, pageSize)
+    ): List<RecipeResponse> {
+        println(userId)
+        return recipeService.readAll(userId, sort, pageNumber, pageSize)
+    }
 
     @GetMapping(Path.ID)
-    fun read(@PathVariable id: Long) = recipeService.read(id)
+    fun read(@RequestHeader userId: String, @PathVariable id: Long) = recipeService.read(userId, id)
 
     // update
 
     @PutMapping(Path.ID)
-    fun update(@PathVariable id: Long, @RequestBody recipeNew: RecipeRequest) = recipeService.update(id, recipeNew)
+    fun update(@RequestHeader userId: String, @PathVariable id: Long, @RequestBody recipeNew: RecipeRequest) = recipeService.update(userId, id, recipeNew)
 
     // delete
 
@@ -60,5 +66,5 @@ class RecipeController(private val recipeService: RecipeService) {
 
     @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: Long) = recipeService.delete(id)
+    fun delete(@RequestHeader userId: String, @PathVariable id: Long) = recipeService.delete(userId, id)
 }

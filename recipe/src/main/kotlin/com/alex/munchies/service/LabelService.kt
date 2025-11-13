@@ -11,16 +11,13 @@ import org.springframework.stereotype.Service
 import java.util.Date
 
 @Service
-class LabelService(
-    private val userService: UserService,
-    private val labelRepository: LabelRepository
-) {
+class LabelService(private val labelRepository: LabelRepository) {
     // create
 
-    fun create(label: LabelRequest): LabelResponse {
+    fun create(userId: String, label: LabelRequest): LabelResponse {
         val entity = LabelEntity(
             0,
-            userService.userId,
+            userId,
             label.name,
             Date().time,
             Date().time
@@ -33,19 +30,19 @@ class LabelService(
 
     // read
 
-    fun readAll() = labelRepository
-        .findAllByUserId(userService.userId, Sort.unsorted())
+    fun readAll(userId: String, ) = labelRepository
+        .findAllByUserId(userId, Sort.unsorted())
         .map { it.toDomain() }
 
-    fun read(id: Long) = labelRepository
-        .findByIdAndUserIdOrThrow(id, userService.userId)
+    fun read(userId: String, id: Long) = labelRepository
+        .findByIdAndUserIdOrThrow(id, userId)
         .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, labelUpdate: LabelRequest) = labelRepository
-        .findByIdAndUserIdOrThrow(id, userService.userId)
+    fun update(userId: String, id: Long, labelUpdate: LabelRequest) = labelRepository
+        .findByIdAndUserIdOrThrow(id, userId)
         .apply {
             name = labelUpdate.name
             updatedAt = Date().time
@@ -53,10 +50,10 @@ class LabelService(
 
     // delete
 
-    fun delete(id: Long) {
+    fun delete(userId: String, id: Long) {
         labelRepository.apply {
-            existsByIdAndUserIdOrThrow(id, userService.userId)
-            deleteByIdAndUserId(id, userService.userId)
+            existsByIdAndUserIdOrThrow(id, userId)
+            deleteByIdAndUserId(id, userId)
         }
     }
 }

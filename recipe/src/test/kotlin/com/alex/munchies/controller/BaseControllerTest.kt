@@ -7,7 +7,6 @@ import com.alex.munchies.repository.LabelRepository
 import com.alex.munchies.repository.RecipeRepository
 import com.alex.munchies.repository.StepRepository
 import com.alex.munchies.service.S3Service
-import com.alex.munchies.service.UserService
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.junit.jupiter.api.AfterEach

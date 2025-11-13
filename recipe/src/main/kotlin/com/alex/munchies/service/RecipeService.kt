@@ -15,7 +15,6 @@ import java.util.Date
 
 @Service
 class RecipeService(
-    private val userService: UserService,
     private val s3Service: S3Service,
     private val labelRepository: LabelRepository,
     private val recipeRepository: RecipeRepository,
@@ -23,10 +22,10 @@ class RecipeService(
 ) {
     // create
 
-    fun create(recipe: RecipeRequest): RecipeResponse {
+    fun create(userId: String, recipe: RecipeRequest): RecipeResponse {
         val entity = RecipeEntity(
             0,
-            userService.userId,
+            userId,
             recipe.labelId,
             recipe.title,
             recipe.description,
@@ -41,7 +40,7 @@ class RecipeService(
             .toDomain()
     }
 
-    fun createFromTheMealDb(meal: Meal): RecipeResponse {
+    fun createFromTheMealDb(userId: String, meal: Meal): RecipeResponse {
         val recipe = theMealDbClient
             .getMeal(meal.idMeal)
             .meals
@@ -49,7 +48,7 @@ class RecipeService(
             .run {
                 RecipeEntity(
                     0,
-                    userService.userId,
+                    userId,
                     null,
                     strMeal,
                     strCategory,
@@ -67,28 +66,28 @@ class RecipeService(
 
     // read
 
-    fun readAll(sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<RecipeResponse> {
+    fun readAll(userId: String, sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<RecipeResponse> {
         return when (pageNumber >= 0 && pageSize >= 1) {
-            true -> recipeRepository.findAllByUserId(userService.userId, PageRequest.of(pageNumber, pageSize, sort))
-            false -> recipeRepository.findAllByUserId(userService.userId, sort)
+            true -> recipeRepository.findAllByUserId(userId, PageRequest.of(pageNumber, pageSize, sort))
+            false -> recipeRepository.findAllByUserId(userId, sort)
         }.map { it.toDomain() }
     }
 
-    fun read(id: Long) = recipeRepository
-        .findByIdAndUserIdOrThrow(id, userService.userId)
+    fun read(userId: String, id: Long) = recipeRepository
+        .findByIdAndUserIdOrThrow(id, userId)
         .toDomain()
 
     // update
 
     @Transactional
-    fun update(id: Long, recipeUpdate: RecipeRequest): RecipeResponse {
+    fun update(userId: String, id: Long, recipeUpdate: RecipeRequest): RecipeResponse {
         // check if the label-id exists
         recipeUpdate.labelId?.let {
-            labelRepository.existsByIdAndUserIdOrThrow(it, userService.userId)
+            labelRepository.existsByIdAndUserIdOrThrow(it, userId)
         }
 
         return recipeRepository
-            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .findByIdAndUserIdOrThrow(id, userId)
             .apply {
                 labelId = recipeUpdate.labelId
                 title = recipeUpdate.title
@@ -104,14 +103,14 @@ class RecipeService(
         recipeRepository.deleteAll()
     }
 
-    fun delete(id: Long) {
+    fun delete(userId: String, id: Long) {
         // try to delete the file from the storage
         recipeRepository
-            .findByIdAndUserIdOrThrow(id, userService.userId)
+            .findByIdAndUserIdOrThrow(id, userId)
             .filename
             ?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
 
         // delete the recipe
-        recipeRepository.deleteByIdAndUserId(id, userService.userId)
+        recipeRepository.deleteByIdAndUserId(id, userId)
     }
 }
