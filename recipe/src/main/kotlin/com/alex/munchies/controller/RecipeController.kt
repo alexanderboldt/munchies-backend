@@ -2,7 +2,6 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.RecipeRequest
-import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.service.RecipeService
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RateLimit
@@ -45,10 +44,7 @@ class RecipeController(private val recipeService: RecipeService) {
         @RequestParam sort: Sort = Sort.unsorted(),
         @RequestParam pageNumber: Int = -1,
         @RequestParam pageSize: Int = -1
-    ): List<RecipeResponse> {
-        println(userId)
-        return recipeService.readAll(userId, sort, pageNumber, pageSize)
-    }
+    ) = recipeService.readAll(userId, sort, pageNumber, pageSize)
 
     @GetMapping(Path.ID)
     fun read(@RequestHeader userId: String, @PathVariable id: Long) = recipeService.read(userId, id)

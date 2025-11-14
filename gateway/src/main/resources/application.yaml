@@ -10,9 +10,7 @@ spring:
         - id: recipe-service
           uri: http://localhost:4001
           predicates:
-            - Path=/api/v1/recipes/**, /api/v1/labels/**
-          filters:
-            - StripPrefix=1
+            - Path=/v1/recipes/**, /v1/labels/**
   security:
     oauth2:
       resourceserver:
