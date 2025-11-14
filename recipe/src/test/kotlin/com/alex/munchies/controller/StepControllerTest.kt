@@ -2,6 +2,7 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.RecipeResponse
+import com.alex.munchies.util.Header
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
 import com.alex.munchies.util.STEP_ID
@@ -38,6 +39,7 @@ class StepControllerTest : BaseControllerTest() {
     fun `should not create a step with invalid recipe-id`() {
         Given {
             body(Fixtures.Steps.dough)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             post(Path.STEP, 999)
         } Then {
@@ -59,7 +61,9 @@ class StepControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read all steps and return an empty list`() {
-        val steps = When {
+        val steps = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -75,7 +79,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should read all steps and return a list with one step`() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        val steps = When {
+        val steps = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -93,7 +99,9 @@ class StepControllerTest : BaseControllerTest() {
 
         stepsRequest.forEach { createStep(recipeCreated.id, it) }
 
-        val steps = When {
+        val steps = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -113,7 +121,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should not read one step and throw bad-request with invalid recipe-id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -124,7 +134,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should not read one step and throw bad-request with invalid id`() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP_ID, recipeCreated.id, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -135,7 +147,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should read one step and return it with valid id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        val step = When {
+        val step = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -157,6 +171,7 @@ class StepControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Steps.sauce)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.STEP_ID, 100, stepCreated.id)
         } Then {
@@ -170,6 +185,7 @@ class StepControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Steps.sauce)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.STEP_ID, recipeCreated.id, 100)
         } Then {
@@ -183,6 +199,7 @@ class StepControllerTest : BaseControllerTest() {
 
         val step = Given {
             body(Fixtures.Steps.sauce)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
@@ -203,7 +220,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should not delete a step and throw bad-request with invalid recipe-id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.STEP_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -214,7 +233,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should not delete a step and throw bad-request with invalid id`() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.STEP_ID, recipeCreated.id, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -225,7 +246,9 @@ class StepControllerTest : BaseControllerTest() {
     fun `should delete a step with valid id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
@@ -237,14 +260,18 @@ class StepControllerTest : BaseControllerTest() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         // delete the recipe
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
 
         // try to read the step
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.STEP_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)

@@ -17,6 +17,7 @@ import org.apache.http.HttpStatus
 fun createLabel(label: LabelRequest): LabelResponse {
     return Given {
         body(label)
+        header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
         post(Path.LABEL)
     } Then {
@@ -29,6 +30,7 @@ fun createLabel(label: LabelRequest): LabelResponse {
 fun createRecipe(recipe: RecipeRequest): RecipeResponse {
     return Given {
         body(recipe)
+        header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
         post(Path.RECIPE)
     } Then {
@@ -41,6 +43,7 @@ fun createRecipe(recipe: RecipeRequest): RecipeResponse {
 fun uploadRecipeImage(id: Long): RecipeResponse {
     return Given {
         multiPart("image", Fixtures.image)
+        header(Header.USER_ID, Fixtures.User.USER_ID)
         contentType(ContentType.MULTIPART)
     } When {
         post(Path.RECIPE_IMAGE, id)
@@ -54,6 +57,7 @@ fun uploadRecipeImage(id: Long): RecipeResponse {
 fun createStep(recipeId: Long, step: StepRequest): StepResponse {
     return Given {
         body(step)
+        header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
         post(Path.STEP, recipeId)
     } Then {

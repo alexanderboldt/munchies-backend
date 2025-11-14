@@ -4,6 +4,7 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.asRecipes
 import com.alex.munchies.service.S3Bucket
+import com.alex.munchies.util.Header
 import com.alex.munchies.util.LABEL_ID
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
@@ -40,6 +41,7 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should not create a recipe with invalid label-id`() {
         Given {
             body(Fixtures.Recipes.pizza.copy(labelId = 100))
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             post(Path.RECIPE)
         } Then {
@@ -64,7 +66,9 @@ class RecipeControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read all recipes and return an empty list`() {
-        val recipes = When {
+        val recipes = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -81,7 +85,9 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should read all recipes and return a list with one recipe`() {
         createRecipe(Fixtures.Recipes.pizza)
 
-        val recipes = When {
+        val recipes = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -99,7 +105,9 @@ class RecipeControllerTest : BaseControllerTest() {
 
         recipesRequest.forEach { createRecipe(it) }
 
-        val recipes = When {
+        val recipes = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -119,7 +127,9 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should not read one recipe and throw bad-request with invalid id`() {
         createRecipe(Fixtures.Recipes.pizza)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -130,7 +140,9 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should read one recipe and return it with valid id`() {
         val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
-        val recipe = When {
+        val recipe = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -151,6 +163,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Recipes.burger)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPE_ID, 100)
         } Then {
@@ -164,6 +177,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
         val recipe = Given {
             body(Fixtures.Recipes.burger)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPE_ID, recipeCreated.id)
         } Then {
@@ -185,14 +199,18 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipeCreated = createRecipe(recipeRequest)
 
         // execute: delete the label
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
 
         // verify: the label-id of a recipe is null
-        val recipe = When {
+        val recipe = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -211,7 +229,9 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should not delete a recipe and throw bad-request with invalid id`() {
         createRecipe(Fixtures.Recipes.pizza)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -222,7 +242,9 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should delete a recipe with valid id`() {
         val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
@@ -234,7 +256,9 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipeCreated = uploadRecipeImage(createRecipe(Fixtures.Recipes.pizza).id)
 
         // execute the delete and verify
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)

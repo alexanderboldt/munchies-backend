@@ -2,6 +2,7 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.domain.RecipeResponse
+import com.alex.munchies.util.Header
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.Path
 import com.alex.munchies.util.createRecipe
@@ -34,6 +35,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     fun `should not upload a recipe-image and throw bad-request with invalid id`() {
         Given {
             multiPart("image", Fixtures.image)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
             post(Path.RECIPE_IMAGE, 100)
@@ -46,6 +48,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     fun `should upload a recipe-image and return ok with valid id`() {
         val recipe = Given {
             multiPart("image", Fixtures.image)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
             post(Path.RECIPE_IMAGE, recipeCreated.id)
@@ -69,7 +72,9 @@ class RecipeImageControllerTest : BaseControllerTest() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE_IMAGE, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -81,7 +86,9 @@ class RecipeImageControllerTest : BaseControllerTest() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
-        val bytes = When {
+        val bytes = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.RECIPE_IMAGE, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -103,7 +110,9 @@ class RecipeImageControllerTest : BaseControllerTest() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_IMAGE, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -112,7 +121,9 @@ class RecipeImageControllerTest : BaseControllerTest() {
 
     @Test
     fun `should not delete a recipe-image with non existing image`() {
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_IMAGE, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -124,7 +135,9 @@ class RecipeImageControllerTest : BaseControllerTest() {
         // precondition: upload an image
         uploadRecipeImage(recipeCreated.id)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.RECIPE_IMAGE, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)

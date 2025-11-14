@@ -1,6 +1,7 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
+import com.alex.munchies.util.Header
 import com.alex.munchies.util.asLabel
 import com.alex.munchies.util.asLabels
 import com.alex.munchies.util.LABEL_ID
@@ -36,7 +37,9 @@ class LabelControllerTest : BaseControllerTest() {
 
     @Test
     fun `should read all labels and return an empty list`() {
-        val labels = When {
+        val labels = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -52,7 +55,9 @@ class LabelControllerTest : BaseControllerTest() {
     fun `should read all labels and return a list with one label`() {
         createLabel(Fixtures.Labels.vegetarian)
 
-        val labels = When {
+        val labels = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -70,7 +75,9 @@ class LabelControllerTest : BaseControllerTest() {
 
         labelsRequest.forEach { createLabel(it) }
 
-        val labels = When {
+        val labels = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.LABEL)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -90,7 +97,9 @@ class LabelControllerTest : BaseControllerTest() {
     fun `should not read one label and throw bad-request with invalid id`() {
         createLabel(Fixtures.Labels.vegetarian)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.LABEL_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -101,7 +110,9 @@ class LabelControllerTest : BaseControllerTest() {
     fun `should read one label and return it with valid id`() {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
-        val label = When {
+        val label = Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             get(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
@@ -123,6 +134,7 @@ class LabelControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Labels.vegan)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.LABEL_ID, 100)
         } Then {
@@ -136,6 +148,7 @@ class LabelControllerTest : BaseControllerTest() {
 
         val label = Given {
             body(Fixtures.Labels.vegan)
+            header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.LABEL_ID, labelCreated.id)
         } Then {
@@ -156,7 +169,9 @@ class LabelControllerTest : BaseControllerTest() {
     fun `should not delete a label and throw bad-request with invalid id`() {
         createLabel(Fixtures.Labels.vegetarian)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.LABEL_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
@@ -167,7 +182,9 @@ class LabelControllerTest : BaseControllerTest() {
     fun `should delete a label with valid id`() {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
-        When {
+        Given {
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
             delete(Path.LABEL_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
