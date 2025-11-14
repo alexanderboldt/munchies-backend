@@ -1,6 +1,5 @@
 package com.alex.munchies.controller
 
-import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.RecipeRequest
 import com.alex.munchies.service.RecipeService
 import com.alex.munchies.util.Path
@@ -31,10 +30,6 @@ class RecipeController(private val recipeService: RecipeService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestHeader userId: String, @RequestBody recipe: RecipeRequest) = recipeService.create(userId, recipe)
-
-    @PostMapping(Path.THE_MEAL_DB)
-    @ResponseStatus(HttpStatus.CREATED)
-    fun createFromTheMealDb(@RequestHeader userId: String, @RequestBody meal: Meal) = recipeService.createFromTheMealDb(userId, meal)
 
     // read
 

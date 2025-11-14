@@ -1,7 +1,3 @@
-values:
-  themealdb:
-    url: https://www.themealdb.com/api/json
-
 spring:
   application:
     name: munchies-recipe

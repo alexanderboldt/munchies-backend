@@ -1,6 +1,5 @@
 package com.alex.munchies.service
 
-import com.alex.munchies.domain.Meal
 import com.alex.munchies.domain.RecipeRequest
 import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.repository.RecipeRepository
@@ -17,8 +16,7 @@ import java.util.Date
 class RecipeService(
     private val s3Service: S3Service,
     private val labelRepository: LabelRepository,
-    private val recipeRepository: RecipeRepository,
-    private val theMealDbClient: TheMealDbClient
+    private val recipeRepository: RecipeRepository
 ) {
     // create
 
@@ -37,30 +35,6 @@ class RecipeService(
 
         return recipeRepository
             .save(entity)
-            .toDomain()
-    }
-
-    fun createFromTheMealDb(userId: String, meal: Meal): RecipeResponse {
-        val recipe = theMealDbClient
-            .getMeal(meal.idMeal)
-            .meals
-            .first()
-            .run {
-                RecipeEntity(
-                    0,
-                    userId,
-                    null,
-                    strMeal,
-                    strCategory,
-                    0,
-                    null,
-                    Date().time,
-                    Date().time
-                )
-            }
-
-        return recipeRepository
-            .save(recipe)
             .toDomain()
     }
 

@@ -11,7 +11,6 @@ This is a backend application made with Kotlin and Spring Boot for managing reci
 - MySQL
 - Keycloak
 - Flyway
-- OpenFeign
 - OpenApi
 
 ### Test

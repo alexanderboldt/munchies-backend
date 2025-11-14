@@ -20,8 +20,6 @@ dependencies {
 	implementation(libs.flyway.core)
 	implementation(libs.flyway.mysql)
 
-	implementation(libs.openfeign)
-
     implementation(libs.aws.s3)
 
     implementation(libs.resilience4j)
