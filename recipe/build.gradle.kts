@@ -22,8 +22,6 @@ dependencies {
 
     implementation(libs.aws.s3)
 
-    implementation(libs.resilience4j)
-
 	implementation(libs.springdoc)
 
 	// test libraries
