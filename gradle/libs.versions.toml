@@ -6,7 +6,6 @@ jackson-version = "2.20.1"
 mysql-version = "8.0.33"
 flyway-version = "11.12.0"
 aws-s3-version = "2.32.29"
-resilience4j-version = "2.3.0"
 spring-cloud-version = "4.3.2"
 springdoc-version = "2.8.13"
 
@@ -40,8 +39,6 @@ flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "fly
 flyway-mysql = { group = "org.flywaydb", name = "flyway-mysql", version.ref = "flyway-version" }
 
 aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3-version" }
-
-resilience4j = { group = "io.github.resilience4j", name = "resilience4j-spring-boot3", version.ref = "resilience4j-version" }
 
 springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-api", version.ref = "springdoc-version" }
 

@@ -30,7 +30,7 @@ class LabelService(private val labelRepository: LabelRepository) {
 
     // read
 
-    fun readAll(userId: String, ) = labelRepository
+    fun readAll(userId: String) = labelRepository
         .findAllByUserId(userId, Sort.unsorted())
         .map { it.toDomain() }
 
