@@ -11,6 +11,12 @@ spring:
           uri: http://localhost:4001
           predicates:
             - Path=/v1/recipes/**, /v1/labels/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@tokenKeyResolver}"
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
   security:
     oauth2:
       resourceserver:
