@@ -1,6 +1,7 @@
 services:
   mysql:
     image: mysql:9.2.0
+    container_name: munchies-mysql
     environment:
       MYSQL_DATABASE: ${DB_MAIN_DB}
       MYSQL_USER: ${DB_MAIN_USERNAME}
@@ -15,6 +16,7 @@ services:
 
   mysql-keycloak:
     image: mysql:9.2.0
+    container_name: munchies-mysql-keycloak
     environment:
       MYSQL_DATABASE: ${DB_KEYCLOAK_DB}
       MYSQL_USER: ${DB_KEYCLOAK_USERNAME}
@@ -29,6 +31,7 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
+    container_name: munchies-keycloak
     environment:
       KC_DB: mysql
       KC_DB_URL: jdbc:mysql://mysql-keycloak:3306/${DB_KEYCLOAK_DB}
@@ -48,6 +51,7 @@ services:
 
   minio:
     image: minio/minio
+    container_name: munchies-minio
     ports:
       - ${S3_PORT}:9000
       - ${S3_WEB_PORT}:9001
@@ -62,6 +66,7 @@ services:
 
   redis:
     image: redis:8.2.3-alpine
+    container_name: munchies-redis
     ports:
       - ${REDIS_PORT}:6379
     networks:
@@ -69,6 +74,7 @@ services:
 
   recipe:
     image: munchies/recipe:5.0.0
+    container_name: munchies-recipe
     build:
       context: .
       dockerfile: recipe/Dockerfile
@@ -86,6 +92,7 @@ services:
 
   gateway:
     image: munchies/gateway:1.0.0
+    container_name: munchies-gateway
     build:
       context: .
       dockerfile: gateway/Dockerfile
