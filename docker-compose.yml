@@ -67,17 +67,38 @@ services:
     networks:
       - backend
 
-  app:
-    image: munchies:5.0.0
-    build: .
+  recipe:
+    image: munchies/recipe:5.0.0
+    build:
+      context: .
+      dockerfile: recipe/Dockerfile
     ports:
-      - ${APP_PORT}:4000
+      - ${APP_RECIPE_PORT}:4001
     environment:
       SPRING_PROFILES_ACTIVE: stage
     depends_on:
       - mysql
       - keycloak
       - minio
+      - redis
+    networks:
+      - backend
+
+  gateway:
+    image: munchies/gateway:1.0.0
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - ${APP_GATEWAY_PORT}:4000
+    environment:
+      SPRING_PROFILES_ACTIVE: stage
+    depends_on:
+      - mysql
+      - keycloak
+      - minio
+      - redis
+      - recipe
     networks:
       - backend
 
