@@ -1,20 +1,25 @@
 # Munchies
 
-This is a backend application made with Kotlin and Spring Boot for managing recipes.
+This is a multi-module backend application with microservice architecture. Developed with Kotlin and Spring Boot for managing recipes.
 
 ## Tech-Stack
 
-### Development
+### Gateway Microservice
+- Kotlin
+- Spring Cloud Gateway
+- Redis
+- Keycloak
+
+### Recipe Microservice
 - Kotlin
 - Spring Boot
 - Hibernate
 - MySQL
-- Keycloak
 - Flyway
-- Redis
+- MinIO
 - OpenApi
 
-### Test
+### Test Environment
 - RestAssured
 - Mockito
 - Kotest
