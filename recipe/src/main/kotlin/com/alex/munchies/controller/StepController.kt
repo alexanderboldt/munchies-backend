@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
 @RestController
-@RequestMapping(Path.STEP)
+@RequestMapping(Path.RECIPE_STEP)
 class StepController(private val stepService: StepService) {
 
     // create

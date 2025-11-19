@@ -41,7 +41,7 @@ class StepControllerTest : BaseControllerTest() {
             body(Fixtures.Steps.dough)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            post(Path.STEP, 999)
+            post(Path.RECIPE_STEP, 999)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -64,7 +64,7 @@ class StepControllerTest : BaseControllerTest() {
         val steps = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP, recipeCreated.id)
+            get(Path.RECIPE_STEP, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -82,7 +82,7 @@ class StepControllerTest : BaseControllerTest() {
         val steps = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP, recipeCreated.id)
+            get(Path.RECIPE_STEP, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -102,7 +102,7 @@ class StepControllerTest : BaseControllerTest() {
         val steps = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP, recipeCreated.id)
+            get(Path.RECIPE_STEP, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
