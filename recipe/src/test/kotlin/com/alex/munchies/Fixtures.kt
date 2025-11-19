@@ -46,7 +46,7 @@ object Fixtures {
         )
     }
 
-    val image: File = File.createTempFile("image", ".jpg").apply {
+    val image: File = File.createTempFile("filename", ".jpg").apply {
         writeText("Image Content")
         deleteOnExit()
     }

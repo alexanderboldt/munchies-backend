@@ -1,6 +1,7 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Header
+import com.alex.munchies.Param
 import com.alex.munchies.Path
 import com.alex.munchies.service.RecipeImageService
 import org.springframework.http.HttpHeaders
@@ -27,7 +28,7 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
     fun uploadImage(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable id: Long,
-        @RequestParam image: MultipartFile
+        @RequestParam(Param.IMAGE) image: MultipartFile
     ) = recipeImageService.uploadImage(userId, id, image)
 
     @GetMapping(produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])

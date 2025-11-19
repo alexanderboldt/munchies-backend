@@ -2,6 +2,7 @@ package com.alex.munchies.util
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.Header
+import com.alex.munchies.Param
 import com.alex.munchies.Path
 import com.alex.munchies.domain.LabelRequest
 import com.alex.munchies.domain.LabelResponse
@@ -44,7 +45,7 @@ fun createRecipe(recipe: RecipeRequest): RecipeResponse {
 
 fun uploadRecipeImage(id: Long): RecipeResponse {
     return Given {
-        multiPart("image", Fixtures.image)
+        multiPart(Param.IMAGE, Fixtures.image)
         header(Header.USER_ID, Fixtures.User.USER_ID)
         contentType(ContentType.MULTIPART)
     } When {
