@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Header
 import com.alex.munchies.Path
 import com.alex.munchies.service.RecipeImageService
 import org.springframework.http.HttpHeaders
@@ -24,13 +25,13 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
 
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun uploadImage(
-        @RequestHeader userId: String,
+        @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable id: Long,
         @RequestParam image: MultipartFile
     ) = recipeImageService.uploadImage(userId, id, image)
 
     @GetMapping(produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE])
-    fun downloadImage(@RequestHeader userId: String, @PathVariable id: Long): ResponseEntity<ByteArray> {
+    fun downloadImage(@RequestHeader(Header.USER_ID) userId: String, @PathVariable id: Long): ResponseEntity<ByteArray> {
         val (bytes, filename) = recipeImageService.downloadImage(userId, id)
 
         return ResponseEntity
@@ -41,5 +42,5 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteImage(@RequestHeader userId: String, @PathVariable id: Long) = recipeImageService.deleteImage(userId, id)
+    fun deleteImage(@RequestHeader(Header.USER_ID) userId: String, @PathVariable id: Long) = recipeImageService.deleteImage(userId, id)
 }

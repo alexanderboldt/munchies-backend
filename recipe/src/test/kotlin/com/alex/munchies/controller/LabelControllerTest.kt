@@ -1,8 +1,8 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
+import com.alex.munchies.Header
 import com.alex.munchies.Path
-import com.alex.munchies.util.Header
 import com.alex.munchies.util.asLabel
 import com.alex.munchies.util.asLabels
 import com.alex.munchies.util.LABEL_ID

@@ -3,6 +3,7 @@ package com.alex.munchies.configuration
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpHeaders
 import reactor.core.publisher.Mono
 
 @Suppress("unused")
@@ -15,7 +16,7 @@ class KeyResolverConfig {
             Mono.just(exchange
                 .request
                 .headers
-                .getFirst("Authorization")
+                .getFirst(HttpHeaders.AUTHORIZATION)
                 ?.removePrefix("Bearer ")
                 ?: "anonymous"
             )

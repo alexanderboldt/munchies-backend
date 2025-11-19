@@ -1,9 +1,9 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
+import com.alex.munchies.Header
 import com.alex.munchies.Path
 import com.alex.munchies.domain.RecipeResponse
-import com.alex.munchies.util.Header
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.createRecipe
 import com.alex.munchies.util.uploadRecipeImage

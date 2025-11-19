@@ -1,5 +1,6 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Header
 import com.alex.munchies.Path
 import com.alex.munchies.domain.StepRequest
 import com.alex.munchies.service.StepService
@@ -25,7 +26,7 @@ class StepController(private val stepService: StepService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(
-        @RequestHeader userId: String,
+        @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable recipeId: Long,
         @RequestBody step: StepRequest
     ) = stepService.create(userId, recipeId, step)
@@ -33,11 +34,11 @@ class StepController(private val stepService: StepService) {
     // read
 
     @GetMapping
-    fun readAll(@RequestHeader userId: String, @PathVariable recipeId: Long) = stepService.readAll(userId, recipeId)
+    fun readAll(@RequestHeader(Header.USER_ID) userId: String, @PathVariable recipeId: Long) = stepService.readAll(userId, recipeId)
 
     @GetMapping(Path.ID)
     fun read(
-        @RequestHeader userId: String,
+        @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable recipeId: Long,
         @PathVariable id: Long
     ) = stepService.read(userId, id, recipeId)
@@ -46,7 +47,7 @@ class StepController(private val stepService: StepService) {
 
     @PutMapping(Path.ID)
     fun update(
-        @RequestHeader userId: String,
+        @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable recipeId: Long,
         @PathVariable id: Long,
         @RequestBody step: StepRequest
@@ -57,7 +58,7 @@ class StepController(private val stepService: StepService) {
     @DeleteMapping(Path.ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(
-        @RequestHeader userId: String,
+        @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable recipeId: Long,
         @PathVariable id: Long
     ) = stepService.delete(userId, id, recipeId)

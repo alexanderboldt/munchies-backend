@@ -1,5 +1,6 @@
 package com.alex.munchies.configuration
 
+import com.alex.munchies.Header
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
 import org.springframework.cloud.gateway.filter.GlobalFilter
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
@@ -18,7 +19,7 @@ class UserIdFilter : GlobalFilter {
             val newRequest = exchange
                 .request
                 .mutate()
-                .header("userId", auth.token.subject)
+                .header(Header.USER_ID, auth.token.subject)
                 .build()
 
             // build the exchange with the new request
