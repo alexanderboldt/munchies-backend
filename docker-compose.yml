@@ -12,7 +12,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - backend
+      - munchies
 
   mysql-keycloak:
     image: mysql:9.2.0
@@ -27,7 +27,7 @@ services:
     volumes:
       - mysql_keycloak_data:/var/lib/mysql
     networks:
-      - backend
+      - munchies
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
@@ -45,7 +45,7 @@ services:
     command:
       - start-dev
     networks:
-      - backend
+      - munchies
     depends_on:
       - mysql-keycloak
 
@@ -62,7 +62,7 @@ services:
       - minio_data:/data
     command: server --console-address ":${S3_WEB_PORT}" /data
     networks:
-      - backend
+      - munchies
 
   redis:
     image: redis:8.2.3-alpine
@@ -70,7 +70,7 @@ services:
     ports:
       - ${REDIS_PORT}:6379
     networks:
-      - backend
+      - munchies
 
   recipe:
     image: munchies/recipe:5.0.0
@@ -88,7 +88,7 @@ services:
       - minio
       - redis
     networks:
-      - backend
+      - munchies
 
   gateway:
     image: munchies/gateway:1.0.0
@@ -107,7 +107,7 @@ services:
       - redis
       - recipe
     networks:
-      - backend
+      - munchies
 
 volumes:
   mysql_data:
@@ -115,5 +115,6 @@ volumes:
   minio_data:
 
 networks:
-  backend:
+  munchies:
+    name: munchies
     driver: bridge
