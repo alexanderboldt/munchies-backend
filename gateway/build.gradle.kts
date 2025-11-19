@@ -15,6 +15,8 @@ dependencies {
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.data.redis.reactive)
 
+    implementation(project(":common"))
+
     // test libraries
     testImplementation(libs.spring.boot.starter.test) {
         exclude(module = "junit")

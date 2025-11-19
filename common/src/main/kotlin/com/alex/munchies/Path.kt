@@ -1,4 +1,4 @@
-package com.alex.munchies.util
+package com.alex.munchies
 
 object Path {
     const val LABEL = "v1/labels"

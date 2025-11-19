@@ -1,8 +1,8 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Path
 import com.alex.munchies.domain.RecipeRequest
 import com.alex.munchies.service.RecipeService
-import com.alex.munchies.util.Path
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping

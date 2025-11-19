@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
+import com.alex.munchies.Path
 import com.alex.munchies.service.RecipeImageService
-import com.alex.munchies.util.Path
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

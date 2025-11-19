@@ -1,6 +1,6 @@
 package com.alex.munchies.configuration
 
-import com.alex.munchies.util.Path
+import com.alex.munchies.Path
 import com.alex.munchies.util.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

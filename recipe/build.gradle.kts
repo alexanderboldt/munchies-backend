@@ -24,6 +24,8 @@ dependencies {
 
 	implementation(libs.springdoc)
 
+    implementation(project(":common"))
+
 	// test libraries
 	testImplementation(libs.spring.boot.starter.test) {
 		exclude(module = "junit")

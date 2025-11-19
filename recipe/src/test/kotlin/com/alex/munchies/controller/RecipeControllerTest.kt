@@ -1,12 +1,12 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
+import com.alex.munchies.Path
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.asRecipes
 import com.alex.munchies.service.S3Bucket
 import com.alex.munchies.util.Header
 import com.alex.munchies.util.LABEL_ID
-import com.alex.munchies.util.Path
 import com.alex.munchies.util.RECIPE_ID
 import com.alex.munchies.util.createLabel
 import com.alex.munchies.util.createRecipe
