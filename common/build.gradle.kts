@@ -1,20 +1,7 @@
 plugins {
-    kotlin("jvm")
-}
-
-group = "com.alex"
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation(kotlin("test"))
+    alias(libs.plugins.kotlin.jvm)
 }
 
 tasks.test {
     useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(21)
 }
