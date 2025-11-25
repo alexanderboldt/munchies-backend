@@ -1,7 +1,7 @@
 [versions]
 # development versions
 kotlin = "2.2.21"
-spring = "3.5.7"
+spring = "3.5.8"
 jackson = "2.20.1"
 mysql = "8.0.33"
 flyway = "11.12.0"
