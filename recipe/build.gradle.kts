@@ -12,9 +12,8 @@ dependencies {
 	implementation(libs.kotlin.stdlib)
 	implementation(libs.jackson.kotlin)
 
-	implementation(libs.spring.boot.starter.web)
+	implementation(libs.spring.boot.starter.webmvc)
 	implementation(libs.spring.boot.starter.data)
-	implementation(libs.spring.boot.starter.aop)
 
 	implementation(libs.mysql)
 	implementation(libs.flyway.core)
@@ -27,7 +26,7 @@ dependencies {
     implementation(project(":common"))
 
 	// test libraries
-	testImplementation(libs.spring.boot.starter.test) {
+	testImplementation(libs.spring.boot.starter.webmvc.test) {
 		exclude(module = "junit")
 	}
 
@@ -36,11 +35,11 @@ dependencies {
 	testImplementation(libs.kotest.runner.junit)
 	testImplementation(libs.kotest.assertions.core)
 
-	testImplementation(libs.testcontainers.junit.jupiter)
+    testImplementation(libs.rest.assured)
 
+	testImplementation(libs.testcontainers.junit.jupiter)
 	testImplementation(libs.testcontainers.mysql)
     testImplementation(libs.testcontainers.minio)
-	testImplementation(libs.rest.assured)
 }
 
 tasks.withType<Test> {

@@ -8,17 +8,15 @@ dependencies {
     // development libraries
     implementation(libs.kotlin.reflect)
 
-    implementation(libs.spring.cloud.starter.gateway)
+    implementation(libs.spring.cloud.starter.gateway.server.webflux)
 
-    implementation(libs.spring.boot.starter.webflux)
-    implementation(libs.spring.boot.starter.oauth2.resource)
-    implementation(libs.spring.boot.starter.security)
+    implementation(libs.spring.boot.starter.security.oauth2.resource.server)
     implementation(libs.spring.boot.starter.data.redis.reactive)
 
     implementation(project(":common"))
 
     // test libraries
-    testImplementation(libs.spring.boot.starter.test) {
+    testImplementation(libs.spring.boot.starter.webmvc.test) {
         exclude(module = "junit")
     }
 }

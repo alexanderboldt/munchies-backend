@@ -1,17 +1,19 @@
 spring:
   cloud:
     gateway:
-      routes:
-        - id: recipe-service
-          uri: http://recipe:4001
-          predicates:
-            - Path=/v1/recipes/**, /v1/labels/**
-          filters:
-            - name: RequestRateLimiter
-              args:
-                key-resolver: "#{@tokenKeyResolver}"
-                redis-rate-limiter.replenishRate: 5
-                redis-rate-limiter.burstCapacity: 10
+      server:
+        webflux:
+          routes:
+            - id: recipe-service
+              uri: http://recipe:4001
+              predicates:
+                - Path=/v1/recipes/**, /v1/labels/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@tokenKeyResolver}"
+                    redis-rate-limiter.replenishRate: 5
+                    redis-rate-limiter.burstCapacity: 10
   redis:
     host: redis
     port: 6379

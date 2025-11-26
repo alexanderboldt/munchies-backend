@@ -1,19 +1,19 @@
 [versions]
 # development versions
 kotlin = "2.2.21"
-spring = "3.5.8"
+spring-cloud = "5.0.0"
+spring-boot = "4.0.0"
 jackson = "2.20.1"
 mysql = "8.0.33"
 flyway = "11.17.2"
 aws-s3 = "2.39.3"
-spring-cloud = "4.3.2"
 springdoc = "2.8.13"
 
 # test versions
 mockito-kotlin = "6.1.0"
 kotest = "6.0.5"
 rest-assured = "5.5.5"
-testcontainer = "1.21.3"
+testcontainer = "2.0.2"
 
 # plugin versions
 spring-dependency = "1.1.7"
@@ -24,15 +24,12 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 jackson-kotlin = { group = "com.fasterxml.jackson.module", name ="jackson-module-kotlin", version.ref = "jackson" }
 
-spring-cloud-starter-gateway = { group = "org.springframework.cloud", name = "spring-cloud-starter-gateway", version.ref = "spring-cloud" }
+spring-cloud-starter-gateway-server-webflux = { group = "org.springframework.cloud", name = "spring-cloud-starter-gateway-server-webflux", version.ref = "spring-cloud" }
 
-spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web", version.ref = "spring" }
-spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux", version.ref = "spring" }
-spring-boot-starter-data = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring" }
-spring-boot-starter-oauth2-resource = { group = "org.springframework.boot", name = "spring-boot-starter-oauth2-resource-server", version.ref = "spring" }
-spring-boot-starter-security = { group = "org.springframework.boot", name = "spring-boot-starter-security", version.ref = "spring" }
-spring-boot-starter-data-redis-reactive = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis-reactive", version.ref = "spring" }
-spring-boot-starter-aop = { group = "org.springframework.boot", name = "spring-boot-starter-aop", version.ref = "spring" }
+spring-boot-starter-webmvc = { group = "org.springframework.boot", name = "spring-boot-starter-webmvc", version.ref = "spring-boot" }
+spring-boot-starter-data = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+spring-boot-starter-security-oauth2-resource-server = { group = "org.springframework.boot", name = "spring-boot-starter-security-oauth2-resource-server", version.ref = "spring-boot" }
+spring-boot-starter-data-redis-reactive = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis-reactive", version.ref = "spring-boot" }
 
 mysql = { group = "mysql", name = "mysql-connector-java", version.ref = "mysql" }
 flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
@@ -43,7 +40,7 @@ aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3"
 springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 
 # test libraries
-spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test", version.ref = "spring" }
+spring-boot-starter-webmvc-test = { group = "org.springframework.boot", name = "spring-boot-starter-webmvc-test", version.ref = "spring-boot" }
 
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 
@@ -52,13 +49,13 @@ kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core",
 
 rest-assured = { group = "io.rest-assured", name = "kotlin-extensions", version.ref = "rest-assured" }
 
-testcontainers-junit-jupiter = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainer"  }
-testcontainers-mysql = { group = "org.testcontainers", name = "mysql", version.ref = "testcontainer"  }
-testcontainers-minio = { group = "org.testcontainers", name = "minio", version.ref = "testcontainer"  }
+testcontainers-junit-jupiter = { group = "org.testcontainers", name = "testcontainers-junit-jupiter", version.ref = "testcontainer"  }
+testcontainers-mysql = { group = "org.testcontainers", name = "testcontainers-mysql", version.ref = "testcontainer"  }
+testcontainers-minio = { group = "org.testcontainers", name = "testcontainers-minio", version.ref = "testcontainer"  }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
-spring-boot = { id = "org.springframework.boot", version.ref = "spring" }
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency" }
