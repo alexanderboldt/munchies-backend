@@ -12,7 +12,7 @@ springdoc = "2.8.13"
 # test versions
 mockito-kotlin = "6.1.0"
 kotest = "6.0.5"
-rest-assured = "5.5.5"
+rest-assured = "5.5.6"
 testcontainer = "2.0.2"
 
 # plugin versions
@@ -28,11 +28,11 @@ spring-cloud-starter-gateway-server-webflux = { group = "org.springframework.clo
 
 spring-boot-starter-webmvc = { group = "org.springframework.boot", name = "spring-boot-starter-webmvc", version.ref = "spring-boot" }
 spring-boot-starter-data = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+spring-boot-starter-flyway = { group = "org.springframework.boot", name = "spring-boot-starter-flyway", version.ref = "spring-boot" }
 spring-boot-starter-security-oauth2-resource-server = { group = "org.springframework.boot", name = "spring-boot-starter-security-oauth2-resource-server", version.ref = "spring-boot" }
 spring-boot-starter-data-redis-reactive = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis-reactive", version.ref = "spring-boot" }
 
 mysql = { group = "mysql", name = "mysql-connector-java", version.ref = "mysql" }
-flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
 flyway-mysql = { group = "org.flywaydb", name = "flyway-mysql", version.ref = "flyway" }
 
 aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3" }
@@ -41,6 +41,7 @@ springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-
 
 # test libraries
 spring-boot-starter-webmvc-test = { group = "org.springframework.boot", name = "spring-boot-starter-webmvc-test", version.ref = "spring-boot" }
+spring-boot-starter-flyway-test = { group = "org.springframework.boot", name = "spring-boot-starter-flyway-test", version.ref = "spring-boot" }
 
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 

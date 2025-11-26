@@ -14,10 +14,10 @@ dependencies {
 
 	implementation(libs.spring.boot.starter.webmvc)
 	implementation(libs.spring.boot.starter.data)
+	implementation(libs.spring.boot.starter.flyway)
 
 	implementation(libs.mysql)
-	implementation(libs.flyway.core)
-	implementation(libs.flyway.mysql)
+    implementation(libs.flyway.mysql)
 
     implementation(libs.aws.s3)
 
@@ -26,9 +26,8 @@ dependencies {
     implementation(project(":common"))
 
 	// test libraries
-	testImplementation(libs.spring.boot.starter.webmvc.test) {
-		exclude(module = "junit")
-	}
+	testImplementation(libs.spring.boot.starter.webmvc.test) { exclude(module = "junit") }
+    testImplementation(libs.spring.boot.starter.flyway.test)
 
     testImplementation(libs.mockito.kotlin)
 
