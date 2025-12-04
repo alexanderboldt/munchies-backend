@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
 @RestController
-@RequestMapping(Path.LABEL)
+@RequestMapping(Path.LABEL, version = "1")
 class LabelController(private val labelService: LabelService) {
 
     // create
