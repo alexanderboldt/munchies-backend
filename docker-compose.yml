@@ -77,9 +77,6 @@ services:
   recipe:
     image: munchies/recipe:5.0.0
     container_name: munchies-recipe
-    build:
-      context: .
-      dockerfile: recipe/Dockerfile
     ports:
       - ${APP_RECIPE_PORT}:4001
     environment:
@@ -95,9 +92,6 @@ services:
   gateway:
     image: munchies/gateway:1.0.0
     container_name: munchies-gateway
-    build:
-      context: .
-      dockerfile: gateway/Dockerfile
     ports:
       - ${APP_GATEWAY_PORT}:4000
     environment:

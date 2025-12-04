@@ -4,6 +4,7 @@ plugins {
 	alias(libs.plugins.kotlin.jpa)
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dependency.management)
+    alias(libs.plugins.jib)
 }
 
 dependencies {
@@ -43,4 +44,10 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// run with: ./gradlew clean recipe:jibDockerBuild
+jib {
+    from.image = "eclipse-temurin:21-jdk-alpine"
+    to.image = "munchies/recipe:5.0.0"
 }
