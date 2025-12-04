@@ -17,6 +17,7 @@ testcontainer = "2.0.2"
 
 # plugin versions
 spring-dependency = "1.1.7"
+jib = "3.5.1"
 
 [libraries]
 # development libraries
@@ -60,3 +61,4 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.spring.boot)
+    alias(libs.plugins.jib)
 }
 
 dependencies {
@@ -23,4 +24,10 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// run with: ./gradlew clean gateway:jibDockerBuild
+jib {
+    from.image = "eclipse-temurin:21-jdk-alpine"
+    to.image = "munchies/gateway:1.0.0"
 }
