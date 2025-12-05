@@ -29,5 +29,5 @@ tasks.withType<Test> {
 // run with: ./gradlew clean gateway:jibDockerBuild
 jib {
     from.image = "eclipse-temurin:21-jdk-alpine"
-    to.image = "munchies/gateway:1.0.0"
+    to.image = "munchies/gateway:2.0.0"
 }
