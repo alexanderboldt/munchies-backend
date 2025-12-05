@@ -26,7 +26,7 @@ class SecurityConfiguration {
         cors { disable() }
         csrf { disable() }
         authorizeExchange {
-            authorize(pathMatchers(HttpMethod.DELETE, Path.RECIPE), hasRole(Role.ADMIN))
+            authorize(pathMatchers(HttpMethod.DELETE, Path.RECIPES), hasRole(Role.ADMIN))
             authorize(anyExchange, hasRole(Role.USER))
         }
         oauth2ResourceServer {

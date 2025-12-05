@@ -6,8 +6,6 @@ import com.alex.munchies.Path
 import com.alex.munchies.util.asRecipe
 import com.alex.munchies.util.asRecipes
 import com.alex.munchies.service.S3Bucket
-import com.alex.munchies.util.LABEL_ID
-import com.alex.munchies.util.RECIPE_ID
 import com.alex.munchies.util.createLabel
 import com.alex.munchies.util.createRecipe
 import com.alex.munchies.util.shouldBeRecipe
@@ -43,7 +41,7 @@ class RecipeControllerTest : BaseControllerTest() {
             body(Fixtures.Recipes.pizza.copy(labelId = 100))
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            post(Path.RECIPE)
+            post(Path.RECIPES)
         } Then {
             statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
         }
@@ -69,7 +67,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipes = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE)
+            get(Path.RECIPES)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -88,7 +86,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipes = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE)
+            get(Path.RECIPES)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -108,7 +106,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipes = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE)
+            get(Path.RECIPES)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -130,7 +128,7 @@ class RecipeControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_ID, 100)
+            get(Path.RECIPES_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -143,7 +141,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipe = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_ID, recipeCreated.id)
+            get(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -165,7 +163,7 @@ class RecipeControllerTest : BaseControllerTest() {
             body(Fixtures.Recipes.burger)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.RECIPE_ID, 100)
+            put(Path.RECIPES_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -179,7 +177,7 @@ class RecipeControllerTest : BaseControllerTest() {
             body(Fixtures.Recipes.burger)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.RECIPE_ID, recipeCreated.id)
+            put(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -202,7 +200,7 @@ class RecipeControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.LABEL_ID, labelCreated.id)
+            delete(Path.LABELS_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -211,7 +209,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipe = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_ID, recipeCreated.id)
+            get(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -232,7 +230,7 @@ class RecipeControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_ID, 100)
+            delete(Path.RECIPES_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -245,7 +243,7 @@ class RecipeControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_ID, recipeCreated.id)
+            delete(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -259,7 +257,7 @@ class RecipeControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_ID, recipeCreated.id)
+            delete(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }

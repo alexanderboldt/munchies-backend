@@ -35,7 +35,7 @@ fun createRecipe(recipe: RecipeRequest): RecipeResponse {
         body(recipe)
         header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
-        post(Path.RECIPE)
+        post(Path.RECIPES)
     } Then {
         statusCode(HttpStatus.SC_CREATED)
     } Extract {
