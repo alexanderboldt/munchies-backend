@@ -62,7 +62,7 @@ fun createStep(recipeId: Long, step: StepRequest): StepResponse {
         body(step)
         header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
-        post(Path.RECIPE_STEP, recipeId)
+        post(Path.RECIPES_STEPS, recipeId)
     } Then {
         statusCode(HttpStatus.SC_CREATED)
     } Extract {

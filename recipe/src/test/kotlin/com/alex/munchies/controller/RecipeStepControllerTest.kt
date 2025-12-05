@@ -4,8 +4,6 @@ import com.alex.munchies.Fixtures
 import com.alex.munchies.Header
 import com.alex.munchies.Path
 import com.alex.munchies.domain.RecipeResponse
-import com.alex.munchies.util.RECIPE_ID
-import com.alex.munchies.util.STEP_ID
 import com.alex.munchies.util.asStep
 import com.alex.munchies.util.asSteps
 import com.alex.munchies.util.createRecipe
@@ -23,7 +21,7 @@ import org.apache.http.HttpStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class StepControllerTest : BaseControllerTest() {
+class RecipeStepControllerTest : BaseControllerTest() {
 
     private lateinit var recipeCreated: RecipeResponse
 
@@ -41,7 +39,7 @@ class StepControllerTest : BaseControllerTest() {
             body(Fixtures.Steps.dough)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            post(Path.RECIPE_STEP, 999)
+            post(Path.RECIPES_STEPS, 999)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -64,7 +62,7 @@ class StepControllerTest : BaseControllerTest() {
         val steps = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_STEP, recipeCreated.id)
+            get(Path.RECIPES_STEPS, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -82,7 +80,7 @@ class StepControllerTest : BaseControllerTest() {
         val steps = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_STEP, recipeCreated.id)
+            get(Path.RECIPES_STEPS, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -102,7 +100,7 @@ class StepControllerTest : BaseControllerTest() {
         val steps = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_STEP, recipeCreated.id)
+            get(Path.RECIPES_STEPS, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -124,7 +122,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP_ID, 100, stepCreated.id)
+            get(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -137,7 +135,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP_ID, recipeCreated.id, 100)
+            get(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -150,7 +148,7 @@ class StepControllerTest : BaseControllerTest() {
         val step = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP_ID, recipeCreated.id, stepCreated.id)
+            get(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -173,7 +171,7 @@ class StepControllerTest : BaseControllerTest() {
             body(Fixtures.Steps.sauce)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.STEP_ID, 100, stepCreated.id)
+            put(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -187,7 +185,7 @@ class StepControllerTest : BaseControllerTest() {
             body(Fixtures.Steps.sauce)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.STEP_ID, recipeCreated.id, 100)
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -201,7 +199,7 @@ class StepControllerTest : BaseControllerTest() {
             body(Fixtures.Steps.sauce)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.STEP_ID, recipeCreated.id, stepCreated.id)
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -223,7 +221,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.STEP_ID, 100, stepCreated.id)
+            delete(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -236,7 +234,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.STEP_ID, recipeCreated.id, 100)
+            delete(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -249,7 +247,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.STEP_ID, recipeCreated.id, stepCreated.id)
+            delete(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -263,7 +261,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_ID, recipeCreated.id)
+            delete(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
@@ -272,7 +270,7 @@ class StepControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.STEP_ID, recipeCreated.id, stepCreated.id)
+            get(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
