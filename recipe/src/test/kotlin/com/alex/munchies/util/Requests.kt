@@ -49,7 +49,7 @@ fun uploadRecipeImage(id: Long): RecipeResponse {
         header(Header.USER_ID, Fixtures.User.USER_ID)
         contentType(ContentType.MULTIPART)
     } When {
-        post(Path.RECIPE_IMAGE, id)
+        post(Path.RECIPES_IMAGES, id)
     } Then {
         statusCode(HttpStatus.SC_OK)
     } Extract {

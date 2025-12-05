@@ -39,7 +39,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
-            post(Path.RECIPE_IMAGE, 100)
+            post(Path.RECIPES_IMAGES, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -52,7 +52,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
-            post(Path.RECIPE_IMAGE, recipeCreated.id)
+            post(Path.RECIPES_IMAGES, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -76,7 +76,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_IMAGE, 100)
+            get(Path.RECIPES_IMAGES, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -90,7 +90,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         val bytes = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.RECIPE_IMAGE, recipeCreated.id)
+            get(Path.RECIPES_IMAGES, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
             contentType(ContentType.BINARY)
@@ -114,7 +114,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_IMAGE, 100)
+            delete(Path.RECIPES_IMAGES, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -125,7 +125,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_IMAGE, recipeCreated.id)
+            delete(Path.RECIPES_IMAGES, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -139,7 +139,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.RECIPE_IMAGE, recipeCreated.id)
+            delete(Path.RECIPES_IMAGES, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }

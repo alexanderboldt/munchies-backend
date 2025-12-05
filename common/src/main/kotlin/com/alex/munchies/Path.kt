@@ -12,7 +12,9 @@ object Path {
     const val RECIPES = "recipes"
     const val RECIPES_ID = "recipes/{recipe_id}"
 
-    const val RECIPE_IMAGE = "recipes/{id}/images"
+    // recipes - images
+    const val RECIPES_IMAGES = "recipes/{recipe_id}/images"
+
     const val RECIPE_STEP = "recipes/{recipeId}/steps"
     const val ID = "{id}"
 }
