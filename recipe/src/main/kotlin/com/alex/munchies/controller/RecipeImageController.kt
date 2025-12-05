@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Suppress("unused")
 @RestController
-@RequestMapping(Path.RECIPE_IMAGE)
+@RequestMapping(Path.RECIPE_IMAGE, version = "1")
 class RecipeImageController(private val recipeImageService: RecipeImageService) {
 
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])

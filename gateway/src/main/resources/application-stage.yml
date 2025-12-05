@@ -7,7 +7,7 @@ spring:
             - id: recipe-service
               uri: http://recipe:4001
               predicates:
-                - Path=/v1/recipes/**, /labels/**
+                - Path=/recipes/**, /labels/**
               filters:
                 - name: RequestRateLimiter
                   args:

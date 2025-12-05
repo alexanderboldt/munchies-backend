@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
 @RestController
-@RequestMapping(Path.RECIPE)
+@RequestMapping(Path.RECIPE, version = "1")
 class RecipeController(private val recipeService: RecipeService) {
 
     // create
