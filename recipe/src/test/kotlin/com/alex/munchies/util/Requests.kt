@@ -22,7 +22,7 @@ fun createLabel(label: LabelRequest): LabelResponse {
         body(label)
         header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
-        post(Path.LABEL)
+        post(Path.LABELS)
     } Then {
         statusCode(HttpStatus.SC_CREATED)
     } Extract {

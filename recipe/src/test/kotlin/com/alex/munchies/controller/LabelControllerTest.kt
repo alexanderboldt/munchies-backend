@@ -5,7 +5,6 @@ import com.alex.munchies.Header
 import com.alex.munchies.Path
 import com.alex.munchies.util.asLabel
 import com.alex.munchies.util.asLabels
-import com.alex.munchies.util.LABEL_ID
 import com.alex.munchies.util.createLabel
 import com.alex.munchies.util.shouldBeLabel
 import com.alex.munchies.util.shouldBeLabels
@@ -40,7 +39,7 @@ class LabelControllerTest : BaseControllerTest() {
         val labels = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.LABEL)
+            get(Path.LABELS)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -58,7 +57,7 @@ class LabelControllerTest : BaseControllerTest() {
         val labels = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.LABEL)
+            get(Path.LABELS)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -78,7 +77,7 @@ class LabelControllerTest : BaseControllerTest() {
         val labels = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.LABEL)
+            get(Path.LABELS)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -100,7 +99,7 @@ class LabelControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.LABEL_ID, 100)
+            get(Path.LABELS_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -113,7 +112,7 @@ class LabelControllerTest : BaseControllerTest() {
         val label = Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            get(Path.LABEL_ID, labelCreated.id)
+            get(Path.LABELS_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -136,7 +135,7 @@ class LabelControllerTest : BaseControllerTest() {
             body(Fixtures.Labels.vegan)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.LABEL_ID, 100)
+            put(Path.LABELS_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -150,7 +149,7 @@ class LabelControllerTest : BaseControllerTest() {
             body(Fixtures.Labels.vegan)
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            put(Path.LABEL_ID, labelCreated.id)
+            put(Path.LABELS_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_OK)
         } Extract {
@@ -172,7 +171,7 @@ class LabelControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.LABEL_ID, 100)
+            delete(Path.LABELS_ID, 100)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -185,7 +184,7 @@ class LabelControllerTest : BaseControllerTest() {
         Given {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
-            delete(Path.LABEL_ID, labelCreated.id)
+            delete(Path.LABELS_ID, labelCreated.id)
         } Then {
             statusCode(HttpStatus.SC_NO_CONTENT)
         }
