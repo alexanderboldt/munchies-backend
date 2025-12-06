@@ -27,3 +27,17 @@ This is a multi-module backend application with microservice architecture. Devel
 
 ### Buildsystem
 - Gradle
+
+## Install
+1. Build the docker image of the gateway microservice:
+```bash
+./gradlew clean gateway:jibDockerBuild
+```
+2. Build the docker image of the recipe microservice:
+```bash
+./gradlew clean recipe:jibDockerBuild
+```
+3. Create and start the containers:
+```bash
+docker compose up -d
+```
