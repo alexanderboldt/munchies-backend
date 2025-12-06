@@ -4,7 +4,7 @@ import com.alex.munchies.Header
 import com.alex.munchies.Path
 import com.alex.munchies.PathParam
 import com.alex.munchies.domain.StepRequest
-import com.alex.munchies.service.StepService
+import com.alex.munchies.service.RecipeStepService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Suppress("unused")
 @RestController
-class RecipeStepController(private val stepService: StepService) {
+class RecipeStepController(private val recipeStepService: RecipeStepService) {
 
     // create
 
@@ -28,7 +28,7 @@ class RecipeStepController(private val stepService: StepService) {
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @RequestBody step: StepRequest
-    ) = stepService.create(userId, recipeId, step)
+    ) = recipeStepService.create(userId, recipeId, step)
 
     // read
 
@@ -36,14 +36,14 @@ class RecipeStepController(private val stepService: StepService) {
     fun readAll(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long
-    ) = stepService.readAll(userId, recipeId)
+    ) = recipeStepService.readAll(userId, recipeId)
 
     @GetMapping(Path.RECIPES_STEPS_ID, version = "1")
     fun read(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @PathVariable(PathParam.STEP_ID) id: Long
-    ) = stepService.read(userId, id, recipeId)
+    ) = recipeStepService.read(userId, id, recipeId)
 
     // update
 
@@ -53,7 +53,7 @@ class RecipeStepController(private val stepService: StepService) {
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @PathVariable(PathParam.STEP_ID) id: Long,
         @RequestBody step: StepRequest
-    ) = stepService.update(userId, id, recipeId, step)
+    ) = recipeStepService.update(userId, id, recipeId, step)
 
     // delete
 
@@ -63,5 +63,5 @@ class RecipeStepController(private val stepService: StepService) {
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @PathVariable(PathParam.STEP_ID) id: Long
-    ) = stepService.delete(userId, id, recipeId)
+    ) = recipeStepService.delete(userId, id, recipeId)
 }

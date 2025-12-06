@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.Date
 
 @Service
-class StepService(
+class RecipeStepService(
     private val recipeRepository: RecipeRepository,
     private val stepRepository: StepRepository
 ) {

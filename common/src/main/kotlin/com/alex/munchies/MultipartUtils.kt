@@ -1,5 +1,5 @@
 package com.alex.munchies
 
-object Param {
+object MultipartParam {
     const val IMAGE = "image"
 }

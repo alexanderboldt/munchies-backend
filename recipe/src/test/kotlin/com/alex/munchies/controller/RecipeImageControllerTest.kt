@@ -2,7 +2,7 @@ package com.alex.munchies.controller
 
 import com.alex.munchies.Fixtures
 import com.alex.munchies.Header
-import com.alex.munchies.Param
+import com.alex.munchies.MultipartParam
 import com.alex.munchies.Path
 import com.alex.munchies.domain.RecipeResponse
 import com.alex.munchies.util.asRecipe
@@ -35,7 +35,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not upload a recipe-image and throw bad-request with invalid id`() {
         Given {
-            multiPart(Param.IMAGE, Fixtures.image)
+            multiPart(MultipartParam.IMAGE, Fixtures.image)
             header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
@@ -48,7 +48,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should upload a recipe-image and return ok with valid id`() {
         val recipe = Given {
-            multiPart(Param.IMAGE, Fixtures.image)
+            multiPart(MultipartParam.IMAGE, Fixtures.image)
             header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {

@@ -1,7 +1,7 @@
 package com.alex.munchies.controller
 
 import com.alex.munchies.Header
-import com.alex.munchies.Param
+import com.alex.munchies.MultipartParam
 import com.alex.munchies.Path
 import com.alex.munchies.PathParam
 import com.alex.munchies.service.RecipeImageService
@@ -30,7 +30,7 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
     ) fun uploadImage(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) id: Long,
-        @RequestParam(Param.IMAGE) image: MultipartFile
+        @RequestParam(MultipartParam.IMAGE) image: MultipartFile
     ) = recipeImageService.uploadImage(userId, id, image)
 
     @GetMapping(

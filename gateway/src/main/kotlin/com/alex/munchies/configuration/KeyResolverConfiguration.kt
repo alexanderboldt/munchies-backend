@@ -1,5 +1,6 @@
 package com.alex.munchies.configuration
 
+import com.alex.munchies.Header
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,7 +18,7 @@ class KeyResolverConfig {
                 .request
                 .headers
                 .getFirst(HttpHeaders.AUTHORIZATION)
-                ?.removePrefix("Bearer ")
+                ?.removePrefix(Header.AUTHORIZATION_BEARER_PREFIX)
                 ?: "anonymous"
             )
         }
