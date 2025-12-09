@@ -2,7 +2,7 @@ plugins {
 	alias(libs.plugins.kotlin.jvm)
 }
 
-group = "com.alex"
+group = "org.munchies"
 
 kotlin {
 	jvmToolchain(21)
