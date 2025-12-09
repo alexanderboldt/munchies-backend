@@ -2,8 +2,6 @@ plugins {
 	alias(libs.plugins.kotlin.jvm)
 }
 
-group = "org.munchies"
-
 kotlin {
 	jvmToolchain(21)
 	compilerOptions {
