@@ -11,7 +11,7 @@ springdoc = "2.8.13"
 
 # test versions
 mockito-kotlin = "6.1.0"
-kotest = "6.0.5"
+kotest = "6.0.7"
 rest-assured = "5.5.6"
 testcontainer = "2.0.2"
 
