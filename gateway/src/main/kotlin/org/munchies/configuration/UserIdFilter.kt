@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
-@Suppress("unused")
+/**
+ * Filters the user-id from the token and puts it into a header parameter.
+ */
 @Component
 class UserIdFilter : GlobalFilter {
 

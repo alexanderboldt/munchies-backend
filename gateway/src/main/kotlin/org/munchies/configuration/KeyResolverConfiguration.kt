@@ -7,10 +7,18 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import reactor.core.publisher.Mono
 
-@Suppress("unused")
+/**
+ * Contains functionalities for the redis rate limiter.
+ */
 @Configuration
 class KeyResolverConfig {
 
+    /**
+     * The redis rate limit buckets will be organized by the user-id.
+     * The user-id will be extracted from the access-token.
+     *
+     * @return the [KeyResolver]
+     */
     @Bean
     fun tokenKeyResolver(): KeyResolver =
         KeyResolver { exchange ->

@@ -16,11 +16,19 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers
 
-@Suppress("unused")
+/**
+ * Contains functionalities to handle security aspects.
+ */
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfiguration {
 
+    /**
+     * Sets up authorization for the routes and role-mapping.
+     *
+     * @param httpSecurity the configuration as a [ServerHttpSecurity]
+     * @return the configuration as a [ServerHttpSecurity]
+     */
     @Bean
     fun filterChain(httpSecurity: ServerHttpSecurity) = httpSecurity {
         cors { disable() }
@@ -42,6 +50,11 @@ class SecurityConfiguration {
         }
     }
 
+    /**
+     * Converts the keycloak roles into a spring friendly schema.
+     *
+     * @return the [JwtAuthenticationConverter]
+     */
     fun jwtAuthenticationConverter(): Converter<Jwt, AbstractAuthenticationToken> {
         val converter = JwtAuthenticationConverter()
         converter.setJwtGrantedAuthoritiesConverter { jwt ->
