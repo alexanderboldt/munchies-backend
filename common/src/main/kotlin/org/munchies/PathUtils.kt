@@ -4,6 +4,12 @@ package org.munchies
  * Contains the paths of the resources.
  */
 object Path {
+    // auth
+    const val AUTH_LOGIN = "auth/login"
+
+    // keycloak
+    const val KEYCLOAK_REALM = "/realm"
+
     // labels
     const val LABELS = "labels"
     const val LABELS_ID = "labels/{label_id}"

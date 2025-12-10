@@ -4,6 +4,12 @@ spring:
       server:
         webflux:
           routes:
+            - id: keycloak
+              uri: http://localhost:8080
+              predicates:
+                - Path=/auth/login
+              filters:
+                - RewritePath=/auth/login,/realms/munchies/protocol/openid-connect/token
             - id: recipe-service
               uri: http://localhost:4001
               predicates:

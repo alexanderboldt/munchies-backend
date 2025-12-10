@@ -26,7 +26,13 @@ class SecurityConfiguration {
         cors { disable() }
         csrf { disable() }
         authorizeExchange {
+            // the login-route is for everybody
+            authorize(Path.AUTH_LOGIN, permitAll)
+
+            // deleting all recipes route is just for admin-role
             authorize(pathMatchers(HttpMethod.DELETE, Path.RECIPES), hasRole(Role.ADMIN))
+
+            // all remaining routes are for user-roles
             authorize(anyExchange, hasRole(Role.USER))
         }
         oauth2ResourceServer {

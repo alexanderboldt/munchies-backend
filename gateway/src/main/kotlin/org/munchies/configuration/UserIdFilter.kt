@@ -1,6 +1,7 @@
 package org.munchies.configuration
 
 import org.munchies.Header
+import org.munchies.Path
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
 import org.springframework.cloud.gateway.filter.GlobalFilter
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
@@ -12,17 +13,24 @@ import reactor.core.publisher.Mono
 @Component
 class UserIdFilter : GlobalFilter {
 
-    override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> = exchange
-        .getPrincipal<JwtAuthenticationToken>()
-        .flatMap { auth ->
-            // build the new request with the added user-id
-            val newRequest = exchange
-                .request
-                .mutate()
-                .header(Header.USER_ID, auth.token.subject)
-                .build()
-
-            // build the exchange with the new request
-            chain.filter(exchange.mutate().request(newRequest).build())
+    override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
+        // requests for keycloak should not be filtered
+        if (exchange.request.uri.path.startsWith(Path.KEYCLOAK_REALM)) {
+            return chain.filter(exchange)
         }
+
+        return exchange
+            .getPrincipal<JwtAuthenticationToken>()
+            .flatMap { auth ->
+                // build the new request with the added user-id
+                val newRequest = exchange
+                    .request
+                    .mutate()
+                    .header(Header.USER_ID, auth.token.subject)
+                    .build()
+
+                // build the exchange with the new request
+                chain.filter(exchange.mutate().request(newRequest).build())
+            }
+    }
 }
