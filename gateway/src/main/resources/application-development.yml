@@ -11,6 +11,11 @@ spring:
               filters:
                 - RewritePath=/auth/login,/realms/munchies/protocol/openid-connect/token
                 - RewritePath=/auth/logout,/realms/munchies/protocol/openid-connect/logout
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@tokenKeyResolver}"
+                    redis-rate-limiter.replenishRate: 5
+                    redis-rate-limiter.burstCapacity: 10
             - id: recipe-service
               uri: http://localhost:4001
               predicates:
