@@ -3,8 +3,8 @@ server:
 
 spring:
   jpa.hibernate.ddl-auto: none
-  datasource:
-    url: jdbc:mysql://localhost:3306/munchies
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/munchies
     username: admin
     password: admin
   flyway:
