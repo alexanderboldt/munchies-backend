@@ -11,7 +11,6 @@ import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import java.net.URI
 
-@Suppress("unused")
 @Configuration
 class S3Configuration(
     @param:Value($$"${spring.s3.endpoint-override}") private val endpoint: String,

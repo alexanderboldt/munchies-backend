@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
-@Suppress("unused")
 @RestController
 class RecipeController(private val recipeService: RecipeService) {
 
