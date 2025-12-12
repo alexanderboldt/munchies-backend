@@ -11,9 +11,13 @@ dependencies {
 	// development libraries
 	implementation(libs.kotlin.reflect)
 	implementation(libs.kotlin.stdlib)
+
+	implementation(libs.kotlinx.coroutines.core)
+	implementation(libs.kotlinx.coroutines.reactor)
+
 	implementation(libs.jackson.kotlin)
 
-	implementation(libs.spring.boot.starter.webmvc)
+	implementation(libs.spring.boot.starter.webflux)
 	implementation(libs.spring.boot.starter.data)
 	implementation(libs.spring.boot.starter.flyway)
 
@@ -27,7 +31,7 @@ dependencies {
     implementation(project(":common"))
 
 	// test libraries
-	testImplementation(libs.spring.boot.starter.webmvc.test) { exclude(module = "junit") }
+	testImplementation(libs.spring.boot.starter.webflux.test) { exclude(module = "junit") }
     testImplementation(libs.spring.boot.starter.flyway.test)
 
     testImplementation(libs.mockito.kotlin)

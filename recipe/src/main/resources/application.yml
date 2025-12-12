@@ -1,4 +1,4 @@
 spring:
   application:
     name: munchies-recipe
-  mvc.apiversion.use.header: X-API-Version
+  webflux.apiversion.use.header: X-API-Version

@@ -17,7 +17,7 @@ dependencies {
     implementation(project(":common"))
 
     // test libraries
-    testImplementation(libs.spring.boot.starter.webmvc.test) {
+    testImplementation(libs.spring.boot.starter.webflux.test) {
         exclude(module = "junit")
     }
 }
