@@ -18,9 +18,10 @@ dependencies {
 	implementation(libs.jackson.kotlin)
 
 	implementation(libs.spring.boot.starter.webflux)
-	implementation(libs.spring.boot.starter.data)
+	implementation(libs.spring.boot.starter.data.r2dbc)
 	implementation(libs.spring.boot.starter.flyway)
 
+	implementation(libs.asyncer.r2dbc.mysql)
 	implementation(libs.mysql)
     implementation(libs.flyway.mysql)
 
