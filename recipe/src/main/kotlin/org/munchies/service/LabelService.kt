@@ -1,13 +1,15 @@
 package org.munchies.service
 
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.munchies.domain.LabelRequest
 import org.munchies.domain.LabelResponse
 import org.munchies.repository.LabelRepository
 import org.munchies.mapper.toDomain
 import org.munchies.entity.LabelEntity
-import jakarta.transaction.Transactional
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.Date
 
 @Service
@@ -15,7 +17,7 @@ class LabelService(private val labelRepository: LabelRepository) {
 
     // create
 
-    fun create(userId: String, label: LabelRequest): LabelResponse {
+    suspend fun create(userId: String, label: LabelRequest): LabelResponse {
         val entity = LabelEntity(
             0,
             userId,
@@ -31,27 +33,35 @@ class LabelService(private val labelRepository: LabelRepository) {
 
     // read
 
-    fun readAll(userId: String) = labelRepository
+    suspend fun readAll(userId: String) = labelRepository
         .findAllByUserId(userId, Sort.unsorted())
         .map { it.toDomain() }
+        .toList()
 
-    fun read(userId: String, id: Long) = labelRepository
+    suspend fun read(userId: String, id: Long) = labelRepository
         .findByIdAndUserIdOrThrow(id, userId)
         .toDomain()
 
     // update
 
     @Transactional
-    fun update(userId: String, id: Long, labelUpdate: LabelRequest) = labelRepository
-        .findByIdAndUserIdOrThrow(id, userId)
-        .apply {
-            name = labelUpdate.name
-            updatedAt = Date().time
-        }.toDomain()
+    suspend fun update(userId: String, id: Long, labelUpdate: LabelRequest): LabelResponse {
+        val label = labelRepository
+            .findByIdAndUserIdOrThrow(id, userId)
+            .apply {
+                name = labelUpdate.name
+                updatedAt = Date().time
+            }
+
+        return labelRepository
+            .save(label)
+            .toDomain()
+    }
 
     // delete
 
-    fun delete(userId: String, id: Long) {
+    @Transactional
+    suspend fun delete(userId: String, id: Long) {
         labelRepository.apply {
             existsByIdAndUserIdOrThrow(id, userId)
             deleteByIdAndUserId(id, userId)

@@ -23,7 +23,7 @@ class LabelController(private val labelService: LabelService) {
 
     @PostMapping(Path.LABELS, version = "1")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(
+    suspend fun create(
         @RequestHeader(Header.USER_ID) userId: String,
         @RequestBody label: LabelRequest
     ) = labelService.create(userId, label)
@@ -31,10 +31,10 @@ class LabelController(private val labelService: LabelService) {
     // read
 
     @GetMapping(Path.LABELS, version = "1")
-    fun readAll(@RequestHeader(Header.USER_ID) userId: String) = labelService.readAll(userId)
+    suspend fun readAll(@RequestHeader(Header.USER_ID) userId: String) = labelService.readAll(userId)
 
     @GetMapping(Path.LABELS_ID, version = "1")
-    fun read(
+    suspend fun read(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.LABEL_ID) id: Long
     ) = labelService.read(userId, id)
@@ -42,7 +42,7 @@ class LabelController(private val labelService: LabelService) {
     // update
 
     @PutMapping(Path.LABELS_ID, version = "1")
-    fun update(
+    suspend fun update(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.LABEL_ID) id: Long,
         @RequestBody labelNew: LabelRequest
@@ -52,7 +52,7 @@ class LabelController(private val labelService: LabelService) {
 
     @DeleteMapping(Path.LABELS_ID, version = "1")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(
+    suspend fun delete(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.LABEL_ID) id: Long
     ) = labelService.delete(userId, id)

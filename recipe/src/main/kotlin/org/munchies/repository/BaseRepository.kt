@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import org.munchies.util.BadRequestException
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * Interface contains base functionalities for all repositories.
@@ -28,6 +27,5 @@ interface BaseRepository<T> {
 
     // delete
 
-    @Transactional
     suspend fun deleteByIdAndUserId(id: Long, userId: String)
 }
