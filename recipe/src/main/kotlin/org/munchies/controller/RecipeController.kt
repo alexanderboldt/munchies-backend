@@ -25,7 +25,7 @@ class RecipeController(private val recipeService: RecipeService) {
 
     @PostMapping(Path.RECIPES, version = "1")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(
+    suspend fun create(
         @RequestHeader(Header.USER_ID) userId: String,
         @RequestBody recipe: RecipeRequest
     ) = recipeService.create(userId, recipe)
@@ -33,7 +33,7 @@ class RecipeController(private val recipeService: RecipeService) {
     // read
 
     @GetMapping(Path.RECIPES, version = "1")
-    fun readAll(
+    suspend fun readAll(
         @RequestHeader(Header.USER_ID) userId: String,
         @RequestParam sort: Sort = Sort.unsorted(),
         @RequestParam pageNumber: Int = -1,
@@ -41,7 +41,7 @@ class RecipeController(private val recipeService: RecipeService) {
     ) = recipeService.readAll(userId, sort, pageNumber, pageSize)
 
     @GetMapping(Path.RECIPES_ID, version = "1")
-    fun read(
+    suspend fun read(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) id: Long
     ) = recipeService.read(userId, id)
@@ -49,7 +49,7 @@ class RecipeController(private val recipeService: RecipeService) {
     // update
 
     @PutMapping(Path.RECIPES_ID, version = "1")
-    fun update(
+    suspend fun update(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) id: Long,
         @RequestBody recipeNew: RecipeRequest
@@ -59,11 +59,11 @@ class RecipeController(private val recipeService: RecipeService) {
 
     @DeleteMapping(Path.RECIPES, version = "1")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteAll() = recipeService.deleteAll()
+    suspend fun deleteAll() = recipeService.deleteAll()
 
     @DeleteMapping(Path.RECIPES_ID, version = "1")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(
+    suspend fun delete(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) id: Long
     ) = recipeService.delete(userId, id)

@@ -9,7 +9,7 @@ data class RecipeRequest(
 
 data class RecipeResponse(
     val id: Long,
-    val userId: String?,
+    val userId: String,
     val labelId: Long?,
     val title: String,
     val description: String?,

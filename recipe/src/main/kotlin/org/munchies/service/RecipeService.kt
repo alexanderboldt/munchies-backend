@@ -1,15 +1,17 @@
 package org.munchies.service
 
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.munchies.domain.RecipeRequest
 import org.munchies.domain.RecipeResponse
 import org.munchies.repository.RecipeRepository
 import org.munchies.mapper.toDomain
 import org.munchies.repository.LabelRepository
 import org.munchies.entity.RecipeEntity
-import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.Date
 
 @Service
@@ -20,7 +22,7 @@ class RecipeService(
 ) {
     // create
 
-    fun create(userId: String, recipe: RecipeRequest): RecipeResponse {
+    suspend fun create(userId: String, recipe: RecipeRequest): RecipeResponse {
         val entity = RecipeEntity(
             0,
             userId,
@@ -40,27 +42,27 @@ class RecipeService(
 
     // read
 
-    fun readAll(userId: String, sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<RecipeResponse> {
+    suspend fun readAll(userId: String, sort: Sort = Sort.unsorted(), pageNumber: Int = -1, pageSize: Int = -1): List<RecipeResponse> {
         return when (pageNumber >= 0 && pageSize >= 1) {
             true -> recipeRepository.findAllByUserId(userId, PageRequest.of(pageNumber, pageSize, sort))
             false -> recipeRepository.findAllByUserId(userId, sort)
-        }.map { it.toDomain() }
+        }.map { it.toDomain() }.toList()
     }
 
-    fun read(userId: String, id: Long) = recipeRepository
+    suspend fun read(userId: String, id: Long) = recipeRepository
         .findByIdAndUserIdOrThrow(id, userId)
         .toDomain()
 
     // update
 
     @Transactional
-    fun update(userId: String, id: Long, recipeUpdate: RecipeRequest): RecipeResponse {
+    suspend fun update(userId: String, id: Long, recipeUpdate: RecipeRequest): RecipeResponse {
         // check if the label-id exists
         recipeUpdate.labelId?.let {
             labelRepository.existsByIdAndUserIdOrThrow(it, userId)
         }
 
-        return recipeRepository
+        val recipe = recipeRepository
             .findByIdAndUserIdOrThrow(id, userId)
             .apply {
                 labelId = recipeUpdate.labelId
@@ -68,16 +70,21 @@ class RecipeService(
                 description = recipeUpdate.description
                 duration = recipeUpdate.duration
                 updatedAt = Date().time
-            }.toDomain()
+            }
+
+        return recipeRepository
+            .save(recipe)
+            .toDomain()
     }
 
     // delete
 
-    fun deleteAll() {
+    suspend fun deleteAll() {
         recipeRepository.deleteAll()
     }
 
-    fun delete(userId: String, id: Long) {
+    @Transactional
+    suspend fun delete(userId: String, id: Long) {
         // try to delete the file from the storage
         recipeRepository
             .findByIdAndUserIdOrThrow(id, userId)
