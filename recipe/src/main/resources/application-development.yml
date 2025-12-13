@@ -1,6 +1,12 @@
 server:
   port: 4001
 
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
 spring:
   jpa.hibernate.ddl-auto: none
   r2dbc:

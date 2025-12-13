@@ -1,12 +1,16 @@
 package org.munchies.service
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.reactor.awaitSingleOrNull
+import kotlinx.coroutines.withContext
 import org.munchies.domain.RecipeResponse
 import org.munchies.util.BadRequestException
 import org.munchies.mapper.toDomain
 import org.munchies.repository.RecipeRepository
-import jakarta.transaction.Transactional
+import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
+import org.springframework.transaction.annotation.Transactional
+import java.nio.file.Files
 
 @Service
 class RecipeImageService(
@@ -15,23 +19,29 @@ class RecipeImageService(
 ) {
 
     @Transactional
-    fun uploadImage(userId: String, id: Long, image: MultipartFile): RecipeResponse {
+    suspend fun uploadImage(userId: String, id: Long, image: FilePart): RecipeResponse {
         // check if the recipe exists
-        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
+        val recipe = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
 
-        // 1. if there is already an image saved, delete it first
-        recipeExisting.filename?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
+        // 1. if there is already an image saved, return BadRequestException
+        if (recipe.filename != null) throw BadRequestException()
 
-        // 2. upload the new image and get the filename
-        val filename = s3Service.uploadFile(S3Bucket.RECIPE, image.bytes, image.originalFilename)
+        // transfer the image to a temporary directory
+        val filePath = withContext(Dispatchers.IO) {
+            Files.createTempFile("temp", image.filename())
+        }
+        image.transferTo(filePath).awaitSingleOrNull()
 
-        // 3. update the recipe with the filename
-        recipeExisting.filename = filename
+        // 2. upload the image and get the filename
+        val filename = s3Service.uploadFile(S3Bucket.RECIPE, filePath)
 
-        return recipeExisting.toDomain()
+        // 3. update the recipe with the filename and return it
+        return recipeRepository
+            .save(recipe.copy(filename = filename))
+            .toDomain()
     }
 
-    fun downloadImage(userId: String, id: Long): Pair<ByteArray,String> {
+    suspend fun downloadImage(userId: String, id: Long): Pair<ByteArray,String> {
         // check if the recipe and the image are existing
         val filename = recipeRepository
             .findByIdAndUserIdOrThrow(id, userId)
@@ -45,14 +55,15 @@ class RecipeImageService(
     }
 
     @Transactional
-    fun deleteImage(userId: String, id: Long) {
+    suspend fun deleteImage(userId: String, id: Long) {
         // check if the recipe and the image are existing
-        val recipeExisting = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
-        val filename = recipeExisting.filename ?: throw BadRequestException()
+        val recipe = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
+        val filename = recipe.filename ?: throw BadRequestException()
 
         // delete the file
         s3Service.deleteFile(S3Bucket.RECIPE, filename)
 
-        recipeExisting.filename = null
+        // update the entity
+        recipeRepository.save(recipe.copy(filename = null))
     }
 }
