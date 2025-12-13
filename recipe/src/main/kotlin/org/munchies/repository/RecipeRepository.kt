@@ -1,6 +1,6 @@
 package org.munchies.repository
 
 import org.munchies.entity.RecipeEntity
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
-interface RecipeRepository : CrudRepository<RecipeEntity, Long>, BaseRepository<RecipeEntity>
+interface RecipeRepository : CoroutineCrudRepository<RecipeEntity, Long>, BaseRepository<RecipeEntity>

@@ -1,6 +1,6 @@
 package org.munchies.repository
 
 import org.munchies.entity.LabelEntity
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
-interface LabelRepository : CrudRepository<LabelEntity, Long>, BaseRepository<LabelEntity>
+interface LabelRepository : CoroutineCrudRepository<LabelEntity, Long>, BaseRepository<LabelEntity>
