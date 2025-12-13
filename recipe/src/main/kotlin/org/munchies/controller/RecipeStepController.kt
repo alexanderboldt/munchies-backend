@@ -23,7 +23,7 @@ class RecipeStepController(private val recipeStepService: RecipeStepService) {
 
     @PostMapping(Path.RECIPES_STEPS, version = "1")
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(
+    suspend fun create(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @RequestBody step: StepRequest
@@ -32,13 +32,13 @@ class RecipeStepController(private val recipeStepService: RecipeStepService) {
     // read
 
     @GetMapping(Path.RECIPES_STEPS, version = "1")
-    fun readAll(
+    suspend fun readAll(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long
     ) = recipeStepService.readAll(userId, recipeId)
 
     @GetMapping(Path.RECIPES_STEPS_ID, version = "1")
-    fun read(
+    suspend fun read(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @PathVariable(PathParam.STEP_ID) id: Long
@@ -47,7 +47,7 @@ class RecipeStepController(private val recipeStepService: RecipeStepService) {
     // update
 
     @PutMapping(Path.RECIPES_STEPS_ID, version = "1")
-    fun update(
+    suspend fun update(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @PathVariable(PathParam.STEP_ID) id: Long,
@@ -58,7 +58,7 @@ class RecipeStepController(private val recipeStepService: RecipeStepService) {
 
     @DeleteMapping(Path.RECIPES_STEPS_ID, version = "1")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(
+    suspend fun delete(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
         @PathVariable(PathParam.STEP_ID) id: Long

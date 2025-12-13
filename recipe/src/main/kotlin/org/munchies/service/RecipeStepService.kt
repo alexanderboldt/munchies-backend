@@ -1,13 +1,15 @@
 package org.munchies.service
 
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.munchies.domain.StepRequest
 import org.munchies.domain.StepResponse
 import org.munchies.entity.StepEntity
 import org.munchies.mapper.toDomain
 import org.munchies.repository.RecipeRepository
 import org.munchies.repository.StepRepository
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.Date
 
 @Service
@@ -18,7 +20,8 @@ class RecipeStepService(
 
     // create
 
-    fun create(userId: String, recipeId: Long, step: StepRequest): StepResponse {
+    @Transactional
+    suspend fun create(userId: String, recipeId: Long, step: StepRequest): StepResponse {
         // check if the recipe exists
         recipeRepository.existsByIdAndUserIdOrThrow(recipeId, userId)
 
@@ -42,29 +45,37 @@ class RecipeStepService(
 
     // read
 
-    fun readAll(userId: String, recipeId: Long) = stepRepository
+    suspend fun readAll(userId: String, recipeId: Long) = stepRepository
         .findAllByUserIdAndRecipeId(userId, recipeId)
         .map { it.toDomain() }
+        .toList()
 
-    fun read(userId: String, id: Long, recipeId: Long) = stepRepository
+    suspend fun read(userId: String, id: Long, recipeId: Long) = stepRepository
         .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
         .toDomain()
 
     // update
 
     @Transactional
-    fun update(userId: String, id: Long, recipeId: Long, stepUpdate: StepRequest) = stepRepository
-        .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
-        .apply {
-            number = stepUpdate.number
-            title = stepUpdate.title
-            description = stepUpdate.description
-            updatedAt = Date().time
-        }.toDomain()
+    suspend fun update(userId: String, id: Long, recipeId: Long, stepUpdate: StepRequest): StepResponse {
+        val step = stepRepository
+            .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
+            .apply {
+                number = stepUpdate.number
+                title = stepUpdate.title
+                description = stepUpdate.description
+                updatedAt = Date().time
+            }
+
+        return stepRepository
+            .save(step)
+            .toDomain()
+    }
 
     // delete
 
-    fun delete(userId: String, id: Long, recipeId: Long) {
+    @Transactional
+    suspend fun delete(userId: String, id: Long, recipeId: Long) {
         stepRepository.apply {
             existsByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
             deleteByIdAndUserId(id, userId)
