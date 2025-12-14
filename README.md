@@ -13,6 +13,7 @@ This is a multi-module backend application with microservice architecture. Devel
 ### Recipe Microservice
 - Kotlin
 - Spring Boot
+- Kotlin Coroutines with WebFlux
 - Hibernate
 - MySQL
 - Flyway
