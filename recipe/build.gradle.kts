@@ -35,6 +35,8 @@ dependencies {
 	testImplementation(libs.spring.boot.starter.webflux.test) { exclude(module = "junit") }
     testImplementation(libs.spring.boot.starter.flyway.test)
 
+	testImplementation(libs.kotlinx.coroutines.test)
+
     testImplementation(libs.mockito.kotlin)
 
 	testImplementation(libs.kotest.runner.junit)
