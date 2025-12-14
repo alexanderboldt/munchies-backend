@@ -7,6 +7,7 @@ import org.munchies.domain.LabelResponse
 import org.munchies.repository.LabelRepository
 import org.munchies.mapper.toDomain
 import org.munchies.entity.LabelEntity
+import org.munchies.util.orThrowBadRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -39,7 +40,8 @@ class LabelService(private val labelRepository: LabelRepository) {
         .toList()
 
     suspend fun read(userId: String, id: Long) = labelRepository
-        .findByIdAndUserIdOrThrow(id, userId)
+        .findByIdAndUserId(id, userId)
+        .orThrowBadRequest()
         .toDomain()
 
     // update
@@ -47,7 +49,8 @@ class LabelService(private val labelRepository: LabelRepository) {
     @Transactional
     suspend fun update(userId: String, id: Long, labelUpdate: LabelRequest): LabelResponse {
         val label = labelRepository
-            .findByIdAndUserIdOrThrow(id, userId)
+            .findByIdAndUserId(id, userId)
+            .orThrowBadRequest()
             .apply {
                 name = labelUpdate.name
                 updatedAt = Date().time
@@ -63,7 +66,7 @@ class LabelService(private val labelRepository: LabelRepository) {
     @Transactional
     suspend fun delete(userId: String, id: Long) {
         labelRepository.apply {
-            existsByIdAndUserIdOrThrow(id, userId)
+            existsByIdAndUserId(id, userId).orThrowBadRequest()
             deleteByIdAndUserId(id, userId)
         }
     }

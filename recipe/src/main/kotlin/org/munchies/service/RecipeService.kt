@@ -8,6 +8,7 @@ import org.munchies.repository.RecipeRepository
 import org.munchies.mapper.toDomain
 import org.munchies.repository.LabelRepository
 import org.munchies.entity.RecipeEntity
+import org.munchies.util.orThrowBadRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -50,7 +51,8 @@ class RecipeService(
     }
 
     suspend fun read(userId: String, id: Long) = recipeRepository
-        .findByIdAndUserIdOrThrow(id, userId)
+        .findByIdAndUserId(id, userId)
+        .orThrowBadRequest()
         .toDomain()
 
     // update
@@ -59,11 +61,14 @@ class RecipeService(
     suspend fun update(userId: String, id: Long, recipeUpdate: RecipeRequest): RecipeResponse {
         // check if the label-id exists
         recipeUpdate.labelId?.let {
-            labelRepository.existsByIdAndUserIdOrThrow(it, userId)
+            labelRepository
+                .existsByIdAndUserId(it, userId)
+                .orThrowBadRequest()
         }
 
         val recipe = recipeRepository
-            .findByIdAndUserIdOrThrow(id, userId)
+            .findByIdAndUserId(id, userId)
+            .orThrowBadRequest()
             .apply {
                 labelId = recipeUpdate.labelId
                 title = recipeUpdate.title
@@ -87,7 +92,8 @@ class RecipeService(
     suspend fun delete(userId: String, id: Long) {
         // try to delete the file from the storage
         recipeRepository
-            .findByIdAndUserIdOrThrow(id, userId)
+            .findByIdAndUserId(id, userId)
+            .orThrowBadRequest()
             .filename
             ?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
 

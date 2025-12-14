@@ -8,6 +8,7 @@ import org.munchies.entity.StepEntity
 import org.munchies.mapper.toDomain
 import org.munchies.repository.RecipeRepository
 import org.munchies.repository.StepRepository
+import org.munchies.util.orThrowBadRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.Date
@@ -23,7 +24,9 @@ class RecipeStepService(
     @Transactional
     suspend fun create(userId: String, recipeId: Long, step: StepRequest): StepResponse {
         // check if the recipe exists
-        recipeRepository.existsByIdAndUserIdOrThrow(recipeId, userId)
+        recipeRepository
+            .existsByIdAndUserId(recipeId, userId)
+            .orThrowBadRequest()
 
         // arrange the information
         val entity = StepEntity(
@@ -51,7 +54,8 @@ class RecipeStepService(
         .toList()
 
     suspend fun read(userId: String, id: Long, recipeId: Long) = stepRepository
-        .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
+        .findByIdAndUserIdAndRecipeId(id, userId, recipeId)
+        .orThrowBadRequest()
         .toDomain()
 
     // update
@@ -59,7 +63,8 @@ class RecipeStepService(
     @Transactional
     suspend fun update(userId: String, id: Long, recipeId: Long, stepUpdate: StepRequest): StepResponse {
         val step = stepRepository
-            .findByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
+            .findByIdAndUserIdAndRecipeId(id, userId, recipeId)
+            .orThrowBadRequest()
             .apply {
                 number = stepUpdate.number
                 title = stepUpdate.title
@@ -77,7 +82,7 @@ class RecipeStepService(
     @Transactional
     suspend fun delete(userId: String, id: Long, recipeId: Long) {
         stepRepository.apply {
-            existsByIdAndUserIdAndRecipeIdOrThrow(id, userId, recipeId)
+            existsByIdAndUserIdAndRecipeId(id, userId, recipeId).orThrowBadRequest()
             deleteByIdAndUserId(id, userId)
         }
     }

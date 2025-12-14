@@ -4,9 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.withContext
 import org.munchies.domain.RecipeResponse
-import org.munchies.util.BadRequestException
 import org.munchies.mapper.toDomain
 import org.munchies.repository.RecipeRepository
+import org.munchies.util.orThrowBadRequest
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,10 +21,12 @@ class RecipeImageService(
     @Transactional
     suspend fun uploadImage(userId: String, id: Long, image: FilePart): RecipeResponse {
         // check if the recipe exists
-        val recipe = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
+        val recipe = recipeRepository
+            .findByIdAndUserId(id, userId)
+            .orThrowBadRequest()
 
-        // 1. if there is already an image saved, return BadRequestException
-        if (recipe.filename != null) throw BadRequestException()
+        // 1. if there is already an image saved, throw BadRequestException
+        recipe.filename.orThrowBadRequest()
 
         // transfer the image to a temporary directory
         val filePath = withContext(Dispatchers.IO) {
@@ -44,9 +46,10 @@ class RecipeImageService(
     suspend fun downloadImage(userId: String, id: Long): Pair<ByteArray,String> {
         // check if the recipe and the image are existing
         val filename = recipeRepository
-            .findByIdAndUserIdOrThrow(id, userId)
+            .findByIdAndUserId(id, userId)
+            .orThrowBadRequest()
             .filename
-            ?: throw BadRequestException()
+            .orThrowBadRequest()
 
         // download the file and return it with the filename
         return s3Service
@@ -57,8 +60,11 @@ class RecipeImageService(
     @Transactional
     suspend fun deleteImage(userId: String, id: Long) {
         // check if the recipe and the image are existing
-        val recipe = recipeRepository.findByIdAndUserIdOrThrow(id, userId)
-        val filename = recipe.filename ?: throw BadRequestException()
+        val recipe = recipeRepository
+            .findByIdAndUserId(id, userId)
+            .orThrowBadRequest()
+
+        val filename = recipe.filename.orThrowBadRequest()
 
         // delete the file
         s3Service.deleteFile(S3Bucket.RECIPE, filename)
