@@ -37,6 +37,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     fun `should not create a step with invalid recipe-id`() {
         Given {
             body(Fixtures.Steps.dough)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             post(Path.RECIPES_STEPS, 999)
@@ -60,6 +61,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     @Test
     fun `should read all steps and return an empty list`() {
         val steps = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS, recipeCreated.id)
@@ -78,6 +80,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val steps = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS, recipeCreated.id)
@@ -98,6 +101,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         stepsRequest.forEach { createStep(recipeCreated.id, it) }
 
         val steps = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS, recipeCreated.id)
@@ -120,6 +124,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
@@ -133,6 +138,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
@@ -146,6 +152,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
@@ -169,6 +176,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Steps.sauce)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
@@ -183,6 +191,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Steps.sauce)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
@@ -197,6 +206,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
 
         val step = Given {
             body(Fixtures.Steps.sauce)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
@@ -219,6 +229,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
@@ -232,6 +243,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
@@ -245,6 +257,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
@@ -259,6 +272,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
 
         // delete the recipe
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_ID, recipeCreated.id)
@@ -268,6 +282,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
 
         // try to read the step
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)

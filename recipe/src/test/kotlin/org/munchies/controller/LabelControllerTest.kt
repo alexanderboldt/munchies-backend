@@ -15,6 +15,7 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
+import kotlinx.coroutines.test.runTest
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Test
 
@@ -23,7 +24,7 @@ class LabelControllerTest : BaseControllerTest() {
     // region create
 
     @Test
-    fun `should create a label with valid request`() {
+    fun `should create a label with valid request`() = runTest {
         val label = createLabel(Fixtures.Labels.vegetarian)
 
         label.shouldNotBeNull()
@@ -35,8 +36,9 @@ class LabelControllerTest : BaseControllerTest() {
     // region read all
 
     @Test
-    fun `should read all labels and return an empty list`() {
+    fun `should read all labels and return an empty list`() = runTest {
         val labels = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.LABELS)
@@ -51,10 +53,11 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should read all labels and return a list with one label`() {
+    fun `should read all labels and return a list with one label`() = runTest {
         createLabel(Fixtures.Labels.vegetarian)
 
         val labels = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.LABELS)
@@ -69,12 +72,13 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should read all labels and return a list with ten labels`() {
+    fun `should read all labels and return a list with ten labels`() = runTest {
         val labelsRequest = (1..10).map { Fixtures.Labels.vegetarian }
 
         labelsRequest.forEach { createLabel(it) }
 
         val labels = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.LABELS)
@@ -93,10 +97,11 @@ class LabelControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
-    fun `should not read one label and throw bad-request with invalid id`() {
+    fun `should not read one label and throw bad-request with invalid id`() = runTest {
         createLabel(Fixtures.Labels.vegetarian)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.LABELS_ID, 100)
@@ -106,10 +111,11 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should read one label and return it with valid id`() {
+    fun `should read one label and return it with valid id`() = runTest {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.LABELS_ID, labelCreated.id)
@@ -128,11 +134,12 @@ class LabelControllerTest : BaseControllerTest() {
     // region update
 
     @Test
-    fun `should not update a label and throw bad-request with invalid id`() {
+    fun `should not update a label and throw bad-request with invalid id`() = runTest {
         createLabel(Fixtures.Labels.vegetarian)
 
         Given {
             body(Fixtures.Labels.vegan)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.LABELS_ID, 100)
@@ -142,11 +149,12 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update a label and return it with valid id`() {
+    fun `should update a label and return it with valid id`() = runTest {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {
             body(Fixtures.Labels.vegan)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.LABELS_ID, labelCreated.id)
@@ -165,10 +173,11 @@ class LabelControllerTest : BaseControllerTest() {
     // region delete
 
     @Test
-    fun `should not delete a label and throw bad-request with invalid id`() {
+    fun `should not delete a label and throw bad-request with invalid id`() = runTest {
         createLabel(Fixtures.Labels.vegetarian)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.LABELS_ID, 100)
@@ -178,10 +187,11 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should delete a label with valid id`() {
+    fun `should delete a label with valid id`() = runTest {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.LABELS_ID, labelCreated.id)

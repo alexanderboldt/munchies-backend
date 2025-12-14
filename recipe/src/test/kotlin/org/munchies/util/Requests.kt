@@ -20,6 +20,7 @@ import org.apache.http.HttpStatus
 fun createLabel(label: LabelRequest): LabelResponse {
     return Given {
         body(label)
+        header(Header.API_VERSION, "1")
         header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
         post(Path.LABELS)
@@ -33,6 +34,7 @@ fun createLabel(label: LabelRequest): LabelResponse {
 fun createRecipe(recipe: RecipeRequest): RecipeResponse {
     return Given {
         body(recipe)
+        header(Header.API_VERSION, "1")
         header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
         post(Path.RECIPES)
@@ -46,6 +48,7 @@ fun createRecipe(recipe: RecipeRequest): RecipeResponse {
 fun uploadRecipeImage(id: Long): RecipeResponse {
     return Given {
         multiPart(MultipartParam.IMAGE, Fixtures.image)
+        header(Header.API_VERSION, "1")
         header(Header.USER_ID, Fixtures.User.USER_ID)
         contentType(ContentType.MULTIPART)
     } When {
@@ -60,6 +63,7 @@ fun uploadRecipeImage(id: Long): RecipeResponse {
 fun createStep(recipeId: Long, step: StepRequest): StepResponse {
     return Given {
         body(step)
+        header(Header.API_VERSION, "1")
         header(Header.USER_ID, Fixtures.User.USER_ID)
     } When {
         post(Path.RECIPES_STEPS, recipeId)

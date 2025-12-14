@@ -39,6 +39,7 @@ class RecipeControllerTest : BaseControllerTest() {
     fun `should not create a recipe with invalid label-id`() {
         Given {
             body(Fixtures.Recipes.pizza.copy(labelId = 100))
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             post(Path.RECIPES)
@@ -65,6 +66,7 @@ class RecipeControllerTest : BaseControllerTest() {
     @Test
     fun `should read all recipes and return an empty list`() {
         val recipes = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES)
@@ -84,6 +86,7 @@ class RecipeControllerTest : BaseControllerTest() {
         createRecipe(Fixtures.Recipes.pizza)
 
         val recipes = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES)
@@ -104,6 +107,7 @@ class RecipeControllerTest : BaseControllerTest() {
         recipesRequest.forEach { createRecipe(it) }
 
         val recipes = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES)
@@ -126,6 +130,7 @@ class RecipeControllerTest : BaseControllerTest() {
         createRecipe(Fixtures.Recipes.pizza)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_ID, 100)
@@ -139,6 +144,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         val recipe = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_ID, recipeCreated.id)
@@ -161,6 +167,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
         Given {
             body(Fixtures.Recipes.burger)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_ID, 100)
@@ -175,6 +182,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
         val recipe = Given {
             body(Fixtures.Recipes.burger)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_ID, recipeCreated.id)
@@ -198,6 +206,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
         // execute: delete the label
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.LABELS_ID, labelCreated.id)
@@ -207,6 +216,7 @@ class RecipeControllerTest : BaseControllerTest() {
 
         // verify: the label-id of a recipe is null
         val recipe = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_ID, recipeCreated.id)
@@ -228,6 +238,7 @@ class RecipeControllerTest : BaseControllerTest() {
         createRecipe(Fixtures.Recipes.pizza)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_ID, 100)
@@ -241,6 +252,7 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_ID, recipeCreated.id)
@@ -250,11 +262,12 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should delete a recipe and an image with valid id`() {
+    suspend fun `should delete a recipe and an image with valid id`() {
         val recipeCreated = uploadRecipeImage(createRecipe(Fixtures.Recipes.pizza).id)
 
         // execute the delete and verify
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_ID, recipeCreated.id)

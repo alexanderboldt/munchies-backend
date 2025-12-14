@@ -36,6 +36,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     fun `should not upload a recipe-image and throw bad-request with invalid id`() {
         Given {
             multiPart(MultipartParam.IMAGE, Fixtures.image)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
@@ -49,6 +50,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     fun `should upload a recipe-image and return ok with valid id`() {
         val recipe = Given {
             multiPart(MultipartParam.IMAGE, Fixtures.image)
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
             contentType(ContentType.MULTIPART)
         } When {
@@ -74,6 +76,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         uploadRecipeImage(recipeCreated.id)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_IMAGES, 100)
@@ -88,6 +91,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         uploadRecipeImage(recipeCreated.id)
 
         val bytes = Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_IMAGES, recipeCreated.id)
@@ -112,6 +116,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         uploadRecipeImage(recipeCreated.id)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_IMAGES, 100)
@@ -123,6 +128,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     @Test
     fun `should not delete a recipe-image with non existing image`() {
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_IMAGES, recipeCreated.id)
@@ -137,6 +143,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
         uploadRecipeImage(recipeCreated.id)
 
         Given {
+            header(Header.API_VERSION, "1")
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_IMAGES, recipeCreated.id)
