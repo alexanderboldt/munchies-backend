@@ -2,12 +2,15 @@ server:
   port: 4001
 
 spring:
-  jpa.hibernate.ddl-auto: none
   r2dbc:
+    initialization-mode: never
     url: r2dbc:mysql://mysql:3306/munchies
     username: admin
     password: admin
   flyway:
+    url: jdbc:mysql://localhost:3306/munchies
+    user: admin
+    password: admin
     enabled: true
     baselineOnMigrate: true
   s3:
