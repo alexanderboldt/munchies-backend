@@ -10,13 +10,14 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.munchies.initializer.MySqlTestInitializer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
-@ContextConfiguration(initializers = [MinioTestInitializer::class])
+@ContextConfiguration(initializers = [MySqlTestInitializer::class, MinioTestInitializer::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SpringProfile.TESTS)
 abstract class BaseControllerTest {
@@ -43,7 +44,7 @@ abstract class BaseControllerTest {
     }
 
     @AfterEach
-    fun afterEachBase() {
+    suspend fun afterEachBase() {
         labelRepository.deleteAll()
         recipeRepository.deleteAll()
         stepRepository.deleteAll()

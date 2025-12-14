@@ -1,9 +1,12 @@
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
 spring:
-  jpa.hibernate.ddl-auto: none
-  datasource:
-    url: jdbc:tc:mysql:9.2.0:///munchies
-    username: admin
-    password: admin
+  r2dbc:
+    initialization-mode: never
   flyway:
     enabled: true
     baselineOnMigrate: true
