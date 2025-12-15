@@ -5,13 +5,11 @@ import org.munchies.Header
 import org.munchies.Path
 import org.munchies.util.asRecipe
 import org.munchies.util.asRecipes
-import org.munchies.service.S3Bucket
 import org.munchies.util.createLabel
 import org.munchies.util.createRecipe
 import org.munchies.util.shouldBeRecipe
 import org.munchies.util.shouldBeRecipes
 import org.munchies.util.uploadRecipeImage
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -21,7 +19,6 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Test
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException
 
 class RecipeControllerTest : BaseControllerTest() {
 
@@ -276,8 +273,13 @@ class RecipeControllerTest : BaseControllerTest() {
         }
 
         // try to download the image and verify, that it is deleted
-        shouldThrow<NoSuchKeyException> {
-            s3Service.downloadFile(S3Bucket.RECIPE, recipeCreated.filename!!)
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.RECIPES_IMAGES, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
         }
     }
 

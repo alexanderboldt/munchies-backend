@@ -26,7 +26,7 @@ class RecipeImageService(
             .orThrowBadRequest()
 
         // 1. if there is already an image saved, throw BadRequestException
-        recipe.filename.orThrowBadRequest()
+        (recipe.filename == null).orThrowBadRequest()
 
         // transfer the image to a temporary directory
         val filePath = withContext(Dispatchers.IO) {
