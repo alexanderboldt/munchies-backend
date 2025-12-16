@@ -7,7 +7,7 @@ spring-boot = "4.0.0"
 jackson = "2.20.1"
 mysql = "9.5.0"
 flyway = "11.17.2"
-aws-s3 = "2.39.3"
+aws-s3 = "2.40.9"
 asyncer = "1.4.0"
 springdoc = "2.8.13"
 
