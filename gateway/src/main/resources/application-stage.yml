@@ -26,9 +26,10 @@ spring:
                     key-resolver: "#{@tokenKeyResolver}"
                     redis-rate-limiter.replenishRate: 5
                     redis-rate-limiter.burstCapacity: 10
-  redis:
-    host: redis
-    port: 6379
+  data:
+    redis:
+      host: redis
+      port: 6379
   security:
     oauth2:
       resourceserver:
