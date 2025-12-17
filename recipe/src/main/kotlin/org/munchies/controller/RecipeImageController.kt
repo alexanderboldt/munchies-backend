@@ -1,10 +1,12 @@
 package org.munchies.controller
 
+import kotlinx.coroutines.flow.Flow
 import org.munchies.Header
 import org.munchies.MultipartParam
 import org.munchies.Path
 import org.munchies.PathParam
 import org.munchies.service.RecipeImageService
+import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -39,13 +41,13 @@ class RecipeImageController(private val recipeImageService: RecipeImageService) 
     ) suspend fun downloadImage(
         @RequestHeader(Header.USER_ID) userId: String,
         @PathVariable(PathParam.RECIPE_ID) id: Long
-    ): ResponseEntity<ByteArray> {
-        val (bytes, filename) = recipeImageService.downloadImage(userId, id)
+    ): ResponseEntity<Flow<DataBuffer>> {
+        val (data, filename) = recipeImageService.downloadImage(userId, id)
 
         return ResponseEntity
             .ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$filename")
-            .body(bytes)
+            .body(data)
     }
 
     @DeleteMapping(Path.RECIPES_IMAGES, version = "1")
