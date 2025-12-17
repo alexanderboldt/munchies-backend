@@ -1,9 +1,16 @@
 package org.munchies.service
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.future.await
+import kotlinx.coroutines.reactive.asFlow
+import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.core.io.buffer.DefaultDataBufferFactory
 import org.springframework.stereotype.Service
-import software.amazon.awssdk.core.sync.RequestBody
-import software.amazon.awssdk.services.s3.S3Client
-import java.io.InputStream
+import software.amazon.awssdk.core.async.AsyncRequestBody
+import software.amazon.awssdk.core.async.AsyncResponseTransformer
+import software.amazon.awssdk.services.s3.S3AsyncClient
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import java.nio.file.Path
 import java.util.UUID
 import kotlin.io.path.extension
@@ -11,10 +18,27 @@ import kotlin.io.path.extension
 /**
  * Manages the connection to the S3-storage.
  *
- * @param s3Client the client as an [S3Client].
+ * @param s3Client the client as an [S3AsyncClient].
  */
 @Service
-class S3Service(private val s3Client: S3Client) {
+class S3Service(private val s3Client: S3AsyncClient) {
+
+    /**
+     * Creates a bucket if it not exists yet.
+     *
+     * @param bucket the bucket to create as a [S3Bucket].
+     */
+    suspend fun createBucketIfNotExists(bucket: S3Bucket) {
+        val bucketExists = s3Client
+            .listBuckets { it.build() }
+            .await()
+            .buckets()
+            .any { it.name() == bucket.bucketName }
+
+        if (!bucketExists) {
+            s3Client.createBucket { it.bucket(bucket.bucketName).build() }.await()
+        }
+    }
 
     /**
      * Uploads a file. The filename will be created with a random UUID and the extension from the assigned filename.
@@ -31,8 +55,8 @@ class S3Service(private val s3Client: S3Client) {
         // upload the file with the filename to the desired bucket
         s3Client.putObject(
             { it.bucket(bucket.bucketName).key(filename).build() },
-            RequestBody.fromFile(filePath)
-        )
+            AsyncRequestBody.fromFile(filePath)
+        ).await()
 
         return filename
     }
@@ -42,10 +66,22 @@ class S3Service(private val s3Client: S3Client) {
      *
      * @param bucket the bucket to download from as a [S3Bucket].
      * @param filename the filename of the file as a [String].
-     * @return the result as an [InputStream].
+     * @return the result as a [DataBuffer] wrapped in a [Flow].
      */
-    suspend fun downloadFile(bucket: S3Bucket, filename: String): InputStream = s3Client
-        .getObject { it.bucket(bucket.bucketName).key(filename).build() }
+    suspend fun downloadFile(bucket: S3Bucket, filename: String): Flow<DataBuffer> {
+        val factory = DefaultDataBufferFactory()
+
+        return s3Client
+            .getObject(
+                GetObjectRequest.builder()
+                    .bucket(bucket.bucketName)
+                    .key(filename)
+                    .build(),
+                AsyncResponseTransformer.toPublisher()
+            ).await()
+            .asFlow()
+            .map { factory.wrap(it) }
+    }
 
     /**
      * Deletes a file.
@@ -56,6 +92,6 @@ class S3Service(private val s3Client: S3Client) {
     suspend fun deleteFile(bucket: S3Bucket, filename: String) {
         s3Client.deleteObject {
             it.bucket(bucket.bucketName).key(filename).build()
-        }
+        }.await()
     }
 }
