@@ -25,8 +25,6 @@ dependencies {
 	implementation(libs.mysql)
     implementation(libs.flyway.mysql)
 
-    implementation(libs.aws.s3)
-
 	implementation(libs.springdoc)
 
     implementation(project(":file"))
