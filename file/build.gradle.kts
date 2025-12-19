@@ -18,6 +18,8 @@ dependencies {
     implementation(libs.spring.boot.starter.webflux)
 
     implementation(libs.aws.s3)
+
+    implementation(project(":common"))
 }
 
 tasks.test {
