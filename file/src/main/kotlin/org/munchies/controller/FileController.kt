@@ -1,12 +1,17 @@
 package org.munchies.controller
 
+import kotlinx.coroutines.flow.Flow
 import org.munchies.MultipartParam
 import org.munchies.Path
 import org.munchies.PathParam
 import org.munchies.service.S3Bucket
 import org.munchies.service.S3Service
+import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.http.codec.multipart.FilePart
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestPart
@@ -23,4 +28,20 @@ class FileController(private val s3Service: S3Service) {
         @PathVariable(PathParam.BUCKET) bucket: String,
         @RequestPart(MultipartParam.FILE) file: FilePart
     ) = s3Service.uploadFile(S3Bucket.fromBucketName(bucket), file)
+
+    @GetMapping(
+        Path.FILES_BUCKET_FILENAME,
+        produces = [MediaType.APPLICATION_OCTET_STREAM_VALUE],
+        version = "1"
+    ) suspend fun download(
+        @PathVariable(PathParam.BUCKET) bucket: String,
+        @PathVariable(PathParam.FILENAME) filename: String
+    ): ResponseEntity<Flow<DataBuffer>> {
+        val data = s3Service.downloadFile(S3Bucket.fromBucketName(bucket), filename)
+
+        return ResponseEntity
+            .ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=$filename")
+            .body(data)
+    }
 }
