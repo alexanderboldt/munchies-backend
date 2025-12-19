@@ -1,17 +1,22 @@
 package org.munchies.service
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.reactor.awaitSingleOrNull
+import kotlinx.coroutines.withContext
+import org.munchies.domain.FileResponse
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.core.io.buffer.DefaultDataBufferFactory
+import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
 import software.amazon.awssdk.core.async.AsyncRequestBody
 import software.amazon.awssdk.core.async.AsyncResponseTransformer
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
-import java.nio.file.Path
+import java.nio.file.Files
 import java.util.UUID
 import kotlin.io.path.extension
 
@@ -45,10 +50,16 @@ class S3Service(private val s3Client: S3AsyncClient) {
      * The final filename will be returned and should be used to associate the file.
      *
      * @param bucket the bucket where to store as an [S3Bucket].
-     * @param filePath the path of the file as a [java.nio.file.Path].
-     * @return returns the filename as a [String].
+     * @param file the file as a [FilePart].
+     * @return returns the response with the filename as a [FileResponse].
      */
-    suspend fun uploadFile(bucket: S3Bucket, filePath: Path): String {
+    suspend fun uploadFile(bucket: S3Bucket, file: FilePart): FileResponse {
+        // transfer the image to a temporary directory
+        val filePath = withContext(Dispatchers.IO) {
+            Files.createTempFile("temp", file.filename())
+        }
+        file.transferTo(filePath).awaitSingleOrNull()
+
         // build the filename with a random UUID and the extension
         val filename = "${UUID.randomUUID()}.${filePath.extension}"
 
@@ -58,7 +69,7 @@ class S3Service(private val s3Client: S3AsyncClient) {
             AsyncRequestBody.fromFile(filePath)
         ).await()
 
-        return filename
+        return FileResponse(filename)
     }
 
     /**
