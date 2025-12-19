@@ -1,0 +1,13 @@
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+spring:
+  s3:
+    path-style-access: true
+    aws:
+      region: us-east-1
+      credentials:
+        type: static

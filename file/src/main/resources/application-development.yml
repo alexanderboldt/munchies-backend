@@ -1,0 +1,20 @@
+server:
+  port: 4002
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+spring:
+  s3:
+    endpoint-override: http://localhost:9000
+    path-style-access: true
+    aws:
+      region: us-east-1
+      credentials:
+        type: static
+        static-provider:
+          access-key-id: adminadmin
+          secret-access-key: adminadmin
