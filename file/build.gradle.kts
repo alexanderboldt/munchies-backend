@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
 }
 
 dependencies {
@@ -11,7 +13,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.reactor)
 
-    implementation(libs.spring.context)
+    implementation(libs.jackson.kotlin)
+
+    implementation(libs.spring.boot.starter.webflux)
 
     implementation(libs.aws.s3)
 }
