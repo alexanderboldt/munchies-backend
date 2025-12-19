@@ -1,13 +1,17 @@
 package org.munchies.service
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.future.await
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.withContext
 import org.munchies.domain.FileResponse
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.event.EventListener
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.core.io.buffer.DefaultDataBufferFactory
 import org.springframework.http.codec.multipart.FilePart
@@ -27,6 +31,16 @@ import kotlin.io.path.extension
  */
 @Service
 class S3Service(private val s3Client: S3AsyncClient) {
+
+    /**
+     * Will be called automatically and creates the buckets in the storage.
+     */
+    @EventListener(ApplicationReadyEvent::class)
+    private fun init() {
+        CoroutineScope(Dispatchers.IO).launch {
+            S3Bucket.entries.forEach { s3 -> createBucketIfNotExists(s3) }
+        }
+    }
 
     /**
      * Creates a bucket if it not exists yet.
