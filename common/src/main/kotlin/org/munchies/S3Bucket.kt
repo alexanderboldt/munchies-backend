@@ -1,4 +1,4 @@
-package org.munchies.service
+package org.munchies
 
 /**
  * Represents the buckets in the S3-storage.

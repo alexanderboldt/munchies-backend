@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import org.munchies.MultipartParam
 import org.munchies.Path
 import org.munchies.PathParam
-import org.munchies.service.S3Bucket
+import org.munchies.S3Bucket
 import org.munchies.service.S3Service
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.HttpHeaders
