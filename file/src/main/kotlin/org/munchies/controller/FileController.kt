@@ -27,7 +27,9 @@ class FileController(private val s3Service: S3Service) {
         Path.FILES_BUCKET,
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
         version = "1"
-    ) suspend fun upload(
+    )
+    @ResponseStatus(HttpStatus.CREATED)
+    suspend fun upload(
         @PathVariable(PathParam.BUCKET) bucket: String,
         @RequestPart(MultipartParam.FILE) file: FilePart
     ) = s3Service.uploadFile(S3Bucket.fromBucketName(bucket), file)
