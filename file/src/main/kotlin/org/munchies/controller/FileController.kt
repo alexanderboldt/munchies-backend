@@ -6,6 +6,7 @@ import org.munchies.Path
 import org.munchies.PathParam
 import org.munchies.S3Bucket
 import org.munchies.service.S3Service
+import org.munchies.util.orThrowBadRequest
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -32,7 +33,7 @@ class FileController(private val s3Service: S3Service) {
     suspend fun upload(
         @PathVariable(PathParam.BUCKET) bucket: String,
         @RequestPart(MultipartParam.FILE) file: FilePart
-    ) = s3Service.uploadFile(S3Bucket.fromBucketName(bucket), file)
+    ) = s3Service.uploadFile(S3Bucket.fromBucketName(bucket).orThrowBadRequest(), file)
 
     @GetMapping(
         Path.FILES_BUCKET_FILENAME,
@@ -42,7 +43,7 @@ class FileController(private val s3Service: S3Service) {
         @PathVariable(PathParam.BUCKET) bucket: String,
         @PathVariable(PathParam.FILENAME) filename: String
     ): ResponseEntity<Flow<DataBuffer>> {
-        val data = s3Service.downloadFile(S3Bucket.fromBucketName(bucket), filename)
+        val data = s3Service.downloadFile(S3Bucket.fromBucketName(bucket).orThrowBadRequest(), filename)
 
         return ResponseEntity
             .ok()
@@ -58,5 +59,5 @@ class FileController(private val s3Service: S3Service) {
     suspend fun delete(
         @PathVariable(PathParam.BUCKET) bucket: String,
         @PathVariable(PathParam.FILENAME) filename: String
-    ) = s3Service.deleteFile(S3Bucket.fromBucketName(bucket), filename)
+    ) = s3Service.deleteFile(S3Bucket.fromBucketName(bucket).orThrowBadRequest(), filename)
 }
