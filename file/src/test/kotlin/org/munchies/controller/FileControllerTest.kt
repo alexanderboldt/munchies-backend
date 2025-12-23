@@ -101,7 +101,7 @@ class FileControllerTest : BaseControllerTest() {
         Given {
             header(Header.API_VERSION, "1")
         } When {
-            get(Path.FILES_BUCKET_FILENAME, S3Bucket.RECIPE.bucketName, "invalid_filename.jpg")
+            get(Path.FILES_BUCKET_FILENAME, S3Bucket.RECIPE.bucketName, "filename.jpg")
         } Then {
             statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
         } Extract {
@@ -126,6 +126,38 @@ class FileControllerTest : BaseControllerTest() {
 
         bytes.shouldNotBeNull()
         bytes.size shouldBeGreaterThan 0
+    }
+
+    // endregion
+
+    // region delete
+
+    @Test
+    fun `should not delete a file with invalid bucket name`() {
+        // precondition: upload a file
+        val file = uploadFile()
+
+        Given {
+            header(Header.API_VERSION, "1")
+        } When {
+            delete(Path.FILES_BUCKET_FILENAME, "bucket", file.filename)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should delete a file`() {
+        // precondition: upload a file
+        val file = uploadFile()
+
+        Given {
+            header(Header.API_VERSION, "1")
+        } When {
+            delete(Path.FILES_BUCKET_FILENAME, S3Bucket.RECIPE.bucketName, file.filename)
+        } Then {
+            statusCode(HttpStatus.SC_NO_CONTENT)
+        }
     }
 
     // endregion
