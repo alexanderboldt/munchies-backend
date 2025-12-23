@@ -10,9 +10,3 @@ spring:
   flyway:
     enabled: true
     baselineOnMigrate: true
-  s3:
-    path-style-access: true
-    aws:
-      region: us-east-1
-      credentials:
-        type: static
