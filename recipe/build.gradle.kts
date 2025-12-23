@@ -26,7 +26,6 @@ dependencies {
 
 	implementation(libs.springdoc)
 
-    implementation(project(":file"))
     implementation(project(":common"))
 
 	// test libraries
