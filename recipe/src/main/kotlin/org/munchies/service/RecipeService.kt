@@ -2,6 +2,8 @@ package org.munchies.service
 
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import org.munchies.S3Bucket
+import org.munchies.client.FileClient
 import org.munchies.domain.RecipeRequest
 import org.munchies.domain.RecipeResponse
 import org.munchies.repository.RecipeRepository
@@ -17,7 +19,7 @@ import java.util.Date
 
 @Service
 class RecipeService(
-    private val s3Service: S3Service,
+    private val fileClient: FileClient,
     private val labelRepository: LabelRepository,
     private val recipeRepository: RecipeRepository
 ) {
@@ -95,7 +97,7 @@ class RecipeService(
             .findByIdAndUserId(id, userId)
             .orThrowBadRequest()
             .filename
-            ?.let { s3Service.deleteFile(S3Bucket.RECIPE, it) }
+            ?.let { fileClient.delete(S3Bucket.RECIPE, it) }
 
         // delete the recipe
         recipeRepository.deleteByIdAndUserId(id, userId)
