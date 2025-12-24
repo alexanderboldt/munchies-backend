@@ -20,4 +20,8 @@ spring:
     enabled: true
     baselineOnMigrate: true
 
+services:
+  file:
+    url: http://localhost:4002
+
 springdoc.api-docs.path: /docs
