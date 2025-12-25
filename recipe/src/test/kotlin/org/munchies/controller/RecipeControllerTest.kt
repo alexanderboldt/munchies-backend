@@ -259,7 +259,7 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    suspend fun `should delete a recipe and an image with valid id`() {
+    fun `should delete a recipe and an image with valid id`() {
         val recipeCreated = uploadRecipeImage(createRecipe(Fixtures.Recipes.pizza).id)
 
         // execute the delete and verify

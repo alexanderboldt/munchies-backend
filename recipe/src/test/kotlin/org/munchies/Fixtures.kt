@@ -1,5 +1,6 @@
 package org.munchies
 
+import org.munchies.domain.FileResponse
 import org.munchies.domain.LabelRequest
 import org.munchies.domain.RecipeRequest
 import org.munchies.domain.StepRequest
@@ -50,4 +51,6 @@ object Fixtures {
         writeText("Image Content")
         deleteOnExit()
     }
+
+    val fileResponse = FileResponse("filename.jpg")
 }
