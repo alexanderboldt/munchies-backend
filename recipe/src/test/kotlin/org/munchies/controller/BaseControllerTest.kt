@@ -1,11 +1,9 @@
 package org.munchies.controller
 
 import org.munchies.configuration.SpringProfile
-import org.munchies.initializer.MinioTestInitializer
 import org.munchies.repository.LabelRepository
 import org.munchies.repository.RecipeRepository
 import org.munchies.repository.StepRepository
-import org.munchies.service.S3Service
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.junit.jupiter.api.AfterEach
@@ -17,16 +15,13 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
-@ContextConfiguration(initializers = [MySqlTestInitializer::class, MinioTestInitializer::class])
+@ContextConfiguration(initializers = [MySqlTestInitializer::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SpringProfile.TESTS)
 abstract class BaseControllerTest {
 
     @LocalServerPort
     private var port: Int = 0
-
-    @Autowired
-    protected lateinit var s3Service: S3Service
 
     @Autowired
     private lateinit var labelRepository: LabelRepository
