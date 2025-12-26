@@ -87,7 +87,7 @@ services:
       - munchies
 
   recipe:
-    image: munchies/recipe:6.1.0
+    image: munchies/recipe:7.0.0
     container_name: munchies-recipe
     ports:
       - ${APP_RECIPE_PORT}:4001

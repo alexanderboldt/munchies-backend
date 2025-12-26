@@ -53,5 +53,5 @@ tasks.withType<Test> {
 // run with: ./gradlew clean recipe:jibDockerBuild
 jib {
     from.image = "eclipse-temurin:21-jdk-alpine"
-    to.image = "munchies/recipe:6.1.0"
+    to.image = "munchies/recipe:7.0.0"
 }
