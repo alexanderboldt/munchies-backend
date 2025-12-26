@@ -17,8 +17,13 @@ This is a multi-module backend application with microservice architecture. Devel
 - Hibernate
 - MySQL
 - Flyway
-- MinIO
 - OpenApi
+
+### File Microservice
+- Kotlin
+- Spring Boot
+- Kotlin Coroutines with WebFlux
+- MinIO
 
 ### Test Environment
 - RestAssured
@@ -38,7 +43,11 @@ This is a multi-module backend application with microservice architecture. Devel
 ```bash
 ./gradlew clean recipe:jibDockerBuild
 ```
-3. Create and start the containers:
+3. Build the docker image of the file microservice:
+```bash
+./gradlew clean file:jibDockerBuild
+```
+4. Create and start the containers:
 ```bash
 docker compose up -d
 ```
