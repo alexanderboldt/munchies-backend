@@ -8,7 +8,7 @@ spring:
     username: admin
     password: admin
   flyway:
-    url: jdbc:mysql://localhost:3306/munchies
+    url: jdbc:mysql://mysql:3306/munchies
     user: admin
     password: admin
     enabled: true
@@ -16,6 +16,6 @@ spring:
 
 services:
   file:
-    url: http://files:4002
+    url: http://file:4002
 
 springdoc.api-docs.path: /docs
