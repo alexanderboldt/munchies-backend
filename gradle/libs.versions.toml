@@ -4,6 +4,7 @@ kotlin = "2.2.21"
 kotlinx = "1.10.2"
 spring-cloud = "5.0.0"
 spring-boot = "4.0.0"
+spring = "7.0.1"
 jackson = "2.20.1"
 mysql = "9.5.0"
 flyway = "11.17.2"
@@ -38,6 +39,8 @@ spring-boot-starter-data-r2dbc = { group = "org.springframework.boot", name = "s
 spring-boot-starter-flyway = { group = "org.springframework.boot", name = "spring-boot-starter-flyway", version.ref = "spring-boot" }
 spring-boot-starter-security-oauth2-resource-server = { group = "org.springframework.boot", name = "spring-boot-starter-security-oauth2-resource-server", version.ref = "spring-boot" }
 spring-boot-starter-data-redis-reactive = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis-reactive", version.ref = "spring-boot" }
+
+spring-web = { group = "org.springframework", name = "spring-web", version.ref = "spring" }
 
 asyncer-r2dbc-mysql = { group = "io.asyncer", name = "r2dbc-mysql", version.ref = "asyncer" }
 mysql = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
