@@ -27,7 +27,7 @@ This is a multi-module backend application with microservice architecture. Devel
 
 ### Test Environment
 - RestAssured
-- Mockito
+- Mockk
 - Kotest
 - Docker-Testcontainer
 
