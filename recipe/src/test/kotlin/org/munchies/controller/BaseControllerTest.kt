@@ -1,5 +1,9 @@
 package org.munchies.controller
 
+import com.ninjasquad.springmockk.MockkBean
+import io.mockk.coEvery
+import io.mockk.just
+import io.mockk.runs
 import org.munchies.configuration.SpringProfile
 import org.munchies.repository.LabelRepository
 import org.munchies.repository.RecipeRepository
@@ -9,9 +13,6 @@ import io.restassured.http.ContentType
 import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.whenever
 import org.munchies.Fixtures
 import org.munchies.S3Bucket
 import org.munchies.client.FileClient
@@ -22,7 +23,6 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.core.io.buffer.DefaultDataBufferFactory
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @ContextConfiguration(initializers = [MySqlTestInitializer::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -32,7 +32,7 @@ abstract class BaseControllerTest {
     @LocalServerPort
     private var port: Int = 0
 
-    @MockitoBean
+    @MockkBean
     lateinit var fileClient: FileClient
 
     @Autowired
@@ -45,14 +45,14 @@ abstract class BaseControllerTest {
     private lateinit var stepRepository: StepRepository
 
     @BeforeEach
-    suspend fun beforeEachBase() {
+    fun beforeEachBase() {
         RestAssured.port = port
         RestAssured.requestSpecification = RestAssured.given().contentType(ContentType.JSON)
 
         // mock the FileClient for all tests
-        whenever(fileClient.upload(any(), any())).doReturn(Fixtures.fileResponse)
-        whenever(fileClient.download(S3Bucket.RECIPE, Fixtures.fileResponse.filename))
-            .doReturn(flowOf(DefaultDataBufferFactory().wrap(Fixtures.image.readBytes())))
+        coEvery { fileClient.upload(any(), any()) } returns Fixtures.fileResponse
+        coEvery { fileClient.download(S3Bucket.RECIPE, Fixtures.fileResponse.filename) } returns flowOf(DefaultDataBufferFactory().wrap(Fixtures.image.readBytes()))
+        coEvery { fileClient.delete(any(), any()) } just runs
     }
 
     @AfterEach
