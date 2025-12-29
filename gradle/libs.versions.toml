@@ -13,7 +13,7 @@ asyncer = "1.4.0"
 springdoc = "2.8.13"
 
 # test versions
-mockito-kotlin = "6.1.0"
+springmockk = "5.0.1"
 kotest = "6.0.7"
 rest-assured = "6.0.0"
 testcontainer = "2.0.2"
@@ -54,9 +54,9 @@ springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux
 spring-boot-starter-webflux-test = { group = "org.springframework.boot", name = "spring-boot-starter-webflux-test", version.ref = "spring-boot" }
 spring-boot-starter-flyway-test = { group = "org.springframework.boot", name = "spring-boot-starter-flyway-test", version.ref = "spring-boot" }
 
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx" }
+springmockk = { group = "com.ninja-squad", name = "springmockk", version.ref = "springmockk" }
 
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx" }
 
 kotest-runner-junit = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }

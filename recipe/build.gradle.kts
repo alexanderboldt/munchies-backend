@@ -29,12 +29,15 @@ dependencies {
     implementation(project(":common"))
 
 	// test libraries
-	testImplementation(libs.spring.boot.starter.webflux.test) { exclude(module = "junit") }
+	testImplementation(libs.spring.boot.starter.webflux.test) {
+		exclude(module = "junit")
+		exclude(group = "org.mockito")
+	}
     testImplementation(libs.spring.boot.starter.flyway.test)
 
-	testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.springmockk)
 
-    testImplementation(libs.mockito.kotlin)
+	testImplementation(libs.kotlinx.coroutines.test)
 
 	testImplementation(libs.kotest.runner.junit)
 	testImplementation(libs.kotest.assertions.core)
