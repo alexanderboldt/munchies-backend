@@ -3,7 +3,7 @@
 kotlin = "2.3.0"
 kotlinx = "1.10.2"
 spring-cloud = "5.0.0"
-spring-boot = "4.0.0"
+spring-boot = "4.0.1"
 spring = "7.0.1"
 jackson = "2.20.1"
 mysql = "9.5.0"
