@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+  - name: munchies
+    uid: df95d61129vy8b
+    type: mysql
+    url: mysql:${DB_MAIN_PORT}
+    user: ${DB_MAIN_USERNAME}
+    access: proxy
+    jsonData:
+      database: ${DB_MAIN_DB}
+      sslmode: disable
+    secureJsonData:
+      password: ${DB_MAIN_PASSWORD}
