@@ -74,6 +74,27 @@ services:
     networks:
       - munchies
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: munchies-node-exporter
+    ports:
+      - ${NODE_EXPORTER_PORT}:9100
+    networks:
+      - munchies
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: munchies-prometheus
+    volumes:
+      - prometheus_data:/prometheus
+      - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - ${PROMETHEUS_PORT}:9090
+    depends_on:
+      - node-exporter
+    networks:
+      - munchies
+
   grafana:
     image: grafana/grafana:latest
     container_name: munchies-grafana
@@ -92,6 +113,7 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
     depends_on:
       - mysql
+      - prometheus
     networks:
       - munchies
 
@@ -143,6 +165,7 @@ volumes:
   mysql_keycloak_data:
   minio_data:
   redis_data:
+  prometheus_data:
   grafana_data:
 
 networks:
