@@ -87,9 +87,12 @@ services:
     container_name: munchies-prometheus
     volumes:
       - prometheus_data:/prometheus
-      - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - ${PROMETHEUS_PORT}:9090
+    command:
+      - "--storage.tsdb.retention.time=15d"
+      - "--config.file=/etc/prometheus/prometheus.yml"
     depends_on:
       - node-exporter
     networks:
