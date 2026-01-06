@@ -12,3 +12,10 @@ datasources:
       sslmode: disable
     secureJsonData:
       password: ${DB_MAIN_PASSWORD}
+  - name: prometheus
+    uid: ef98vg6y97da8a
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    jsonData:
+      httpMethod: GET
