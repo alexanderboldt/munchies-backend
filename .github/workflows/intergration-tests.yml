@@ -20,5 +20,8 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Run integration tests
+      - name: Run integration tests in file module
         run: ./gradlew clean :file:test --tests "org.munchies.controller.FileControllerTest"
+
+      - name: Run integration tests in recipe module
+        run: ./gradlew clean :recipe:test --tests "org.munchies.controller.*"
