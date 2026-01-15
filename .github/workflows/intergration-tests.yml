@@ -6,19 +6,18 @@ on:
 
 jobs:
   integration-tests:
+    name: Integration Tests
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout the code
+        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
-
-      - name: Grant execute permission
-        run: chmod +x gradlew
 
       - name: Run integration tests in file module
         run: ./gradlew clean :file:test --tests "org.munchies.controller.FileControllerTest"
