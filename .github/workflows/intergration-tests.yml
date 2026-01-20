@@ -2,7 +2,6 @@ name: Integration Tests
 
 on:
   push:
-  workflow_dispatch:
 
 jobs:
   integration-tests:
@@ -20,7 +19,17 @@ jobs:
           java-version: 21
 
       - name: Run integration tests in file module
-        run: ./gradlew clean :file:test --tests "org.munchies.controller.FileControllerTest"
+        run: ./gradlew :file:test --tests "org.munchies.controller.*"
 
       - name: Run integration tests in recipe module
-        run: ./gradlew clean :recipe:test --tests "org.munchies.controller.*"
+        run: ./gradlew :recipe:test --tests "org.munchies.controller.*"
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-report
+          path: |
+            file/build/reports/tests/
+            recipe/build/reports/tests/
+          retention-days: 14

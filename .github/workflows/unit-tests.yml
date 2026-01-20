@@ -2,7 +2,6 @@ name: Unit Tests
 
 on:
   push:
-  workflow_dispatch:
 
 jobs:
   unit-tests:
@@ -21,3 +20,11 @@ jobs:
 
       - name: Run unit tests in recipe module
         run: ./gradlew clean :recipe:test --tests "org.munchies.converter.*"
+
+      - name: Upload test report to artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-report
+          path: recipe/build/reports/tests/
+          retention-days: 14
