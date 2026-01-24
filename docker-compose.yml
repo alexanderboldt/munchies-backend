@@ -2,13 +2,9 @@ services:
   mysql:
     image: mysql:9.2.0
     container_name: munchies-mysql
-    environment:
-      MYSQL_DATABASE: ${DB_MAIN_DB}
-      MYSQL_USER: ${DB_MAIN_USERNAME}
-      MYSQL_PASSWORD: ${DB_MAIN_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_MAIN_ROOT_PASSWORD}
+    env_file: mysql.env
     ports:
-      - ${DB_MAIN_PORT}:3306
+      - 3306:3306
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -17,13 +13,9 @@ services:
   mysql-keycloak:
     image: mysql:9.2.0
     container_name: munchies-mysql-keycloak
-    environment:
-      MYSQL_DATABASE: ${DB_KEYCLOAK_DB}
-      MYSQL_USER: ${DB_KEYCLOAK_USERNAME}
-      MYSQL_PASSWORD: ${DB_KEYCLOAK_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_KEYCLOAK_ROOT_PASSWORD}
+    env_file: mysql-keycloak.env
     ports:
-      - ${DB_KEYCLOAK_PORT}:3306
+      - 3307:3306
     volumes:
       - mysql_keycloak_data:/var/lib/mysql
     networks:
@@ -33,16 +25,9 @@ services:
     image: quay.io/keycloak/keycloak:26.3.2
     container_name: munchies-keycloak
     command: start-dev --import-realm
-    environment:
-      KC_DB: mysql
-      KC_DB_URL: jdbc:mysql://mysql-keycloak:3306/${DB_KEYCLOAK_DB}
-      KC_DB_USERNAME: ${DB_KEYCLOAK_USERNAME}
-      KC_DB_PASSWORD: ${DB_KEYCLOAK_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_HOSTNAME_STRICT: false
+    env_file: keycloak.env
     ports:
-      - ${KEYCLOAK_PORT}:8080
+      - 8080:8080
     volumes:
       - ./keycloak:/opt/keycloak/data/import
     depends_on:
@@ -53,13 +38,11 @@ services:
   minio:
     image: minio/minio
     container_name: munchies-minio
-    command: server --console-address ":${S3_WEB_PORT}" /data
-    environment:
-      MINIO_ROOT_USER: ${S3_USERNAME}
-      MINIO_ROOT_PASSWORD: ${S3_PASSWORD}
+    command: server --console-address ":9001" /data
+    env_file: minio.env
     ports:
-      - ${S3_PORT}:9000
-      - ${S3_WEB_PORT}:9001
+      - 9000:9000
+      - 9001:9001
     volumes:
       - minio_data:/data
     networks:
@@ -69,7 +52,7 @@ services:
     image: redis:8.2.3-alpine
     container_name: munchies-redis
     ports:
-      - ${REDIS_PORT}:6379
+      - 6379:6379
     volumes:
       - redis_data:/data
     networks:
@@ -79,7 +62,7 @@ services:
     image: prom/node-exporter:latest
     container_name: munchies-node-exporter
     ports:
-      - ${NODE_EXPORTER_PORT}:9100
+      - 9100:9100
     networks:
       - munchies
 
@@ -90,26 +73,23 @@ services:
       - "--storage.tsdb.retention.time=15d"
       - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
-      - ${PROMETHEUS_PORT}:9090
+      - 9090:9090
     volumes:
       - prometheus_data:/prometheus
       - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    depends_on: node-exporter
+    depends_on:
+      - node-exporter
     networks:
       - munchies
 
   grafana:
     image: grafana/grafana:latest
     container_name: munchies-grafana
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
-      DB_MAIN_DB: ${DB_MAIN_DB}
-      DB_MAIN_USERNAME: ${DB_MAIN_USERNAME}
-      DB_MAIN_PASSWORD: ${DB_MAIN_PASSWORD}
-      DB_MAIN_PORT: ${DB_MAIN_PORT}
+    env_file:
+      - mysql.env
+      - grafana.env
     ports:
-      - ${GRAFANA_PORT}:3000
+      - 3000:3000
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -126,8 +106,9 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: stage
     ports:
-      - ${APP_FILE_PORT}:4002
-    depends_on: minio
+      - 4002:4002
+    depends_on:
+      - minio
     networks:
       - munchies
 
@@ -137,7 +118,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: stage
     ports:
-      - ${APP_RECIPE_PORT}:4001
+      - 4001:4001
     depends_on:
       - mysql
       - keycloak
@@ -152,7 +133,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: stage
     ports:
-      - ${APP_GATEWAY_PORT}:4000
+      - 4000:4000
     depends_on:
       - mysql
       - keycloak

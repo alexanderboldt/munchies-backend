@@ -4,14 +4,14 @@ datasources:
   - name: munchies
     uid: df95d61129vy8b
     type: mysql
-    url: mysql:${DB_MAIN_PORT}
-    user: ${DB_MAIN_USERNAME}
+    url: mysql:3306
+    user: ${MYSQL_USER}
     access: proxy
     jsonData:
-      database: ${DB_MAIN_DB}
+      database: ${MYSQL_DATABASE}
       sslmode: disable
     secureJsonData:
-      password: ${DB_MAIN_PASSWORD}
+      password: ${MYSQL_PASSWORD}
   - name: prometheus
     uid: ef98vg6y97da8a
     type: prometheus
