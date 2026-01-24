@@ -32,6 +32,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
     container_name: munchies-keycloak
+    command: start-dev --import-realm
     environment:
       KC_DB: mysql
       KC_DB_URL: jdbc:mysql://mysql-keycloak:3306/${DB_KEYCLOAK_DB}
@@ -42,25 +43,25 @@ services:
       KC_HOSTNAME_STRICT: false
     ports:
       - ${KEYCLOAK_PORT}:8080
-    command:
-      - start-dev
-    networks:
-      - munchies
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
     depends_on:
       - mysql-keycloak
+    networks:
+      - munchies
 
   minio:
     image: minio/minio
     container_name: munchies-minio
-    ports:
-      - ${S3_PORT}:9000
-      - ${S3_WEB_PORT}:9001
+    command: server --console-address ":${S3_WEB_PORT}" /data
     environment:
       MINIO_ROOT_USER: ${S3_USERNAME}
       MINIO_ROOT_PASSWORD: ${S3_PASSWORD}
+    ports:
+      - ${S3_PORT}:9000
+      - ${S3_WEB_PORT}:9001
     volumes:
       - minio_data:/data
-    command: server --console-address ":${S3_WEB_PORT}" /data
     networks:
       - munchies
 
@@ -85,24 +86,21 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: munchies-prometheus
-    volumes:
-      - prometheus_data:/prometheus
-      - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    ports:
-      - ${PROMETHEUS_PORT}:9090
     command:
       - "--storage.tsdb.retention.time=15d"
       - "--config.file=/etc/prometheus/prometheus.yml"
-    depends_on:
-      - node-exporter
+    ports:
+      - ${PROMETHEUS_PORT}:9090
+    volumes:
+      - prometheus_data:/prometheus
+      - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on: node-exporter
     networks:
       - munchies
 
   grafana:
     image: grafana/grafana:latest
     container_name: munchies-grafana
-    ports:
-      - ${GRAFANA_PORT}:3000
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
@@ -110,6 +108,8 @@ services:
       DB_MAIN_USERNAME: ${DB_MAIN_USERNAME}
       DB_MAIN_PASSWORD: ${DB_MAIN_PASSWORD}
       DB_MAIN_PORT: ${DB_MAIN_PORT}
+    ports:
+      - ${GRAFANA_PORT}:3000
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -123,22 +123,21 @@ services:
   file:
     image: munchies/file:1.0.0
     container_name: munchies-file
-    ports:
-      - ${APP_FILE_PORT}:4002
     environment:
       SPRING_PROFILES_ACTIVE: stage
-    depends_on:
-      - minio
+    ports:
+      - ${APP_FILE_PORT}:4002
+    depends_on: minio
     networks:
       - munchies
 
   recipe:
     image: munchies/recipe:7.0.0
     container_name: munchies-recipe
-    ports:
-      - ${APP_RECIPE_PORT}:4001
     environment:
       SPRING_PROFILES_ACTIVE: stage
+    ports:
+      - ${APP_RECIPE_PORT}:4001
     depends_on:
       - mysql
       - keycloak
@@ -150,10 +149,10 @@ services:
   gateway:
     image: munchies/gateway:2.1.0
     container_name: munchies-gateway
-    ports:
-      - ${APP_GATEWAY_PORT}:4000
     environment:
       SPRING_PROFILES_ACTIVE: stage
+    ports:
+      - ${APP_GATEWAY_PORT}:4000
     depends_on:
       - mysql
       - keycloak
