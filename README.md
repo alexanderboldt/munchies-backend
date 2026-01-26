@@ -34,10 +34,6 @@ This is a multi-module backend application with microservice architecture. Devel
 ### Buildsystem
 - Gradle
 
-## Monitoring
-- Grafana
-- Prometheus
-
 ## Install
 1. Build the docker image of the gateway microservice:
 ```bash
