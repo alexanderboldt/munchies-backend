@@ -22,7 +22,7 @@ services:
       - munchies
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.2
+    image: quay.io/keycloak/keycloak:26.5
     container_name: munchies-keycloak
     command: start-dev --import-realm
     env_file: keycloak.env
