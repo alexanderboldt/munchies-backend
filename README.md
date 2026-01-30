@@ -1,8 +1,8 @@
-# Munchies
+# :ramen: Munchies
 
 This is a multi-module backend application with microservice architecture. Developed with Kotlin and Spring Boot for managing recipes.
 
-## Tech-Stack
+## :computer: Tech-Stack
 
 ### Gateway Microservice
 - Kotlin
@@ -34,7 +34,7 @@ This is a multi-module backend application with microservice architecture. Devel
 ### Buildsystem
 - Gradle
 
-## Install
+## :whale: Install with Docker
 1. Build the docker image of the gateway microservice:
 ```bash
 ./gradlew clean gateway:jibDockerBuild
@@ -51,3 +51,7 @@ This is a multi-module backend application with microservice architecture. Devel
 ```bash
 docker compose up -d
 ```
+5. Setup Keycloak:
+- log in into Keycloak
+- create a user with credentials
+- assign the realm role `user`
