@@ -8,7 +8,7 @@ spring = "7.0.1"
 jackson = "3.0.4"
 mysql = "9.5.0"
 flyway = "12.0.0"
-aws-s3 = "2.40.9"
+aws-s3 = "1.6.12"
 asyncer = "1.4.0"
 springdoc = "2.8.13"
 
@@ -46,7 +46,7 @@ asyncer-r2dbc-mysql = { group = "io.asyncer", name = "r2dbc-mysql", version.ref 
 mysql = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
 flyway-mysql = { group = "org.flywaydb", name = "flyway-mysql", version.ref = "flyway" }
 
-aws-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws-s3" }
+aws-s3 = { group = "aws.sdk.kotlin", name = "s3", version.ref = "aws-s3" }
 
 springdoc = { group = "org.springdoc", name = "springdoc-openapi-starter-webflux-api", version.ref = "springdoc" }
 
