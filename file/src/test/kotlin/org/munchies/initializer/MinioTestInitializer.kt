@@ -17,9 +17,10 @@ class MinioTestInitializer : ApplicationContextInitializer<ConfigurableApplicati
         minio.start()
 
         TestPropertyValues.of(
-            "spring.s3.endpoint-override=${minio.s3URL}",
-            "spring.s3.aws.credentials.static-provider.access-key-id=${minio.userName}",
-            "spring.s3.aws.credentials.static-provider.secret-access-key=${minio.password}",
+            "s3.host=${minio.host}",
+            "s3.port=${minio.firstMappedPort}",
+            "s3.access-key-id=${minio.userName}",
+            "s3.secret-access-key=${minio.password}"
         ).applyTo(context.environment)
     }
 }

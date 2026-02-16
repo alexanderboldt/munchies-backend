@@ -6,8 +6,4 @@ logging:
 
 s3:
   scheme: http
-  host: localhost
-  port: 9000
   region: eu-central-1
-  access-key-id: admin
-  secret-access-key: adminadmin
