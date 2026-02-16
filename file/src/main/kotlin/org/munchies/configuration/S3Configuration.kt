@@ -1,30 +1,41 @@
 package org.munchies.configuration
 
-import org.springframework.beans.factory.annotation.Value
+import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
+import aws.sdk.kotlin.services.s3.S3Client
+import aws.smithy.kotlin.runtime.net.Host
+import aws.smithy.kotlin.runtime.net.Scheme
+import aws.smithy.kotlin.runtime.net.url.Url
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
-import software.amazon.awssdk.regions.Region
-import software.amazon.awssdk.services.s3.S3AsyncClient
-import java.net.URI
+import org.springframework.stereotype.Component
+
+@Component
+@ConfigurationProperties(prefix = "s3")
+class S3Properties {
+    lateinit var scheme: String
+    lateinit var host: String
+    var port: Int = 0
+    lateinit var region: String
+    lateinit var accessKeyId: String
+    lateinit var secretAccessKey: String
+}
 
 @Configuration
-class S3Configuration(
-    @param:Value($$"${spring.s3.endpoint-override}") private val endpoint: String,
-    @param:Value($$"${spring.s3.aws.region}") private val region: String,
-    @param:Value($$"${spring.s3.aws.credentials.static-provider.access-key-id}") private val accessKey: String,
-    @param:Value($$"${spring.s3.aws.credentials.static-provider.secret-access-key}") private val secretKey: String
-) {
+class S3Configuration(private val s3: S3Properties) {
 
     @Bean
-    fun s3Client(): S3AsyncClient = S3AsyncClient.builder()
-        .endpointOverride(URI.create(endpoint))
-        .region(Region.of(region))
-        .forcePathStyle(true)
-        .credentialsProvider(
-            StaticCredentialsProvider.create(
-                AwsBasicCredentials.create(accessKey, secretKey)
-            )
-        ).build()
+    fun s3Client() = S3Client {
+        endpointUrl = Url {
+            scheme = Scheme.parse(s3.scheme)
+            host = Host.parse(s3.host)
+            port = s3.port
+        }
+        region = s3.region
+        credentialsProvider = StaticCredentialsProvider {
+            accessKeyId = s3.accessKeyId
+            secretAccessKey = s3.secretAccessKey
+        }
+        forcePathStyle = true
+    }
 }
