@@ -1,14 +1,10 @@
 server:
   port: 4002
 
-spring:
-  s3:
-    endpoint-override: http://minio:9000
-    path-style-access: true
-    aws:
-      region: us-east-1
-      credentials:
-        type: static
-        static-provider:
-          access-key-id: adminadmin
-          secret-access-key: adminadmin
+s3:
+  scheme: http
+  host: munchies-minio
+  port: 9000
+  region: eu-central-1
+  access-key-id: admin
+  secret-access-key: adminadmin

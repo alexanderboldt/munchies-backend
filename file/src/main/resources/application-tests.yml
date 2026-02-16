@@ -4,10 +4,10 @@ logging:
       springframework:
         web: DEBUG
 
-spring:
-  s3:
-    path-style-access: true
-    aws:
-      region: us-east-1
-      credentials:
-        type: static
+s3:
+  scheme: http
+  host: localhost
+  port: 9000
+  region: eu-central-1
+  access-key-id: admin
+  secret-access-key: adminadmin
