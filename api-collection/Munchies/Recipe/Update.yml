@@ -1,11 +1,11 @@
 info:
-  name: Get Single
+  name: Update
   type: http
-  seq: 3
+  seq: 4
 
 http:
-  method: GET
-  url: "{{BASE_URL}}/labels/:id"
+  method: PUT
+  url: "{{BASE_URL}}/recipes/:id"
   headers:
     - name: X-API-VERSION
       value: "1"
@@ -13,6 +13,15 @@ http:
     - name: id
       value: "1"
       type: path
+  body:
+    type: json
+    data: |-
+      {
+        "labelId": null,
+        "title": "Beanburger",
+        "description": "Muss lecker und GESUND sein!",
+        "duration": 3600
+      }
   auth:
     type: bearer
     token: "{{ACCESS_TOKEN}}"

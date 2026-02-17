@@ -1,0 +1,29 @@
+info:
+  name: Create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/recipes"
+  headers:
+    - name: X-API-VERSION
+      value: "1"
+  body:
+    type: json
+    data: |-
+      {
+        "labelId": null,
+        "title": "Beanburger",
+        "description": "Muss lecker sein!",
+        "duration": 3600
+      }
+  auth:
+    type: bearer
+    token: "{{ACCESS_TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

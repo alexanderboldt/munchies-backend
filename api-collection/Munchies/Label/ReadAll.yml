@@ -1,5 +1,5 @@
 info:
-  name: Get All
+  name: Read All
   type: http
   seq: 2
 
