@@ -55,3 +55,6 @@ docker compose up -d
 - log in into Keycloak
 - create a user with credentials
 - assign the realm role `user`
+
+## :dog: Test with Bruno
+The folder `api-collection` contains the requests to test the app with Bruno.
