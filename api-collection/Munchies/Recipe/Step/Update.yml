@@ -1,0 +1,35 @@
+info:
+  name: Update
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{BASE_URL}}/recipes/:recipe_id/steps/:step_id"
+  headers:
+    - name: X-API-VERSION
+      value: "1"
+  params:
+    - name: recipe_id
+      value: "2"
+      type: path
+    - name: step_id
+      value: "5"
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "number": 2,
+        "title": "Make the sauce",
+        "description": "Mix canned tomatoes with salt."
+      }
+  auth:
+    type: bearer
+    token: "{{ACCESS_TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
