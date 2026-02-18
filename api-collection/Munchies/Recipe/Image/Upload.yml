@@ -1,0 +1,31 @@
+info:
+  name: Upload
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{BASE_URL}}/recipes/:id/images"
+  headers:
+    - name: X-API-VERSION
+      value: "1"
+  params:
+    - name: id
+      value: "2"
+      type: path
+  body:
+    type: multipart-form
+    data:
+      - name: image
+        type: file
+        value:
+          - /home/alex/Downloads/Weltbester-Black-Bean-Burger-3-1280x854.jpg
+  auth:
+    type: bearer
+    token: "{{ACCESS_TOKEN}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
