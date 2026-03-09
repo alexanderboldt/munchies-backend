@@ -14,7 +14,7 @@ springdoc = "2.8.13"
 
 # test versions
 springmockk = "5.0.1"
-kotest = "6.1.4"
+kotest = "6.1.5"
 rest-assured = "6.0.0"
 testcontainer = "2.0.3"
 
