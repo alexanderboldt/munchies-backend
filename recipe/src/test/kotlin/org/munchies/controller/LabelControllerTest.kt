@@ -23,6 +23,32 @@ class LabelControllerTest : BaseControllerTest() {
     // region create
 
     @Test
+    fun `should not create a label and throw bad-request with empty name`() {
+        Given {
+            body(Fixtures.Labels.empty)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.LABELS)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a label and throw bad-request with blank name`() {
+        Given {
+            body(Fixtures.Labels.blank)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.LABELS)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should create a label with valid request`() {
         val label = createLabel(Fixtures.Labels.vegetarian)
 
@@ -96,6 +122,20 @@ class LabelControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
+    fun `should not read one label and throw bad-request with negative id`() {
+        createLabel(Fixtures.Labels.vegetarian)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.LABELS_ID, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not read one label and throw bad-request with invalid id`() {
         createLabel(Fixtures.Labels.vegetarian)
 
@@ -133,6 +173,21 @@ class LabelControllerTest : BaseControllerTest() {
     // region update
 
     @Test
+    fun `should not update a label and throw bad-request with negative id`() {
+        createLabel(Fixtures.Labels.vegetarian)
+
+        Given {
+            body(Fixtures.Labels.vegan)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.LABELS_ID, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not update a label and throw bad-request with invalid id`() {
         createLabel(Fixtures.Labels.vegetarian)
 
@@ -148,7 +203,37 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update a label and return it with valid id`() {
+    fun `should not update a label and throw bad-request with empty name`() {
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
+
+        Given {
+            body(Fixtures.Labels.empty)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.LABELS_ID, labelCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a label and throw bad-request with blank name`() {
+        val labelCreated = createLabel(Fixtures.Labels.vegetarian)
+
+        Given {
+            body(Fixtures.Labels.blank)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.LABELS_ID, labelCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should update a label with valid request`() {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {
@@ -170,6 +255,20 @@ class LabelControllerTest : BaseControllerTest() {
     // endregion
 
     // region delete
+
+    @Test
+    fun `should not delete a label and throw bad-request with negative id`() {
+        createLabel(Fixtures.Labels.vegetarian)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            delete(Path.LABELS_ID, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
 
     @Test
     fun `should not delete a label and throw bad-request with invalid id`() {

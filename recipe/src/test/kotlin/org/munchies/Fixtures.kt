@@ -13,6 +13,8 @@ object Fixtures {
     }
 
     object Labels {
+        val empty = LabelRequest("")
+        val blank = LabelRequest(" ")
         val vegetarian = LabelRequest("Vegetarian")
         val vegan = LabelRequest("Vegan")
     }
