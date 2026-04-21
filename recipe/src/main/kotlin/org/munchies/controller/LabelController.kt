@@ -1,5 +1,8 @@
 package org.munchies.controller
 
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Positive
 import org.munchies.Header
 import org.munchies.Path
 import org.munchies.PathParam
@@ -24,28 +27,28 @@ class LabelController(private val labelService: LabelService) {
     @PostMapping(Path.LABELS, version = "1")
     @ResponseStatus(HttpStatus.CREATED)
     suspend fun create(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @RequestBody label: LabelRequest
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Valid @RequestBody label: LabelRequest
     ) = labelService.create(userId, label)
 
     // read
 
     @GetMapping(Path.LABELS, version = "1")
-    suspend fun readAll(@RequestHeader(Header.USER_ID) userId: String) = labelService.readAll(userId)
+    suspend fun readAll(@NotBlank @RequestHeader(Header.USER_ID) userId: String) = labelService.readAll(userId)
 
     @GetMapping(Path.LABELS_ID, version = "1")
     suspend fun read(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.LABEL_ID) id: Long
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.LABEL_ID) id: Long
     ) = labelService.read(userId, id)
 
     // update
 
     @PutMapping(Path.LABELS_ID, version = "1")
     suspend fun update(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.LABEL_ID) id: Long,
-        @RequestBody labelNew: LabelRequest
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.LABEL_ID) id: Long,
+        @Valid @RequestBody labelNew: LabelRequest
     ) = labelService.update(userId, id, labelNew)
 
     // delete
@@ -53,7 +56,7 @@ class LabelController(private val labelService: LabelService) {
     @DeleteMapping(Path.LABELS_ID, version = "1")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     suspend fun delete(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.LABEL_ID) id: Long
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.LABEL_ID) id: Long
     ) = labelService.delete(userId, id)
 }
