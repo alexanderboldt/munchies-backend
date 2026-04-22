@@ -1,10 +1,14 @@
 package org.munchies.domain
 
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Positive
+
 data class RecipeRequest(
     val labelId: Long?,
-    val title: String,
+    @field:NotBlank val title: String,
     val description: String?,
-    val duration: Int
+    @field:Positive val duration: Int
 )
 
 data class RecipeResponse(

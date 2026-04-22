@@ -25,11 +25,42 @@ class RecipeControllerTest : BaseControllerTest() {
     // region create
 
     @Test
-    fun `should create a recipe with valid request`() {
-        val recipe = createRecipe(Fixtures.Recipes.pizza)
+    fun `should not create a recipe and throw bad-request with empty title`() {
+        Given {
+            body(Fixtures.Recipes.pizza.copy(title = ""))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
 
-        recipe.shouldNotBeNull()
-        recipe shouldBeRecipe Fixtures.Recipes.pizza
+    @Test
+    fun `should not create a recipe and throw bad-request with blank title`() {
+        Given {
+            body(Fixtures.Recipes.pizza.copy(title = " "))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a recipe and throw bad-request with negative duration`() {
+        Given {
+            body(Fixtures.Recipes.pizza.copy(duration = -1))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
     }
 
     @Test
@@ -54,6 +85,14 @@ class RecipeControllerTest : BaseControllerTest() {
         val recipeCreated = createRecipe(recipeRequest)
 
         recipeCreated shouldBeRecipe recipeRequest
+    }
+
+    @Test
+    fun `should create a recipe with valid request`() {
+        val recipe = createRecipe(Fixtures.Recipes.pizza)
+
+        recipe.shouldNotBeNull()
+        recipe shouldBeRecipe Fixtures.Recipes.pizza
     }
 
     // endregion
@@ -123,6 +162,20 @@ class RecipeControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
+    fun `should not read one recipe and throw bad-request with negative id`() {
+        createRecipe(Fixtures.Recipes.pizza)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.RECIPES_ID, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not read one recipe and throw bad-request with invalid id`() {
         createRecipe(Fixtures.Recipes.pizza)
 
@@ -159,6 +212,21 @@ class RecipeControllerTest : BaseControllerTest() {
     // region update
 
     @Test
+    fun `should not update a recipe and throw bad-request with negative id`() {
+        createRecipe(Fixtures.Recipes.pizza)
+
+        Given {
+            body(Fixtures.Recipes.burger)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_ID, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not update a recipe and throw bad-request with invalid id`() {
         createRecipe(Fixtures.Recipes.pizza)
 
@@ -168,6 +236,51 @@ class RecipeControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_ID, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a recipe and throw bad-request with empty title`() {
+        val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
+
+        Given {
+            body(Fixtures.Recipes.burger.copy(title = ""))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_ID, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a recipe and throw bad-request with blank title`() {
+        val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
+
+        Given {
+            body(Fixtures.Recipes.burger.copy(title = " "))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_ID, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a recipe and throw bad-request with negative duration`() {
+        val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
+
+        Given {
+            body(Fixtures.Recipes.burger.copy(duration = -1))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_ID, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -229,6 +342,20 @@ class RecipeControllerTest : BaseControllerTest() {
     // endregion
 
     // region delete
+
+    @Test
+    fun `should not delete a recipe and throw bad-request with negative id`() {
+        createRecipe(Fixtures.Recipes.pizza)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            delete(Path.RECIPES_ID, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
 
     @Test
     fun `should not delete a recipe and throw bad-request with invalid id`() {
