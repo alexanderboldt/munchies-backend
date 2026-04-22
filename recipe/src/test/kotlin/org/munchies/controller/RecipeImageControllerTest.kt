@@ -33,6 +33,20 @@ class RecipeImageControllerTest : BaseControllerTest() {
     // region upload image
 
     @Test
+    fun `should not upload a recipe-image and throw bad-request with negative id`() {
+        Given {
+            multiPart(MultipartParam.IMAGE, Fixtures.image)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+            contentType(ContentType.MULTIPART)
+        } When {
+            post(Path.RECIPES_IMAGES, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not upload a recipe-image and throw bad-request with invalid id`() {
         Given {
             multiPart(MultipartParam.IMAGE, Fixtures.image)
@@ -69,6 +83,21 @@ class RecipeImageControllerTest : BaseControllerTest() {
     // endregion
 
     // region download image
+
+    @Test
+    fun `should not download a recipe-image and throw bad-request with negative id`() {
+        // precondition: upload an image
+        uploadRecipeImage(recipeCreated.id)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.RECIPES_IMAGES, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
 
     @Test
     fun `should not download a recipe-image and throw bad-request with invalid id`() {
@@ -109,6 +138,21 @@ class RecipeImageControllerTest : BaseControllerTest() {
     // endregion
 
     // region delete image
+
+    @Test
+    fun `should not delete a recipe-image and throw bad-request with negative id`() {
+        // precondition: upload an image
+        uploadRecipeImage(recipeCreated.id)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            delete(Path.RECIPES_IMAGES, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
 
     @Test
     fun `should not delete a recipe-image and throw bad-request with invalid id`() {
