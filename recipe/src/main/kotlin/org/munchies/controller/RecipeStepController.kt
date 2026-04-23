@@ -1,5 +1,8 @@
 package org.munchies.controller
 
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Positive
 import org.munchies.Header
 import org.munchies.Path
 import org.munchies.PathParam
@@ -24,34 +27,34 @@ class RecipeStepController(private val recipeStepService: RecipeStepService) {
     @PostMapping(Path.RECIPES_STEPS, version = "1")
     @ResponseStatus(HttpStatus.CREATED)
     suspend fun create(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
-        @RequestBody step: StepRequest
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
+        @Valid @RequestBody step: StepRequest
     ) = recipeStepService.create(userId, recipeId, step)
 
     // read
 
     @GetMapping(Path.RECIPES_STEPS, version = "1")
     suspend fun readAll(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.RECIPE_ID) recipeId: Long
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.RECIPE_ID) recipeId: Long
     ) = recipeStepService.readAll(userId, recipeId)
 
     @GetMapping(Path.RECIPES_STEPS_ID, version = "1")
     suspend fun read(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
-        @PathVariable(PathParam.STEP_ID) id: Long
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
+        @Positive @PathVariable(PathParam.STEP_ID) id: Long
     ) = recipeStepService.read(userId, id, recipeId)
 
     // update
 
     @PutMapping(Path.RECIPES_STEPS_ID, version = "1")
     suspend fun update(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
-        @PathVariable(PathParam.STEP_ID) id: Long,
-        @RequestBody step: StepRequest
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
+        @Positive @PathVariable(PathParam.STEP_ID) id: Long,
+        @Valid @RequestBody step: StepRequest
     ) = recipeStepService.update(userId, id, recipeId, step)
 
     // delete
@@ -59,8 +62,8 @@ class RecipeStepController(private val recipeStepService: RecipeStepService) {
     @DeleteMapping(Path.RECIPES_STEPS_ID, version = "1")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     suspend fun delete(
-        @RequestHeader(Header.USER_ID) userId: String,
-        @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
-        @PathVariable(PathParam.STEP_ID) id: Long
+        @NotBlank @RequestHeader(Header.USER_ID) userId: String,
+        @Positive @PathVariable(PathParam.RECIPE_ID) recipeId: Long,
+        @Positive @PathVariable(PathParam.STEP_ID) id: Long
     ) = recipeStepService.delete(userId, id, recipeId)
 }

@@ -1,9 +1,12 @@
 package org.munchies.domain
 
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Positive
+
 data class StepRequest(
-    val number: Int,
-    val title: String,
-    val description: String
+    @field:Positive val number: Int,
+    @field:NotBlank val title: String,
+    @field:NotBlank val description: String
 )
 
 data class StepResponse(
