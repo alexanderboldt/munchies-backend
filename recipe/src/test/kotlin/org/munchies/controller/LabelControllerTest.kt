@@ -150,7 +150,7 @@ class LabelControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should read one label and return it with valid id`() {
+    fun `should read one label with valid id`() {
         val labelCreated = createLabel(Fixtures.Labels.vegetarian)
 
         val label = Given {

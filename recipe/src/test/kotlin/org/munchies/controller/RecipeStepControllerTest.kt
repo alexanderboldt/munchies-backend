@@ -34,7 +34,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     // region create
 
     @Test
-    fun `should not create a step with negative recipe-id`() {
+    fun `should not create a step and throw bad-request with negative recipe-id`() {
         Given {
             body(Fixtures.Steps.dough)
             header(Header.API_VERSION, "1")
@@ -47,7 +47,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not create a step with invalid recipe-id`() {
+    fun `should not create a step and throw bad-request with invalid recipe-id`() {
         Given {
             body(Fixtures.Steps.dough)
             header(Header.API_VERSION, "1")
@@ -60,7 +60,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not create a step with negative number`() {
+    fun `should not create a step and throw bad-request with negative number`() {
         val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
@@ -75,7 +75,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not create a step with empty title`() {
+    fun `should not create a step and throw bad-request with empty title`() {
         val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
@@ -90,7 +90,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not create a step with blank title`() {
+    fun `should not create a step and throw bad-request with blank title`() {
         val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
@@ -105,7 +105,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not create a step with empty description`() {
+    fun `should not create a step and throw bad-request with empty description`() {
         val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
@@ -120,7 +120,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not create a step with blank description`() {
+    fun `should not create a step and throw bad-request with blank description`() {
         val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         Given {
@@ -276,7 +276,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should read one step and return it with valid id`() {
+    fun `should read one step with valid id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = Given {
@@ -434,7 +434,7 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update a step and return it with valid id`() {
+    fun `should update a step with valid id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
         val step = Given {

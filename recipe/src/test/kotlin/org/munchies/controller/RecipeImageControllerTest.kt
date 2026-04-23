@@ -61,7 +61,7 @@ class RecipeImageControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should upload a recipe-image and return ok with valid id`() {
+    fun `should upload a recipe-image with valid id`() {
         val recipe = Given {
             multiPart(MultipartParam.IMAGE, Fixtures.image)
             header(Header.API_VERSION, "1")

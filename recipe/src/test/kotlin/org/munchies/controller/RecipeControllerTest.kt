@@ -190,7 +190,7 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should read one recipe and return it with valid id`() {
+    fun `should read one recipe with valid id`() {
         val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         val recipe = Given {
@@ -287,7 +287,7 @@ class RecipeControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should update a recipe and return it with valid id`() {
+    fun `should update a recipe with valid id`() {
         val recipeCreated = createRecipe(Fixtures.Recipes.pizza)
 
         val recipe = Given {
