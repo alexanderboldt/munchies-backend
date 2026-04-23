@@ -34,6 +34,19 @@ class RecipeStepControllerTest : BaseControllerTest() {
     // region create
 
     @Test
+    fun `should not create a step with negative recipe-id`() {
+        Given {
+            body(Fixtures.Steps.dough)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES_STEPS, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not create a step with invalid recipe-id`() {
         Given {
             body(Fixtures.Steps.dough)
@@ -41,6 +54,81 @@ class RecipeStepControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             post(Path.RECIPES_STEPS, 999)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a step with negative number`() {
+        val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.dough.copy(number = -1))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES_STEPS, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a step with empty title`() {
+        val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.dough.copy(title = ""))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES_STEPS, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a step with blank title`() {
+        val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.dough.copy(title = " "))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES_STEPS, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a step with empty description`() {
+        val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.dough.copy(description = ""))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES_STEPS, recipeCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not create a step with blank description`() {
+        val step = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.dough.copy(description = " "))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            post(Path.RECIPES_STEPS, recipeCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -57,6 +145,18 @@ class RecipeStepControllerTest : BaseControllerTest() {
     // endregion
 
     // region read all
+
+    @Test
+    fun `should not read all steps and throw bad-request with negative recipe-id`() {
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.RECIPES_STEPS, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
 
     @Test
     fun `should read all steps and return an empty list`() {
@@ -120,6 +220,20 @@ class RecipeStepControllerTest : BaseControllerTest() {
     // region read one
 
     @Test
+    fun `should not read one step and throw bad-request with negative recipe-id`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.RECIPES_STEPS_ID, -1, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not read one step and throw bad-request with invalid recipe-id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
@@ -128,6 +242,20 @@ class RecipeStepControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             get(Path.RECIPES_STEPS_ID, 100, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not read one step and throw bad-request with negative id`() {
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            get(Path.RECIPES_STEPS_ID, recipeCreated.id, -1)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -171,6 +299,21 @@ class RecipeStepControllerTest : BaseControllerTest() {
     // region update
 
     @Test
+    fun `should not update a step and throw bad-request with negative recipe-id`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, -1, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not update a step and throw bad-request with invalid recipe-id`() {
         val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
 
@@ -186,6 +329,21 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
+    fun `should not update a step and throw bad-request with negative id`() {
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce)
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, -1)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not update a step and throw bad-request with invalid id`() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
@@ -195,6 +353,81 @@ class RecipeStepControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             put(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a step and throw bad-request with negative number`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce.copy(number = -1))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a step and throw bad-request with empty title`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce.copy(title = ""))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a step and throw bad-request with blank title`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce.copy(title = " "))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a step and throw bad-request with empty description`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce.copy(description = ""))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not update a step and throw bad-request with blank description`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            body(Fixtures.Steps.sauce.copy(description = " "))
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            put(Path.RECIPES_STEPS_ID, recipeCreated.id, stepCreated.id)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
@@ -239,6 +472,20 @@ class RecipeStepControllerTest : BaseControllerTest() {
     }
 
     @Test
+    fun `should not delete a step and throw bad-request with negative recipe-id`() {
+        val stepCreated = createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            delete(Path.RECIPES_STEPS_ID, -1, stepCreated.id)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
     fun `should not delete a step and throw bad-request with invalid id`() {
         createStep(recipeCreated.id, Fixtures.Steps.dough)
 
@@ -247,6 +494,20 @@ class RecipeStepControllerTest : BaseControllerTest() {
             header(Header.USER_ID, Fixtures.User.USER_ID)
         } When {
             delete(Path.RECIPES_STEPS_ID, recipeCreated.id, 100)
+        } Then {
+            statusCode(HttpStatus.SC_BAD_REQUEST)
+        }
+    }
+
+    @Test
+    fun `should not delete a step and throw bad-request with negative id`() {
+        createStep(recipeCreated.id, Fixtures.Steps.dough)
+
+        Given {
+            header(Header.API_VERSION, "1")
+            header(Header.USER_ID, Fixtures.User.USER_ID)
+        } When {
+            delete(Path.RECIPES_STEPS_ID, recipeCreated.id, -1)
         } Then {
             statusCode(HttpStatus.SC_BAD_REQUEST)
         }
