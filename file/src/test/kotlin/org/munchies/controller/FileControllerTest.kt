@@ -24,7 +24,7 @@ class FileControllerTest : BaseControllerTest() {
     // region create
 
     @Test
-    fun `should not upload file and throw error with invalid bucket name`() {
+    fun `should not upload a file and throw bad-request with invalid bucket name`() {
         Given {
             multiPart(MultipartParam.FILE, Fixtures.image)
             header(Header.API_VERSION, "1")
@@ -37,7 +37,7 @@ class FileControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not upload file and throw bad-request with invalid multipart`() {
+    fun `should not upload a file and throw bad-request with invalid multipart`() {
         Given {
             multiPart("image", Fixtures.image)
             header(Header.API_VERSION, "1")
@@ -50,7 +50,7 @@ class FileControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should upload a file`() {
+    fun `should upload a file with valid request`() {
         val file = Given {
             multiPart(MultipartParam.FILE, Fixtures.image)
             header(Header.API_VERSION, "1")
@@ -75,7 +75,7 @@ class FileControllerTest : BaseControllerTest() {
     // region read
 
     @Test
-    fun `should not download a file with invalid bucket name`() {
+    fun `should not download a file and throw bad-request with invalid bucket name`() {
         // precondition: upload a file
         val file = uploadFile()
 
@@ -94,7 +94,7 @@ class FileControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should not download a file with invalid filename`() {
+    fun `should not download a file and throw bad-request with invalid filename`() {
         // precondition: upload a file
         uploadFile()
 
@@ -110,7 +110,7 @@ class FileControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should download a file`() {
+    fun `should download a file with valid requesst`() {
         // precondition: upload a file
         val file = uploadFile()
 
@@ -133,7 +133,7 @@ class FileControllerTest : BaseControllerTest() {
     // region delete
 
     @Test
-    fun `should not delete a file with invalid bucket name`() {
+    fun `should not delete a file and throw bad-request with invalid bucket name`() {
         // precondition: upload a file
         val file = uploadFile()
 
@@ -147,7 +147,7 @@ class FileControllerTest : BaseControllerTest() {
     }
 
     @Test
-    fun `should delete a file`() {
+    fun `should delete a file with valid request`() {
         // precondition: upload a file
         val file = uploadFile()
 
