@@ -4,7 +4,7 @@ import org.munchies.Fixtures
 import org.munchies.Header
 import org.munchies.MultipartParam
 import org.munchies.Path
-import org.munchies.domain.RecipeResponse
+import org.munchies.controller.domain.RecipeResponse
 import org.munchies.util.asRecipe
 import org.munchies.util.createRecipe
 import org.munchies.util.uploadRecipeImage

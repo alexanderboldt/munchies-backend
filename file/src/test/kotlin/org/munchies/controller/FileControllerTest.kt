@@ -16,7 +16,7 @@ import org.munchies.Header
 import org.munchies.MultipartParam
 import org.munchies.Path
 import org.munchies.S3Bucket
-import org.munchies.domain.FileResponse
+import org.munchies.controller.domain.FileResponse
 import org.munchies.util.asFile
 
 class FileControllerTest : BaseControllerTest() {

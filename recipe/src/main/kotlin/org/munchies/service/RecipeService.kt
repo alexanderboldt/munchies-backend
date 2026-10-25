@@ -4,11 +4,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import org.munchies.S3Bucket
 import org.munchies.client.FileClient
-import org.munchies.domain.RecipeRequest
-import org.munchies.domain.RecipeResponse
+import org.munchies.controller.domain.RecipeRequest
+import org.munchies.controller.domain.RecipeResponse
 import org.munchies.repository.RecipeRepository
 import org.munchies.repository.LabelRepository
-import org.munchies.entity.RecipeEntity
+import org.munchies.repository.entity.RecipeEntity
 import org.munchies.util.orThrowBadRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

@@ -3,7 +3,7 @@ package org.munchies.controller
 import org.munchies.Fixtures
 import org.munchies.Header
 import org.munchies.Path
-import org.munchies.domain.RecipeResponse
+import org.munchies.controller.domain.RecipeResponse
 import org.munchies.util.asStep
 import org.munchies.util.asSteps
 import org.munchies.util.createRecipe

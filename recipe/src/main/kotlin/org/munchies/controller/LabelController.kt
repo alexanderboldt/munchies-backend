@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive
 import org.munchies.Header
 import org.munchies.Path
 import org.munchies.PathParam
-import org.munchies.domain.LabelRequest
+import org.munchies.controller.domain.LabelRequest
 import org.munchies.service.LabelService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping

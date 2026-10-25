@@ -2,10 +2,10 @@ package org.munchies.service
 
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import org.munchies.domain.LabelRequest
-import org.munchies.domain.LabelResponse
+import org.munchies.controller.domain.LabelRequest
+import org.munchies.controller.domain.LabelResponse
 import org.munchies.repository.LabelRepository
-import org.munchies.entity.LabelEntity
+import org.munchies.repository.entity.LabelEntity
 import org.munchies.util.orThrowBadRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service

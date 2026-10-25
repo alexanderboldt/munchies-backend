@@ -1,7 +1,7 @@
 package org.munchies.repository
 
 import kotlinx.coroutines.flow.Flow
-import org.munchies.entity.StepEntity
+import org.munchies.repository.entity.StepEntity
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 
 interface StepRepository : CoroutineCrudRepository<StepEntity, Long>, BaseRepository<StepEntity> {

@@ -1,6 +1,6 @@
-package org.munchies.entity
+package org.munchies.repository.entity
 
-import org.munchies.domain.StepResponse
+import org.munchies.controller.domain.StepResponse
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 

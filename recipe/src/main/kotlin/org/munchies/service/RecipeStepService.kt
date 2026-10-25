@@ -2,9 +2,9 @@ package org.munchies.service
 
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import org.munchies.domain.StepRequest
-import org.munchies.domain.StepResponse
-import org.munchies.entity.StepEntity
+import org.munchies.controller.domain.StepRequest
+import org.munchies.controller.domain.StepResponse
+import org.munchies.repository.entity.StepEntity
 import org.munchies.repository.RecipeRepository
 import org.munchies.repository.StepRepository
 import org.munchies.util.orThrowBadRequest

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive
 import org.munchies.Header
 import org.munchies.Path
 import org.munchies.PathParam
-import org.munchies.domain.RecipeRequest
+import org.munchies.controller.domain.RecipeRequest
 import org.munchies.service.RecipeService
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus

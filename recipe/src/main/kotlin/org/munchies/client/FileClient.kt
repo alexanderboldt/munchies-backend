@@ -8,7 +8,7 @@ import org.munchies.Header
 import org.munchies.MultipartParam
 import org.munchies.Path
 import org.munchies.S3Bucket
-import org.munchies.domain.FileResponse
+import org.munchies.controller.domain.FileResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.http.MediaType

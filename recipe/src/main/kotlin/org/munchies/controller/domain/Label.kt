@@ -1,4 +1,4 @@
-package org.munchies.domain
+package org.munchies.controller.domain
 
 import jakarta.validation.constraints.NotBlank
 

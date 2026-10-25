@@ -1,9 +1,9 @@
 package org.munchies
 
-import org.munchies.domain.FileResponse
-import org.munchies.domain.LabelRequest
-import org.munchies.domain.RecipeRequest
-import org.munchies.domain.StepRequest
+import org.munchies.controller.domain.FileResponse
+import org.munchies.controller.domain.LabelRequest
+import org.munchies.controller.domain.RecipeRequest
+import org.munchies.controller.domain.StepRequest
 import java.io.File
 
 object Fixtures {

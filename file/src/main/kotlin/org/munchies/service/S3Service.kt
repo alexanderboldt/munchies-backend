@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import kotlinx.coroutines.withContext
 import org.munchies.S3Bucket
-import org.munchies.domain.FileResponse
+import org.munchies.controller.domain.FileResponse
 import org.munchies.util.orThrowBadRequest
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener

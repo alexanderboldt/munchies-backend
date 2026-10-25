@@ -3,7 +3,7 @@ package org.munchies.service
 import kotlinx.coroutines.flow.Flow
 import org.munchies.S3Bucket
 import org.munchies.client.FileClient
-import org.munchies.domain.RecipeResponse
+import org.munchies.controller.domain.RecipeResponse
 import org.munchies.repository.RecipeRepository
 import org.munchies.util.orThrowBadRequest
 import org.springframework.core.io.buffer.DataBuffer

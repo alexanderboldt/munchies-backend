@@ -1,8 +1,8 @@
 package org.munchies.util
 
-import org.munchies.domain.LabelResponse
-import org.munchies.domain.RecipeResponse
-import org.munchies.domain.StepResponse
+import org.munchies.controller.domain.LabelResponse
+import org.munchies.controller.domain.RecipeResponse
+import org.munchies.controller.domain.StepResponse
 import io.restassured.common.mapper.TypeRef
 import io.restassured.response.ResponseBodyExtractionOptions
 
