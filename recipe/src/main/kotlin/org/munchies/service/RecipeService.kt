@@ -7,7 +7,6 @@ import org.munchies.client.FileClient
 import org.munchies.domain.RecipeRequest
 import org.munchies.domain.RecipeResponse
 import org.munchies.repository.RecipeRepository
-import org.munchies.mapper.toDomain
 import org.munchies.repository.LabelRepository
 import org.munchies.entity.RecipeEntity
 import org.munchies.util.orThrowBadRequest

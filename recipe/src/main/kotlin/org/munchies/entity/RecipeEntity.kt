@@ -1,5 +1,6 @@
 package org.munchies.entity
 
+import org.munchies.domain.RecipeResponse
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 
@@ -15,4 +16,6 @@ data class RecipeEntity(
     var filename: String?,
     val createdAt: Long,
     var updatedAt: Long
-)
+) {
+    fun toDomain() = RecipeResponse(id, userId, labelId, title, description, duration, filename, createdAt, updatedAt)
+}

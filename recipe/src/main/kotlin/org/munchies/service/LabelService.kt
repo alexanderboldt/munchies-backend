@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.toList
 import org.munchies.domain.LabelRequest
 import org.munchies.domain.LabelResponse
 import org.munchies.repository.LabelRepository
-import org.munchies.mapper.toDomain
 import org.munchies.entity.LabelEntity
 import org.munchies.util.orThrowBadRequest
 import org.springframework.data.domain.Sort

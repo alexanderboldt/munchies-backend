@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.toList
 import org.munchies.domain.StepRequest
 import org.munchies.domain.StepResponse
 import org.munchies.entity.StepEntity
-import org.munchies.mapper.toDomain
 import org.munchies.repository.RecipeRepository
 import org.munchies.repository.StepRepository
 import org.munchies.util.orThrowBadRequest
